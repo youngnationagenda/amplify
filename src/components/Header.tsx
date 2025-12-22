@@ -25,7 +25,7 @@ const Header = () => {
               <div className="absolute -top-1 -right-1 w-3 h-3 bg-secondary rounded-full animate-pulse" />
             </div>
             <span className="font-display font-bold text-xl gradient-text">
-              CarbonRide
+              Net Tribe Carbon
             </span>
           </a>
 
@@ -44,13 +44,17 @@ const Header = () => {
 
           {/* CTA Buttons */}
           <div className="hidden md:flex items-center gap-3">
-            <Button variant="ghost" size="sm">
-              Connect Wallet
-            </Button>
-            <Button variant="glow" size="sm">
-              <Zap className="w-4 h-4" />
-              Launch App
-            </Button>
+            <a href="/auth">
+              <Button variant="ghost" size="sm">
+                Login
+              </Button>
+            </a>
+            <a href="/rider-dashboard">
+              <Button variant="glow" size="sm">
+                <Zap className="w-4 h-4" />
+                Rider Dashboard
+              </Button>
+            </a>
           </div>
 
           {/* Mobile Menu Button */}
@@ -77,13 +81,17 @@ const Header = () => {
                 </a>
               ))}
               <div className="flex flex-col gap-2 pt-4 border-t border-border/50">
-                <Button variant="outline" className="w-full">
-                  Connect Wallet
-                </Button>
-                <Button variant="glow" className="w-full">
-                  <Zap className="w-4 h-4" />
-                  Launch App
-                </Button>
+                <a href="/auth">
+                  <Button variant="outline" className="w-full">
+                    Login
+                  </Button>
+                </a>
+                <a href="/rider-dashboard">
+                  <Button variant="glow" className="w-full">
+                    <Zap className="w-4 h-4" />
+                    Rider Dashboard
+                  </Button>
+                </a>
               </div>
             </nav>
           </div>
