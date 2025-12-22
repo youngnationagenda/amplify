@@ -26,7 +26,7 @@ const Footer = () => {
                 <Leaf className="w-5 h-5 text-primary-foreground" />
               </div>
               <span className="font-display font-bold text-xl gradient-text">
-                CarbonRide
+                Net Tribe Carbon
               </span>
             </a>
             <p className="text-sm text-muted-foreground mb-6 max-w-xs">
@@ -70,7 +70,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-border/50 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-muted-foreground">
-            © 2024 CarbonRide. All rights reserved.
+            © 2024 Net Tribe Carbon. All rights reserved.
           </p>
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
             <span className="flex items-center gap-2">

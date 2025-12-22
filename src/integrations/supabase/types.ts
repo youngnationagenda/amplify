@@ -14,16 +14,212 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      motorcycles: {
+        Row: {
+          battery_capacity: number | null
+          carbon_credits_generated: number | null
+          created_at: string
+          current_rider_id: string | null
+          id: string
+          iot_device_id: string | null
+          is_active: boolean | null
+          model: string | null
+          total_distance_km: number | null
+        }
+        Insert: {
+          battery_capacity?: number | null
+          carbon_credits_generated?: number | null
+          created_at?: string
+          current_rider_id?: string | null
+          id?: string
+          iot_device_id?: string | null
+          is_active?: boolean | null
+          model?: string | null
+          total_distance_km?: number | null
+        }
+        Update: {
+          battery_capacity?: number | null
+          carbon_credits_generated?: number | null
+          created_at?: string
+          current_rider_id?: string | null
+          id?: string
+          iot_device_id?: string | null
+          is_active?: boolean | null
+          model?: string | null
+          total_distance_km?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "motorcycles_current_rider_id_fkey"
+            columns: ["current_rider_id"]
+            isOneToOne: false
+            referencedRelation: "riders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+          kyc_documents: Json | null
+          kyc_status: string | null
+          phone: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          kyc_documents?: Json | null
+          kyc_status?: string | null
+          phone?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          kyc_documents?: Json | null
+          kyc_status?: string | null
+          phone?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      riders: {
+        Row: {
+          created_at: string
+          efficiency_score: number | null
+          id: string
+          is_active: boolean | null
+          motorcycle_id: string | null
+          total_carbon_credits: number | null
+          total_distance_km: number | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          efficiency_score?: number | null
+          id?: string
+          is_active?: boolean | null
+          motorcycle_id?: string | null
+          total_carbon_credits?: number | null
+          total_distance_km?: number | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          efficiency_score?: number | null
+          id?: string
+          is_active?: boolean | null
+          motorcycle_id?: string | null
+          total_carbon_credits?: number | null
+          total_distance_km?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      rides: {
+        Row: {
+          carbon_credits_earned: number | null
+          created_at: string
+          distance_km: number
+          efficiency_score: number | null
+          end_time: string | null
+          energy_consumed_kwh: number | null
+          id: string
+          iot_validated: boolean | null
+          motorcycle_id: string | null
+          rider_id: string | null
+          start_time: string | null
+        }
+        Insert: {
+          carbon_credits_earned?: number | null
+          created_at?: string
+          distance_km: number
+          efficiency_score?: number | null
+          end_time?: string | null
+          energy_consumed_kwh?: number | null
+          id?: string
+          iot_validated?: boolean | null
+          motorcycle_id?: string | null
+          rider_id?: string | null
+          start_time?: string | null
+        }
+        Update: {
+          carbon_credits_earned?: number | null
+          created_at?: string
+          distance_km?: number
+          efficiency_score?: number | null
+          end_time?: string | null
+          energy_consumed_kwh?: number | null
+          id?: string
+          iot_validated?: boolean | null
+          motorcycle_id?: string | null
+          rider_id?: string | null
+          start_time?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rides_motorcycle_id_fkey"
+            columns: ["motorcycle_id"]
+            isOneToOne: false
+            referencedRelation: "motorcycles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "rides_rider_id_fkey"
+            columns: ["rider_id"]
+            isOneToOne: false
+            referencedRelation: "riders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "rider" | "investor"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +346,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "rider", "investor"],
+    },
   },
 } as const

@@ -6,13 +6,13 @@ import RideHistory from "./RideHistory";
 const Dashboard = () => {
   const metrics = [
     { title: "Total Rides", value: "1,247", change: 12.5, icon: <Bike className="w-5 h-5" />, trend: "up" as const },
-    { title: "Carbon Credits Earned", value: "89.4", suffix: "tCO₂", change: 8.3, icon: <Leaf className="w-5 h-5" />, trend: "up" as const },
+    { title: "Carbon Credits Available", value: "576", suffix: "tCO₂", change: 8.3, icon: <Leaf className="w-5 h-5" />, trend: "up" as const },
     { title: "Distance Covered", value: "45,892", suffix: "km", change: 15.2, icon: <MapPin className="w-5 h-5" />, trend: "up" as const },
     { title: "Energy Consumed", value: "2,340", suffix: "kWh", change: -3.2, icon: <Battery className="w-5 h-5" />, trend: "down" as const },
-    { title: "Token Value", value: "$8,940", change: 22.1, icon: <DollarSign className="w-5 h-5" />, trend: "up" as const },
-    { title: "Active Riders", value: "120", change: 5.8, icon: <Activity className="w-5 h-5" />, trend: "up" as const },
+    { title: "Token Value", value: "$57,600", change: 22.1, icon: <DollarSign className="w-5 h-5" />, trend: "up" as const },
+    { title: "Active Motorcycles", value: "120", change: 5.8, icon: <Activity className="w-5 h-5" />, trend: "up" as const },
     { title: "Avg. Efficiency", value: "92", suffix: "%", change: 2.4, icon: <Gauge className="w-5 h-5" />, trend: "up" as const },
-    { title: "IoT Devices", value: "156", change: 10.0, icon: <Zap className="w-5 h-5" />, trend: "up" as const },
+    { title: "IoT Devices", value: "120", change: 10.0, icon: <Zap className="w-5 h-5" />, trend: "up" as const },
   ];
 
   return (

@@ -48,10 +48,10 @@ const HeroSection = () => {
           {/* Stats Row */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto animate-slide-up" style={{ animationDelay: '0.3s' }}>
             {[
-              { value: "120+", label: "Active Riders", icon: Zap },
-              { value: "$100", label: "Per Token", icon: TrendingUp },
-              { value: "$1,500", label: "Asset Token", icon: Shield },
-              { value: "1 Ton", label: "Per 10 Tokens", icon: Shield },
+              { value: "120", label: "Electric Motorcycles", icon: Zap },
+              { value: "576", label: "Carbon Credits", icon: TrendingUp },
+              { value: "$100", label: "Per Credit", icon: Shield },
+              { value: "$57,600", label: "Total Value", icon: Shield },
             ].map((stat, index) => (
               <div
                 key={index}
