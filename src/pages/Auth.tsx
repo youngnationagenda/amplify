@@ -4,7 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Leaf, Mail, Lock, User, ArrowRight, Bike, TrendingUp } from "lucide-react";
+import { Leaf, Mail, Lock, User, ArrowRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
 
@@ -22,7 +22,6 @@ const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
-  const [role, setRole] = useState<'rider' | 'investor'>('rider');
   const [isLoading, setIsLoading] = useState(false);
   const { signIn, signUp, user, loading, userRole } = useAuth();
   const navigate = useNavigate();
@@ -83,7 +82,7 @@ const Auth = () => {
           return;
         }
 
-        const { error } = await signUp(email, password, fullName, role);
+        const { error } = await signUp(email, password, fullName);
         if (error) {
           if (error.message.includes("already registered")) {
             toast({
@@ -198,39 +197,6 @@ const Auth = () => {
               </div>
             </div>
 
-            {!isLogin && (
-              <div className="space-y-2">
-                <Label>Account Type</Label>
-                <div className="grid grid-cols-2 gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setRole('rider')}
-                    className={`p-4 rounded-xl border-2 transition-all flex flex-col items-center gap-2 ${
-                      role === 'rider' 
-                        ? 'border-primary bg-primary/10 text-primary' 
-                        : 'border-border hover:border-primary/50'
-                    }`}
-                  >
-                    <Bike className="w-6 h-6" />
-                    <span className="font-medium">Rider</span>
-                    <span className="text-xs text-muted-foreground">Earn carbon credits</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setRole('investor')}
-                    className={`p-4 rounded-xl border-2 transition-all flex flex-col items-center gap-2 ${
-                      role === 'investor' 
-                        ? 'border-primary bg-primary/10 text-primary' 
-                        : 'border-border hover:border-primary/50'
-                    }`}
-                  >
-                    <TrendingUp className="w-6 h-6" />
-                    <span className="font-medium">Investor</span>
-                    <span className="text-xs text-muted-foreground">Buy EOT tokens</span>
-                  </button>
-                </div>
-              </div>
-            )}
 
             <Button 
               type="submit" 
