@@ -24,15 +24,20 @@ const Auth = () => {
   const [fullName, setFullName] = useState("");
   const [role, setRole] = useState<'rider' | 'investor'>('rider');
   const [isLoading, setIsLoading] = useState(false);
-  const { signIn, signUp, user, loading } = useAuth();
+  const { signIn, signUp, user, loading, userRole } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
   useEffect(() => {
     if (!loading && user) {
-      navigate("/");
+      // Redirect based on role
+      if (userRole === 'investor') {
+        navigate("/investor-dashboard");
+      } else {
+        navigate("/rider-dashboard");
+      }
     }
-  }, [user, loading, navigate]);
+  }, [user, loading, userRole, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
