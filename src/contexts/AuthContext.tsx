@@ -6,7 +6,7 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
-  userRole: 'rider' | 'investor' | 'admin' | null;
+  userRole: 'rider' | 'investor' | 'admin' | 'offsetter' | null;
   signUp: (email: string, password: string, fullName: string) => Promise<{ error: Error | null }>;
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
-  const [userRole, setUserRole] = useState<'rider' | 'investor' | 'admin' | null>(null);
+  const [userRole, setUserRole] = useState<'rider' | 'investor' | 'admin' | 'offsetter' | null>(null);
 
   const fetchUserRole = async (userId: string) => {
     const { data } = await supabase
@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       .maybeSingle();
     
     if (data) {
-      setUserRole(data.role as 'rider' | 'investor' | 'admin');
+      setUserRole(data.role as 'rider' | 'investor' | 'admin' | 'offsetter');
     }
   };
 
