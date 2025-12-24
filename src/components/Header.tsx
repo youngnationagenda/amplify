@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Zap, Leaf, TrendingUp } from "lucide-react";
+import { Menu, X, Zap, Leaf, TrendingUp, Flame } from "lucide-react";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -55,6 +55,12 @@ const Header = () => {
                 Rider
               </Button>
             </a>
+            <a href="/offsetter-dashboard">
+              <Button variant="outline" size="sm" className="border-warning/50 text-warning hover:bg-warning/10">
+                <Flame className="w-4 h-4" />
+                Offsetter
+              </Button>
+            </a>
             <a href="/investor-dashboard">
               <Button variant="glow" size="sm">
                 <TrendingUp className="w-4 h-4" />
@@ -96,6 +102,12 @@ const Header = () => {
                   <Button variant="outline" className="w-full">
                     <Zap className="w-4 h-4" />
                     Rider Dashboard
+                  </Button>
+                </a>
+                <a href="/offsetter-dashboard">
+                  <Button variant="outline" className="w-full border-warning/50 text-warning">
+                    <Flame className="w-4 h-4" />
+                    Offsetter Dashboard
                   </Button>
                 </a>
                 <a href="/investor-dashboard">

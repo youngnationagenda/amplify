@@ -32,6 +32,8 @@ const Auth = () => {
       // Redirect based on role
       if (userRole === 'investor') {
         navigate("/investor-dashboard");
+      } else if (userRole === 'offsetter') {
+        navigate("/offsetter-dashboard");
       } else {
         navigate("/rider-dashboard");
       }
