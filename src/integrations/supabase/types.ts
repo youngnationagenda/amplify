@@ -14,6 +14,211 @@ export type Database = {
   }
   public: {
     Tables: {
+      burned_credits: {
+        Row: {
+          amount: number
+          burned_at: string
+          certificate_number: string
+          ico_purchase_id: string | null
+          id: string
+          purchase_id: string | null
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          burned_at?: string
+          certificate_number: string
+          ico_purchase_id?: string | null
+          id?: string
+          purchase_id?: string | null
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          burned_at?: string
+          certificate_number?: string
+          ico_purchase_id?: string | null
+          id?: string
+          purchase_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "burned_credits_ico_purchase_id_fkey"
+            columns: ["ico_purchase_id"]
+            isOneToOne: false
+            referencedRelation: "ico_purchases"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "burned_credits_purchase_id_fkey"
+            columns: ["purchase_id"]
+            isOneToOne: false
+            referencedRelation: "carbon_purchases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      carbon_credits: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          price_per_credit: number
+          source_id: string | null
+          source_type: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          amount?: number
+          created_at?: string
+          id?: string
+          price_per_credit?: number
+          source_id?: string | null
+          source_type?: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          price_per_credit?: number
+          source_id?: string | null
+          source_type?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      carbon_purchases: {
+        Row: {
+          amount: number
+          burned_at: string | null
+          created_at: string
+          credit_id: string | null
+          id: string
+          price_paid: number
+          status: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          burned_at?: string | null
+          created_at?: string
+          credit_id?: string | null
+          id?: string
+          price_paid: number
+          status?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          burned_at?: string | null
+          created_at?: string
+          credit_id?: string | null
+          id?: string
+          price_paid?: number
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "carbon_purchases_credit_id_fkey"
+            columns: ["credit_id"]
+            isOneToOne: false
+            referencedRelation: "carbon_credits"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ico_purchases: {
+        Row: {
+          created_at: string
+          credits_delivered: number
+          credits_purchased: number
+          ico_id: string | null
+          id: string
+          price_paid: number
+          status: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          credits_delivered?: number
+          credits_purchased: number
+          ico_id?: string | null
+          id?: string
+          price_paid: number
+          status?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          credits_delivered?: number
+          credits_purchased?: number
+          ico_id?: string | null
+          id?: string
+          price_paid?: number
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ico_purchases_ico_id_fkey"
+            columns: ["ico_id"]
+            isOneToOne: false
+            referencedRelation: "initial_carbon_offerings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      initial_carbon_offerings: {
+        Row: {
+          created_at: string
+          credits_sold: number
+          delivery_date: string
+          description: string | null
+          end_date: string
+          id: string
+          market_price: number
+          name: string
+          price_per_credit: number
+          start_date: string
+          status: string
+          total_credits: number
+        }
+        Insert: {
+          created_at?: string
+          credits_sold?: number
+          delivery_date: string
+          description?: string | null
+          end_date: string
+          id?: string
+          market_price: number
+          name: string
+          price_per_credit: number
+          start_date: string
+          status?: string
+          total_credits: number
+        }
+        Update: {
+          created_at?: string
+          credits_sold?: number
+          delivery_date?: string
+          description?: string | null
+          end_date?: string
+          id?: string
+          market_price?: number
+          name?: string
+          price_per_credit?: number
+          start_date?: string
+          status?: string
+          total_credits?: number
+        }
+        Relationships: []
+      }
       motorcycles: {
         Row: {
           battery_capacity: number | null
@@ -210,6 +415,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      generate_certificate_number: { Args: never; Returns: string }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
