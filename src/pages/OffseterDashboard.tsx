@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAccount } from "wagmi";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -23,7 +24,8 @@ import {
   Clock,
   CheckCircle,
   LogOut,
-  Zap
+  Zap,
+  Wallet
 } from "lucide-react";
 
 interface CarbonCredit {
@@ -68,6 +70,7 @@ const OffseterDashboard = () => {
   const { user, loading, signOut, userRole } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { isConnected } = useAccount();
   
   const [credits, setCredits] = useState<CarbonCredit[]>([]);
   const [icos, setIcos] = useState<ICO[]>([]);
@@ -77,6 +80,14 @@ const OffseterDashboard = () => {
   const [selectedCredit, setSelectedCredit] = useState<string | null>(null);
   const [icoAmount, setIcoAmount] = useState<number>(100);
   const [isProcessing, setIsProcessing] = useState(false);
+  
+  // Celo payment modal state
+  const [paymentModalOpen, setPaymentModalOpen] = useState(false);
+  const [pendingPurchase, setPendingPurchase] = useState<{
+    creditId: string;
+    amount: number;
+    pricePerCredit: number;
+  } | null>(null);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -120,8 +131,21 @@ const OffseterDashboard = () => {
     if (burnedData) setBurnedCredits(burnedData);
   };
 
-  const handlePurchaseCredits = async (creditId: string, amount: number, pricePerCredit: number) => {
-    if (!user) return;
+  const initiatePayment = (creditId: string, amount: number, pricePerCredit: number) => {
+    if (!isConnected) {
+      toast({
+        title: "Wallet Not Connected",
+        description: "Please connect your Celo wallet to purchase credits",
+        variant: "destructive"
+      });
+      return;
+    }
+    setPendingPurchase({ creditId, amount, pricePerCredit });
+    setPaymentModalOpen(true);
+  };
+
+  const handlePaymentSuccess = async (txHash: string) => {
+    if (!user || !pendingPurchase) return;
     setIsProcessing(true);
     
     try {
@@ -129,9 +153,9 @@ const OffseterDashboard = () => {
         .from('carbon_purchases')
         .insert({
           user_id: user.id,
-          credit_id: creditId,
-          amount,
-          price_paid: amount * pricePerCredit,
+          credit_id: pendingPurchase.creditId,
+          amount: pendingPurchase.amount,
+          price_paid: pendingPurchase.amount * pendingPurchase.pricePerCredit,
           status: 'active'
         });
 
@@ -139,14 +163,15 @@ const OffseterDashboard = () => {
 
       toast({
         title: "Purchase Successful!",
-        description: `You purchased ${amount} carbon credits for $${(amount * pricePerCredit).toFixed(2)}`
+        description: `You purchased ${pendingPurchase.amount} carbon credits. Tx: ${txHash.slice(0, 10)}...`
       });
       
       fetchData();
       setSelectedCredit(null);
+      setPendingPurchase(null);
     } catch (error: any) {
       toast({
-        title: "Purchase Failed",
+        title: "Database Error",
         description: error.message,
         variant: "destructive"
       });
@@ -411,10 +436,14 @@ const OffseterDashboard = () => {
                               <Button 
                                 variant="glow" 
                                 size="sm"
-                                onClick={() => handlePurchaseCredits(credit.id, purchaseAmount, Number(credit.price_per_credit))}
+                                onClick={() => initiatePayment(credit.id, purchaseAmount, Number(credit.price_per_credit))}
                                 disabled={isProcessing}
                               >
-                                ${(purchaseAmount * Number(credit.price_per_credit)).toFixed(2)}
+                                {isConnected ? (
+                                  <>${(purchaseAmount * Number(credit.price_per_credit)).toFixed(2)}</>
+                                ) : (
+                                  <><Wallet className="w-4 h-4 mr-1" /> Connect</>
+                                )}
                               </Button>
                               <Button 
                                 variant="ghost" 
@@ -686,6 +715,20 @@ const OffseterDashboard = () => {
           </TabsContent>
         </Tabs>
       </main>
+
+      {/* Celo Payment Modal */}
+      {pendingPurchase && (
+        <CeloPaymentModal
+          open={paymentModalOpen}
+          onClose={() => {
+            setPaymentModalOpen(false);
+            setPendingPurchase(null);
+          }}
+          amount={pendingPurchase.amount * pendingPurchase.pricePerCredit}
+          onSuccess={handlePaymentSuccess}
+          description={`Purchase ${pendingPurchase.amount} carbon credits at $${pendingPurchase.pricePerCredit}/credit`}
+        />
+      )}
     </div>
   );
 };
