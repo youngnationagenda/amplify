@@ -42,6 +42,11 @@
 
     --radius: 0.75rem;
 
+    /* Celo brand colors */
+    --celo-gold: 45 95% 55%;
+    --celo-green: 142 70% 48%;
+    --cusd-blue: 200 90% 50%;
+
     /* Custom tokens */
     --gradient-primary: linear-gradient(135deg, hsl(160 84% 39%), hsl(185 90% 48%));
     --gradient-card: linear-gradient(145deg, hsl(160 25% 10%), hsl(160 25% 6%));

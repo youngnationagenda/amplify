@@ -10,6 +10,8 @@ import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
+import { ConnectWalletButton } from "@/components/celo/ConnectWalletButton";
+import { CeloPaymentModal } from "@/components/celo/CeloPaymentModal";
 import { 
   Leaf, 
   Flame, 
@@ -265,6 +267,7 @@ const OffseterDashboard = () => {
             </div>
           </div>
           <div className="flex items-center gap-3">
+            <ConnectWalletButton />
             <Badge variant="outline" className="border-warning/50 text-warning">
               <Flame className="w-3 h-3 mr-1" />
               Offsetter
