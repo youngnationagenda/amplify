@@ -225,8 +225,25 @@ const OffseterDashboard = () => {
     }
   };
 
-  const handleICOPurchase = async (ico: ICO, amount: number) => {
-    if (!user) return;
+  // ICO payment state
+  const [pendingICO, setPendingICO] = useState<{ ico: ICO; amount: number } | null>(null);
+  const [icoPaymentModalOpen, setIcoPaymentModalOpen] = useState(false);
+
+  const initiateICOPayment = (ico: ICO, amount: number) => {
+    if (!isConnected) {
+      toast({
+        title: "Wallet Not Connected",
+        description: "Please connect your Celo wallet to purchase ICO credits",
+        variant: "destructive"
+      });
+      return;
+    }
+    setPendingICO({ ico, amount });
+    setIcoPaymentModalOpen(true);
+  };
+
+  const handleICOPaymentSuccess = async (txHash: string) => {
+    if (!user || !pendingICO) return;
     setIsProcessing(true);
 
     try {
@@ -234,9 +251,9 @@ const OffseterDashboard = () => {
         .from('ico_purchases')
         .insert({
           user_id: user.id,
-          ico_id: ico.id,
-          credits_purchased: amount,
-          price_paid: amount * ico.price_per_credit,
+          ico_id: pendingICO.ico.id,
+          credits_purchased: pendingICO.amount,
+          price_paid: pendingICO.amount * pendingICO.ico.price_per_credit,
           status: 'pending'
         });
 
@@ -244,13 +261,14 @@ const OffseterDashboard = () => {
 
       toast({
         title: "ICO Purchase Successful!",
-        description: `Reserved ${amount} future credits at $${ico.price_per_credit}/credit (${Math.round((1 - ico.price_per_credit / ico.market_price) * 100)}% discount!)`
+        description: `Reserved ${pendingICO.amount} future credits. Tx: ${txHash.slice(0, 10)}...`
       });
 
       fetchData();
+      setPendingICO(null);
     } catch (error: any) {
       toast({
-        title: "Purchase Failed",
+        title: "Database Error",
         description: error.message,
         variant: "destructive"
       });
@@ -574,11 +592,14 @@ const OffseterDashboard = () => {
                               </div>
                               <Button 
                                 variant="glow"
-                                onClick={() => handleICOPurchase(ico, icoAmount)}
+                                onClick={() => initiateICOPayment(ico, icoAmount)}
                                 disabled={isProcessing}
                               >
-                                Reserve Credits
-                                <ArrowRight className="w-4 h-4 ml-2" />
+                                {isConnected ? (
+                                  <>Reserve Credits <ArrowRight className="w-4 h-4 ml-2" /></>
+                                ) : (
+                                  <><Wallet className="w-4 h-4 mr-1" /> Connect Wallet</>
+                                )}
                               </Button>
                             </div>
                           )}
@@ -727,6 +748,20 @@ const OffseterDashboard = () => {
           amount={pendingPurchase.amount * pendingPurchase.pricePerCredit}
           onSuccess={handlePaymentSuccess}
           description={`Purchase ${pendingPurchase.amount} carbon credits at $${pendingPurchase.pricePerCredit}/credit`}
+        />
+      )}
+
+      {/* ICO Payment Modal */}
+      {pendingICO && (
+        <CeloPaymentModal
+          open={icoPaymentModalOpen}
+          onClose={() => {
+            setIcoPaymentModalOpen(false);
+            setPendingICO(null);
+          }}
+          amount={pendingICO.amount * pendingICO.ico.price_per_credit}
+          onSuccess={handleICOPaymentSuccess}
+          description={`ICO: Reserve ${pendingICO.amount} future credits at $${pendingICO.ico.price_per_credit}/credit`}
         />
       )}
     </div>
