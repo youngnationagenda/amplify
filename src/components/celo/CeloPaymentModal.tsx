@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAccount, useBalance, useSendTransaction, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { parseEther, parseUnits, formatEther, formatUnits } from "viem";
-import { celo } from "viem/chains";
+import { celoSepolia } from "@/config/web3";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -36,7 +36,7 @@ export function CeloPaymentModal({ open, onClose, amount, onSuccess, description
   const { data: celoBalance } = useBalance({ address });
   
   // Get cUSD balance
-  const chainId = chain?.id ?? celo.id;
+  const chainId = chain?.id ?? celoSepolia.id;
   const cusdAddress = CELO_TOKENS[chainId as keyof typeof CELO_TOKENS]?.cUSD;
   
   const { data: cusdBalance } = useBalance({
