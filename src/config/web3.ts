@@ -1,10 +1,34 @@
 import { defaultWagmiConfig } from '@web3modal/wagmi/react/config'
-import { celo, celoAlfajores } from 'viem/chains'
+import { celo } from 'viem/chains'
+import { defineChain } from 'viem'
 import { http } from 'wagmi'
 
-// Dummy WalletConnect project ID for development
-// Replace with your own project ID from https://cloud.walletconnect.com
-export const WALLETCONNECT_PROJECT_ID = 'dummy_project_id_for_development'
+// Define Celo Sepolia Testnet (not yet in viem/chains)
+export const celoSepolia = defineChain({
+  id: 11142220,
+  name: 'Celo Sepolia Testnet',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'CELO',
+    symbol: 'CELO',
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://forno.celo-sepolia.celo-testnet.org'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'Celo Sepolia Explorer',
+      url: 'https://celo-sepolia.blockscout.com',
+    },
+  },
+  testnet: true,
+})
+
+// WalletConnect project ID - loaded from environment variable for production
+// Get your own at https://cloud.walletconnect.com
+export const WALLETCONNECT_PROJECT_ID = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID || 'dummy_project_id_for_development'
 
 const metadata = {
   name: 'EOT Carbon Credits',
@@ -13,7 +37,7 @@ const metadata = {
   icons: ['https://avatars.githubusercontent.com/u/37784886']
 }
 
-export const chains = [celo, celoAlfajores] as const
+export const chains = [celo, celoSepolia] as const
 
 export const wagmiConfig = defaultWagmiConfig({
   chains,
@@ -21,7 +45,7 @@ export const wagmiConfig = defaultWagmiConfig({
   metadata,
   transports: {
     [celo.id]: http(),
-    [celoAlfajores.id]: http(),
+    [celoSepolia.id]: http(),
   },
 })
 
@@ -30,12 +54,12 @@ export const CELO_TOKENS = {
   // Mainnet
   [celo.id]: {
     CELO: '0x0000000000000000000000000000000000000000', // Native CELO
-    cUSD: '0x765DE816845861e75A25fCA122bb6898B8B1282a',
+    cUSD: '0x765DE816845861e75A25fCA122bb6898B8B1282a', // USDm on mainnet
   },
-  // Alfajores Testnet
-  [celoAlfajores.id]: {
+  // Celo Sepolia Testnet
+  [celoSepolia.id]: {
     CELO: '0x0000000000000000000000000000000000000000', // Native CELO
-    cUSD: '0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1',
+    cUSD: '0xdE9e4C3ce781b4bA68120d6261cbad65ce0aB00b', // USDm on Celo Sepolia
   },
 }
 
