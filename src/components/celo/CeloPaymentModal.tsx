@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { useAccount, useBalance, useSendTransaction, useWaitForTransactionReceipt } from "wagmi";
-import { parseEther, formatEther } from "viem";
+import { useAccount, useBalance, useSendTransaction, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
+import { parseEther, parseUnits, formatEther, formatUnits } from "viem";
 import { celo } from "viem/chains";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -8,6 +8,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Loader2, Wallet, CheckCircle, AlertCircle, Coins } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { CELO_TOKENS, CUSD_ABI } from "@/config/web3";
 
 interface CeloPaymentModalProps {
   open: boolean;
@@ -32,28 +33,48 @@ export function CeloPaymentModal({ open, onClose, amount, onSuccess, description
   const { address, isConnected, chain } = useAccount();
   
   // Get CELO balance
-  const { data: celoBalance } = useBalance({
-    address,
-  });
+  const { data: celoBalance } = useBalance({ address });
   
-  // Calculate CELO amount needed
-  const celoAmount = amount / CELO_PRICE_USD;
+  // Get cUSD balance
+  const chainId = chain?.id ?? celo.id;
+  const cusdAddress = CELO_TOKENS[chainId as keyof typeof CELO_TOKENS]?.cUSD;
+  
+  const { data: cusdBalance } = useBalance({
+    address,
+    token: cusdAddress as `0x${string}`,
+  });
 
-  // For CELO native transfer
+  // Calculate amounts
+  const celoAmount = amount / CELO_PRICE_USD;
+  const cusdAmount = amount; // 1 cUSD ≈ 1 USD
+
+  // CELO native transfer
   const { 
     sendTransaction, 
-    isPending: isSending, 
-    data: txHash,
-    isError,
-    reset 
+    isPending: isCeloSending, 
+    data: celoTxHash,
+    isError: isCeloError,
+    reset: resetCelo 
   } = useSendTransaction();
-  
+
+  // cUSD ERC-20 transfer
+  const {
+    writeContract,
+    isPending: isCusdSending,
+    data: cusdTxHash,
+    isError: isCusdError,
+    reset: resetCusd
+  } = useWriteContract();
+
+  const txHash = selectedToken === "CELO" ? celoTxHash : cusdTxHash;
+  const isSending = selectedToken === "CELO" ? isCeloSending : isCusdSending;
+  const isError = selectedToken === "CELO" ? isCeloError : isCusdError;
+
   // Wait for transaction confirmation
   const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
     hash: txHash,
   });
 
-  // Handle confirmation
   useEffect(() => {
     if (isConfirmed && txHash) {
       setPaymentStatus("success");
@@ -61,7 +82,6 @@ export function CeloPaymentModal({ open, onClose, amount, onSuccess, description
     }
   }, [isConfirmed, txHash, onSuccess]);
 
-  // Handle error
   useEffect(() => {
     if (isError) {
       setPaymentStatus("error");
@@ -72,27 +92,44 @@ export function CeloPaymentModal({ open, onClose, amount, onSuccess, description
   useEffect(() => {
     if (open) {
       setPaymentStatus("idle");
-      reset();
+      resetCelo();
+      resetCusd();
     }
-  }, [open, reset]);
+  }, [open, resetCelo, resetCusd]);
 
   const handlePayment = () => {
     if (!address) return;
-    
     setPaymentStatus("pending");
-    
-    sendTransaction({
-      to: TREASURY_ADDRESS,
-      value: parseEther(celoAmount.toFixed(18)),
-    });
+
+    if (selectedToken === "CELO") {
+      sendTransaction({
+        to: TREASURY_ADDRESS,
+        value: parseEther(celoAmount.toFixed(18)),
+      });
+    } else {
+      // cUSD ERC-20 transfer
+      if (!cusdAddress || !chain) return;
+      writeContract({
+        address: cusdAddress as `0x${string}`,
+        abi: CUSD_ABI,
+        functionName: "transfer",
+        args: [TREASURY_ADDRESS, parseUnits(cusdAmount.toFixed(2), 18)],
+        chain,
+        account: address,
+      });
+    }
   };
 
   const isPending = isSending || isConfirming;
   
-  const formatBalance = (balance: typeof celoBalance) => {
+  const formatBal = (balance: typeof celoBalance) => {
     if (!balance) return "0.00";
-    return Number(formatEther(balance.value)).toFixed(4);
+    return Number(formatUnits(balance.value, balance.decimals)).toFixed(4);
   };
+
+  const payLabel = selectedToken === "CELO" 
+    ? `Pay ${celoAmount.toFixed(2)} CELO` 
+    : `Pay ${cusdAmount.toFixed(2)} cUSD`;
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
@@ -120,6 +157,7 @@ export function CeloPaymentModal({ open, onClose, amount, onSuccess, description
               onValueChange={(v) => setSelectedToken(v as PaymentToken)}
               className="grid grid-cols-2 gap-3"
             >
+              {/* CELO option */}
               <Label
                 htmlFor="celo"
                 className={cn(
@@ -138,26 +176,30 @@ export function CeloPaymentModal({ open, onClose, amount, onSuccess, description
                   {celoAmount.toFixed(2)} CELO
                 </span>
                 <span className="text-xs text-muted-foreground">
-                  Balance: {formatBalance(celoBalance)}
+                  Balance: {formatBal(celoBalance)}
                 </span>
               </Label>
 
+              {/* cUSD option */}
               <Label
                 htmlFor="cusd"
                 className={cn(
-                  "flex flex-col items-center justify-center p-4 rounded-lg border-2 cursor-pointer transition-all opacity-50",
+                  "flex flex-col items-center justify-center p-4 rounded-lg border-2 cursor-pointer transition-all",
                   selectedToken === "cUSD"
                     ? "border-[hsl(200,90%,50%)] bg-[hsl(200,90%,50%)]/10"
-                    : "border-border"
+                    : "border-border hover:border-[hsl(200,90%,50%)]/50"
                 )}
               >
-                <RadioGroupItem value="cUSD" id="cusd" className="sr-only" disabled />
+                <RadioGroupItem value="cUSD" id="cusd" className="sr-only" />
                 <div className="w-10 h-10 rounded-full bg-[hsl(200,90%,50%)] flex items-center justify-center mb-2">
                   <span className="text-lg font-bold text-background">$</span>
                 </div>
                 <span className="font-semibold">cUSD</span>
                 <span className="text-xs text-muted-foreground mt-1">
-                  Coming Soon
+                  {cusdAmount.toFixed(2)} cUSD
+                </span>
+                <span className="text-xs text-muted-foreground">
+                  Balance: {formatBal(cusdBalance)}
                 </span>
               </Label>
             </RadioGroup>
@@ -194,7 +236,7 @@ export function CeloPaymentModal({ open, onClose, amount, onSuccess, description
             <Button
               className="flex-1 bg-gradient-to-r from-[hsl(142,70%,48%)] to-[hsl(45,95%,55%)] text-background hover:opacity-90"
               onClick={handlePayment}
-              disabled={!isConnected || isPending || paymentStatus === "success" || selectedToken !== "CELO"}
+              disabled={!isConnected || isPending || paymentStatus === "success"}
             >
               {isPending ? (
                 <>
@@ -209,7 +251,7 @@ export function CeloPaymentModal({ open, onClose, amount, onSuccess, description
               ) : (
                 <>
                   <Wallet className="w-4 h-4 mr-2" />
-                  Pay {celoAmount.toFixed(2)} CELO
+                  {payLabel}
                 </>
               )}
             </Button>
