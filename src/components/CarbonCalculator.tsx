@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Leaf, Zap, MapPin, TrendingUp } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
-
 const CarbonCalculator = () => {
   const [distance, setDistance] = useState(0);
   const [credits, setCredits] = useState(0);
@@ -21,14 +20,10 @@ const CarbonCalculator = () => {
       });
       setTimeout(() => setIsAnimating(false), 300);
     }, 2000);
-
     return () => clearInterval(interval);
   }, []);
-
-  const progressToNextToken = (credits % 1) * 100;
-
-  return (
-    <div className="glass-card p-6 h-full">
+  const progressToNextToken = credits % 1 * 100;
+  return <div className="glass-card p-6 h-full">
       <div className="flex items-center gap-3 mb-6">
         <div className="p-3 rounded-xl bg-primary/10">
           <Leaf className="w-6 h-6 text-primary" />
@@ -44,7 +39,7 @@ const CarbonCalculator = () => {
         <div className="bg-muted/50 rounded-xl p-4">
           <div className="flex items-center gap-2 text-muted-foreground mb-2">
             <MapPin className="w-4 h-4" />
-            <span className="text-xs">Distance (km)</span>
+            <span className="text-xs">Aggregated Distance (km)</span>
           </div>
           <p className={`font-display text-2xl font-bold ${isAnimating ? 'text-primary' : 'text-foreground'} transition-colors`}>
             {distance.toFixed(2)}
@@ -91,8 +86,6 @@ const CarbonCalculator = () => {
           Based on acceleration patterns, braking, and energy consumption
         </p>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default CarbonCalculator;
