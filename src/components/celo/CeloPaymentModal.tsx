@@ -21,7 +21,7 @@ interface CeloPaymentModalProps {
 type PaymentToken = "CELO" | "cUSD";
 
 // Treasury address (replace with actual treasury wallet)
-const TREASURY_ADDRESS = "0x0000000000000000000000000000000000000001" as const;
+const TREASURY_ADDRESS = "0x57651B018Fa4aC931Ec585da641078988Ef1213B" as const;
 
 // Mock exchange rate: 1 CELO = $0.50 (in production, fetch from oracle)
 const CELO_PRICE_USD = 0.5;
