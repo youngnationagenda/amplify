@@ -6,7 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { 
   Leaf, LogOut, User, TrendingUp, Coins, PieChart, 
   BarChart3, DollarSign, Bike, ArrowUpRight, ArrowDownRight,
-  Wallet, Clock, Target
+  Wallet, Clock, Target, ExternalLink
 } from "lucide-react";
 
 // Simulated investment data
@@ -86,6 +86,15 @@ const InvestorDashboard = () => {
           </div>
           
           <div className="flex items-center gap-4">
+            <Button
+              variant="default"
+              size="sm"
+              onClick={() => navigate("/investor-portal")}
+              className="bg-gradient-to-r from-primary to-secondary text-primary-foreground"
+            >
+              <ExternalLink className="w-4 h-4 mr-2" />
+              Investor Portal
+            </Button>
             <div className="flex items-center gap-2 text-sm">
               <User className="w-4 h-4 text-muted-foreground" />
               <span className="text-muted-foreground">{user?.email}</span>
