@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import RiderDashboard from "./pages/RiderDashboard";
 import InvestorDashboard from "./pages/InvestorDashboard";
+import InvestorPortal from "./pages/InvestorPortal";
 import OffseterDashboard from "./pages/OffseterDashboard";
 import NotFound from "./pages/NotFound";
 
@@ -23,6 +24,7 @@ const App = () => (
             <Route path="/auth" element={<Auth />} />
             <Route path="/rider-dashboard" element={<RiderDashboard />} />
             <Route path="/investor-dashboard" element={<InvestorDashboard />} />
+            <Route path="/investor-portal/*" element={<InvestorPortal />} />
             <Route path="/offsetter-dashboard" element={<OffseterDashboard />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
