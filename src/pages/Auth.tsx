@@ -4,9 +4,10 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Leaf, Mail, Lock, User, ArrowRight } from "lucide-react";
+import { Leaf, Mail, Lock, User, ArrowRight, Bike, TrendingUp, Flame, ShoppingCart } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -22,6 +23,7 @@ const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
+  const [selectedRole, setSelectedRole] = useState("rider");
   const [isLoading, setIsLoading] = useState(false);
   const { signIn, signUp, user, loading, userRole } = useAuth();
   const navigate = useNavigate();
@@ -31,7 +33,7 @@ const Auth = () => {
     if (!loading && user) {
       // Redirect based on role
       if (userRole === 'investor') {
-        navigate("/investor-dashboard");
+        navigate("/investor-portal");
       } else if (userRole === 'offsetter') {
         navigate("/offsetter-dashboard");
       } else {
@@ -84,7 +86,7 @@ const Auth = () => {
           return;
         }
 
-        const { error } = await signUp(email, password, fullName);
+        const { error } = await signUp(email, password, fullName, selectedRole);
         if (error) {
           if (error.message.includes("already registered")) {
             toast({
@@ -149,21 +151,52 @@ const Auth = () => {
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
             {!isLogin && (
-              <div className="space-y-2">
-                <Label htmlFor="fullName">Full Name</Label>
-                <div className="relative">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                  <Input
-                    id="fullName"
-                    type="text"
-                    placeholder="John Doe"
-                    value={fullName}
-                    onChange={(e) => setFullName(e.target.value)}
-                    className="pl-10"
-                    required
-                  />
+              <>
+                <div className="space-y-2">
+                  <Label htmlFor="fullName">Full Name</Label>
+                  <div className="relative">
+                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                    <Input
+                      id="fullName"
+                      type="text"
+                      placeholder="John Doe"
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
+                      className="pl-10"
+                      required
+                    />
+                  </div>
                 </div>
-              </div>
+
+                <div className="space-y-3">
+                  <Label>I am signing up as</Label>
+                  <RadioGroup value={selectedRole} onValueChange={setSelectedRole} className="grid grid-cols-2 gap-3">
+                    {[
+                      { value: "rider", label: "Rider", icon: Bike, desc: "Earn credits by riding" },
+                      { value: "investor", label: "Investor", icon: TrendingUp, desc: "Fund & earn ROI" },
+                      { value: "offsetter", label: "Offsetter", icon: Flame, desc: "Buy & burn credits" },
+                      { value: "user", label: "User", icon: ShoppingCart, desc: "Trade carbon credits" },
+                    ].map((role) => (
+                      <Label
+                        key={role.value}
+                        htmlFor={`role-${role.value}`}
+                        className={`flex items-center gap-3 p-3 rounded-xl border-2 cursor-pointer transition-all ${
+                          selectedRole === role.value
+                            ? "border-primary bg-primary/10"
+                            : "border-border hover:border-primary/50"
+                        }`}
+                      >
+                        <RadioGroupItem value={role.value} id={`role-${role.value}`} className="sr-only" />
+                        <role.icon className={`w-5 h-5 ${selectedRole === role.value ? "text-primary" : "text-muted-foreground"}`} />
+                        <div>
+                          <div className="font-medium text-sm">{role.label}</div>
+                          <div className="text-xs text-muted-foreground">{role.desc}</div>
+                        </div>
+                      </Label>
+                    ))}
+                  </RadioGroup>
+                </div>
+              </>
             )}
 
             <div className="space-y-2">

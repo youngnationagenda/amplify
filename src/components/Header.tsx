@@ -61,7 +61,7 @@ const Header = () => {
                 Offsetter
               </Button>
             </a>
-            <a href="/investor-dashboard">
+            <a href="/investor-portal">
               <Button variant="glow" size="sm">
                 <TrendingUp className="w-4 h-4" />
                 Investor
@@ -110,10 +110,10 @@ const Header = () => {
                     Offsetter Dashboard
                   </Button>
                 </a>
-                <a href="/investor-dashboard">
+                <a href="/investor-portal">
                   <Button variant="glow" className="w-full">
                     <TrendingUp className="w-4 h-4" />
-                    Investor Dashboard
+                    Investor Portal
                   </Button>
                 </a>
               </div>
