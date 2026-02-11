@@ -31,7 +31,9 @@ const Auth = () => {
 
   useEffect(() => {
     if (!loading && user) {
-      // Redirect based on role
+      // Wait for role to be fetched before redirecting
+      if (userRole === null) return;
+      
       if (userRole === 'investor') {
         navigate("/investor-portal");
       } else if (userRole === 'offsetter') {
