@@ -2,11 +2,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { 
-  Bike, Leaf, MapPin, Battery, Zap, LogOut, User, 
-  TrendingUp, Activity, Gauge, Play, Square 
-} from "lucide-react";
+import { Bike, Leaf, Zap, LogOut, User, TrendingUp } from "lucide-react";
+import LiveRideSection from "@/components/rider/LiveRideSection";
+import RiderLeaderboard from "@/components/rider/RiderLeaderboard";
 
 // Simulated real-time data
 const useRideSimulation = () => {
@@ -19,27 +17,16 @@ const useRideSimulation = () => {
 
   useEffect(() => {
     if (!isRiding) return;
-
     const interval = setInterval(() => {
-      // Simulate movement (100m - 500m per second for demo)
       const newDistance = Math.random() * 0.4 + 0.1;
       setDistance(prev => prev + newDistance);
-      
-      // Calculate credits: 1 credit per km based on efficiency
       const efficiencyMultiplier = efficiency / 100;
-      const newCredits = (newDistance / 1000) * efficiencyMultiplier * 4.8; // 576 credits / 120 motorcycles = 4.8
+      const newCredits = (newDistance / 1000) * efficiencyMultiplier * 4.8;
       setCredits(prev => prev + newCredits);
-      
-      // Random speed between 20-60 km/h
       setSpeed(Math.floor(Math.random() * 40 + 20));
-      
-      // Battery drain
       setBattery(prev => Math.max(0, prev - 0.01));
-      
-      // Efficiency fluctuation
       setEfficiency(Math.min(100, Math.max(70, efficiency + (Math.random() - 0.5) * 2)));
     }, 100);
-
     return () => clearInterval(interval);
   }, [isRiding, efficiency]);
 
@@ -70,10 +57,6 @@ const RiderDashboard = () => {
     );
   }
 
-  // Calculate progress to next credit milestone
-  const creditsProgress = (credits % 1) * 100;
-  const totalCredits = Math.floor(credits);
-
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -88,7 +71,6 @@ const RiderDashboard = () => {
               <p className="text-xs text-muted-foreground">Rider Dashboard</p>
             </div>
           </div>
-          
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2 text-sm">
               <User className="w-4 h-4 text-muted-foreground" />
@@ -103,104 +85,15 @@ const RiderDashboard = () => {
 
       <main className="container mx-auto px-4 py-8">
         {/* Live Ride Section */}
-        <div className="glass-card p-6 mb-8">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h2 className="font-display text-2xl font-bold mb-1">Live Ride Tracking</h2>
-              <p className="text-muted-foreground">Real-time carbon credit generation</p>
-            </div>
-            <Button 
-              variant={isRiding ? "destructive" : "glow"} 
-              size="lg"
-              onClick={() => setIsRiding(!isRiding)}
-            >
-              {isRiding ? (
-                <>
-                  <Square className="w-5 h-5" />
-                  Stop Ride
-                </>
-              ) : (
-                <>
-                  <Play className="w-5 h-5" />
-                  Start Ride
-                </>
-              )}
-            </Button>
-          </div>
-
-          {/* Live Metrics */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-            <div className="p-4 bg-background/50 rounded-xl border border-border/50">
-              <div className="flex items-center gap-2 mb-2">
-                <MapPin className="w-4 h-4 text-primary" />
-                <span className="text-sm text-muted-foreground">Distance</span>
-              </div>
-              <div className="font-display text-2xl font-bold">
-                {(distance / 1000).toFixed(2)} <span className="text-sm text-muted-foreground">km</span>
-              </div>
-            </div>
-            
-            <div className="p-4 bg-background/50 rounded-xl border border-border/50">
-              <div className="flex items-center gap-2 mb-2">
-                <Gauge className="w-4 h-4 text-secondary" />
-                <span className="text-sm text-muted-foreground">Speed</span>
-              </div>
-              <div className="font-display text-2xl font-bold">
-                {speed} <span className="text-sm text-muted-foreground">km/h</span>
-              </div>
-            </div>
-            
-            <div className="p-4 bg-background/50 rounded-xl border border-border/50">
-              <div className="flex items-center gap-2 mb-2">
-                <Battery className="w-4 h-4 text-success" />
-                <span className="text-sm text-muted-foreground">Battery</span>
-              </div>
-              <div className="font-display text-2xl font-bold">
-                {battery.toFixed(0)} <span className="text-sm text-muted-foreground">%</span>
-              </div>
-            </div>
-            
-            <div className="p-4 bg-background/50 rounded-xl border border-border/50">
-              <div className="flex items-center gap-2 mb-2">
-                <Activity className="w-4 h-4 text-warning" />
-                <span className="text-sm text-muted-foreground">Efficiency</span>
-              </div>
-              <div className="font-display text-2xl font-bold">
-                {efficiency.toFixed(0)} <span className="text-sm text-muted-foreground">%</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Carbon Credit Progress */}
-          <div className="p-6 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-xl border border-primary/20">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
-                  <Leaf className="w-6 h-6 text-primary" />
-                </div>
-                <div>
-                  <h3 className="font-display font-bold text-lg">Carbon Credits Earned</h3>
-                  <p className="text-sm text-muted-foreground">This ride session</p>
-                </div>
-              </div>
-              <div className="text-right">
-                <div className="font-display text-3xl font-bold gradient-text">{credits.toFixed(4)}</div>
-                <div className="text-sm text-muted-foreground">tCO₂e</div>
-              </div>
-            </div>
-            
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">Progress to next credit</span>
-                <span className="text-primary font-medium">{creditsProgress.toFixed(0)}%</span>
-              </div>
-              <Progress value={creditsProgress} className="h-3" />
-              <p className="text-xs text-muted-foreground text-center">
-                {totalCredits} complete credits earned • Generating at {(efficiency / 100 * 4.8).toFixed(2)} credits/km
-              </p>
-            </div>
-          </div>
-        </div>
+        <LiveRideSection
+          isRiding={isRiding}
+          setIsRiding={setIsRiding}
+          distance={distance}
+          credits={credits}
+          speed={speed}
+          battery={battery}
+          efficiency={efficiency}
+        />
 
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -212,9 +105,8 @@ const RiderDashboard = () => {
               <h3 className="font-display font-bold">Total Rides</h3>
             </div>
             <div className="font-display text-3xl font-bold mb-2">47</div>
-            <p className="text-sm text-success">+12% this week</p>
+            <p className="text-sm text-green-500">+12% this week</p>
           </div>
-          
           <div className="glass-card p-6">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-xl bg-secondary/10 flex items-center justify-center">
@@ -225,11 +117,10 @@ const RiderDashboard = () => {
             <div className="font-display text-3xl font-bold mb-2">4.8</div>
             <p className="text-sm text-muted-foreground">tCO₂e lifetime</p>
           </div>
-          
           <div className="glass-card p-6">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-success/10 flex items-center justify-center">
-                <TrendingUp className="w-5 h-5 text-success" />
+              <div className="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center">
+                <TrendingUp className="w-5 h-5 text-green-500" />
               </div>
               <h3 className="font-display font-bold">Earnings</h3>
             </div>
@@ -238,18 +129,23 @@ const RiderDashboard = () => {
           </div>
         </div>
 
+        {/* Leaderboard */}
+        <div className="mb-8">
+          <RiderLeaderboard currentUserId={user?.id} />
+        </div>
+
         {/* IoT Status */}
         <div className="glass-card p-6">
           <h3 className="font-display text-xl font-bold mb-4">IoT Device Status</h3>
-          <div className="flex items-center gap-4 p-4 bg-success/10 rounded-xl border border-success/20">
-            <div className="w-3 h-3 bg-success rounded-full animate-pulse" />
+          <div className="flex items-center gap-4 p-4 bg-green-500/10 rounded-xl border border-green-500/20">
+            <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse" />
             <div>
-              <p className="font-medium text-success">Device Connected</p>
+              <p className="font-medium text-green-500">Device Connected</p>
               <p className="text-sm text-muted-foreground">IoT ID: NTC-MC-0042 • Last sync: Just now</p>
             </div>
             <div className="ml-auto flex items-center gap-2">
-              <Zap className="w-4 h-4 text-success" />
-              <span className="text-sm text-success">Validating</span>
+              <Zap className="w-4 h-4 text-green-500" />
+              <span className="text-sm text-green-500">Validating</span>
             </div>
           </div>
         </div>
