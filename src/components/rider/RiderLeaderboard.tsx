@@ -1,21 +1,16 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { Trophy, Medal, TrendingUp, Leaf, Bike, Zap, Crown, ChevronUp, ChevronDown } from "lucide-react";
+import { Trophy, Medal, TrendingUp, Leaf, Bike, Zap, Crown, ChevronUp } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  fetchRiders,
+  computeFleetStats,
+  NTC_CONTRACT,
+  type TelemetryRider,
+} from "@/services/evTelemetry";
+import { supabase } from "@/integrations/supabase/client";
 
-// NTC Contract reference (Celo Sepolia)
-const NTC_CONTRACT = "0xde6dBD244fBE84141a97DDe4043029D9c61767AE";
-const EV_ASSET_CONTRACT = "0xCdB1d119Eda8f7A04a820b5002ef2ea8b189bb18";
-
-interface RiderEntry {
-  id: string;
-  user_id: string;
-  total_carbon_credits: number;
-  total_distance_km: number;
-  efficiency_score: number;
-  is_active: boolean;
-  motorcycle_id: string | null;
+interface LeaderboardEntry extends TelemetryRider {
   rank?: number;
   displayName?: string;
 }
@@ -42,63 +37,60 @@ const RankBadge = ({ rank }: { rank: number }) => {
 };
 
 export default function RiderLeaderboard({ currentUserId }: { currentUserId?: string }) {
-  const [riders, setRiders] = useState<RiderEntry[]>([]);
+  const [riders, setRiders] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState("credits");
+  const [dataSource, setDataSource] = useState<"bridge" | "api" | "mock">("mock");
 
   useEffect(() => {
-    fetchLeaderboard();
-  }, []);
+    loadLeaderboard();
+  }, [currentUserId]);
 
-  const fetchLeaderboard = async () => {
+  const loadLeaderboard = async () => {
     setLoading(true);
-    // Fetch all riders - RLS restricts to own data, so we use a public view approach
-    // For demo, we generate mock leaderboard data enriched with any real rider data
-    const { data: myRider } = await supabase
-      .from("riders")
-      .select("*")
-      .eq("user_id", currentUserId ?? "")
-      .maybeSingle();
 
-    // Generate realistic leaderboard entries
-    const mockRiders: RiderEntry[] = [
-      { id: "r1", user_id: "u1", total_carbon_credits: 48.2, total_distance_km: 1245, efficiency_score: 96, is_active: true, motorcycle_id: "NTC-MC-0012", displayName: "KE-Rider-Alpha" },
-      { id: "r2", user_id: "u2", total_carbon_credits: 42.7, total_distance_km: 1102, efficiency_score: 94, is_active: true, motorcycle_id: "NTC-MC-0008", displayName: "MachakosEV" },
-      { id: "r3", user_id: "u3", total_carbon_credits: 38.1, total_distance_km: 987, efficiency_score: 91, is_active: true, motorcycle_id: "NTC-MC-0031", displayName: "GreenRider_KE" },
-      { id: "r4", user_id: "u4", total_carbon_credits: 31.5, total_distance_km: 812, efficiency_score: 89, is_active: true, motorcycle_id: "NTC-MC-0005", displayName: "NairobiEco" },
-      { id: "r5", user_id: "u5", total_carbon_credits: 27.9, total_distance_km: 723, efficiency_score: 87, is_active: true, motorcycle_id: "NTC-MC-0019", displayName: "CeloRider01" },
-      { id: "r6", user_id: "u6", total_carbon_credits: 22.4, total_distance_km: 580, efficiency_score: 85, is_active: true, motorcycle_id: "NTC-MC-0027", displayName: "EV_Pioneer" },
-      { id: "r7", user_id: "u7", total_carbon_credits: 18.6, total_distance_km: 482, efficiency_score: 83, is_active: true, motorcycle_id: "NTC-MC-0044", displayName: "KisiiGreen" },
-      { id: "r8", user_id: "u8", total_carbon_credits: 14.2, total_distance_km: 368, efficiency_score: 80, is_active: true, motorcycle_id: "NTC-MC-0003", displayName: "MombasaEV" },
-      { id: "r9", user_id: "u9", total_carbon_credits: 9.8, total_distance_km: 254, efficiency_score: 78, is_active: true, motorcycle_id: "NTC-MC-0051", displayName: "RiderKE_09" },
-      { id: "r10", user_id: "u10", total_carbon_credits: 5.1, total_distance_km: 132, efficiency_score: 75, is_active: false, motorcycle_id: "NTC-MC-0062", displayName: "NewRider_KE" },
-    ];
+    // Fetch telemetry data (bridge → API → mock)
+    const { riders: telemetryRiders, source } = await fetchRiders();
+    setDataSource(source);
 
-    // Insert current user into leaderboard if they exist
-    if (myRider) {
-      const existing = mockRiders.findIndex(r => r.total_carbon_credits <= (myRider.total_carbon_credits ?? 0));
-      const entry: RiderEntry = {
-        ...myRider,
-        total_carbon_credits: myRider.total_carbon_credits ?? 0,
-        total_distance_km: myRider.total_distance_km ?? 0,
-        efficiency_score: myRider.efficiency_score ?? 85,
-        is_active: myRider.is_active ?? true,
-        displayName: "You",
-      };
-      if (existing >= 0) {
-        mockRiders.splice(existing, 0, entry);
-      } else {
-        mockRiders.push(entry);
+    // Map to leaderboard entries
+    let entries: LeaderboardEntry[] = telemetryRiders.map((r) => ({
+      ...r,
+      displayName: r.name ?? r.wallet?.slice(0, 8) ?? "Unknown",
+    }));
+
+    // Try to merge current user's DB data
+    if (currentUserId) {
+      const { data: myRider } = await supabase
+        .from("riders")
+        .select("*")
+        .eq("user_id", currentUserId)
+        .maybeSingle();
+
+      if (myRider) {
+        const userEntry: LeaderboardEntry = {
+          total_carbon_credits: myRider.total_carbon_credits ?? 0,
+          total_distance_km: myRider.total_distance_km ?? 0,
+          efficiency_score: myRider.efficiency_score ?? 85,
+          is_active: myRider.is_active ?? true,
+          motorcycle_id: myRider.motorcycle_id,
+          rider_id: myRider.id,
+          wallet: undefined,
+          name: "You",
+          displayName: "You",
+        };
+        // Insert at correct position
+        const idx = entries.findIndex((e) => e.total_carbon_credits <= userEntry.total_carbon_credits);
+        if (idx >= 0) entries.splice(idx, 0, userEntry);
+        else entries.push(userEntry);
       }
     }
 
-    // Assign ranks
-    const sorted = sortRiders(mockRiders, "credits");
-    setRiders(sorted);
+    setRiders(sortRiders(entries, "credits"));
     setLoading(false);
   };
 
-  const sortRiders = (list: RiderEntry[], by: string): RiderEntry[] => {
+  const sortRiders = (list: LeaderboardEntry[], by: string): LeaderboardEntry[] => {
     const copy = [...list];
     if (by === "credits") copy.sort((a, b) => b.total_carbon_credits - a.total_carbon_credits);
     else if (by === "distance") copy.sort((a, b) => b.total_distance_km - a.total_distance_km);
@@ -110,6 +102,8 @@ export default function RiderLeaderboard({ currentUserId }: { currentUserId?: st
     setTab(value);
     setRiders(sortRiders(riders, value));
   };
+
+  const stats = computeFleetStats(riders);
 
   if (loading) {
     return (
@@ -135,13 +129,18 @@ export default function RiderLeaderboard({ currentUserId }: { currentUserId?: st
           <div>
             <h2 className="font-display text-xl font-bold">Rider Leaderboard</h2>
             <p className="text-xs text-muted-foreground">
-              NTC Contract: {NTC_CONTRACT.slice(0, 8)}...{NTC_CONTRACT.slice(-6)}
+              NTC: {NTC_CONTRACT.slice(0, 8)}...{NTC_CONTRACT.slice(-6)}
             </p>
           </div>
         </div>
-        <Badge variant="outline" className="text-xs border-primary/30 text-primary">
-          <Zap className="w-3 h-3 mr-1" /> Live Rankings
-        </Badge>
+        <div className="flex items-center gap-2">
+          <Badge variant="outline" className="text-[10px] border-muted-foreground/30 text-muted-foreground">
+            {dataSource === "bridge" ? "🟢 Live Bridge" : dataSource === "api" ? "🔵 REST API" : "⚪ Simulated"}
+          </Badge>
+          <Badge variant="outline" className="text-xs border-primary/30 text-primary">
+            <Zap className="w-3 h-3 mr-1" /> Live Rankings
+          </Badge>
+        </div>
       </div>
 
       {/* Sort Tabs */}
@@ -162,10 +161,10 @@ export default function RiderLeaderboard({ currentUserId }: { currentUserId?: st
       {/* Leaderboard List */}
       <div className="space-y-2">
         {riders.slice(0, 10).map((rider) => {
-          const isCurrentUser = rider.user_id === currentUserId || rider.displayName === "You";
+          const isCurrentUser = rider.displayName === "You";
           return (
             <div
-              key={rider.id}
+              key={rider.rider_id ?? rider.wallet ?? rider.rank}
               className={`flex items-center gap-4 p-3 rounded-xl transition-all ${
                 isCurrentUser
                   ? "bg-primary/10 border border-primary/30 ring-1 ring-primary/20"
@@ -179,7 +178,7 @@ export default function RiderLeaderboard({ currentUserId }: { currentUserId?: st
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
                   <span className="font-display font-semibold text-sm truncate">
-                    {rider.displayName ?? `Rider-${rider.id.slice(0, 6)}`}
+                    {rider.displayName}
                   </span>
                   {isCurrentUser && (
                     <Badge className="text-[10px] px-1.5 py-0 bg-primary/20 text-primary border-0">YOU</Badge>
@@ -189,7 +188,7 @@ export default function RiderLeaderboard({ currentUserId }: { currentUserId?: st
                   )}
                 </div>
                 <p className="text-xs text-muted-foreground truncate">
-                  {rider.motorcycle_id ?? "Unassigned"} • {rider.total_distance_km.toFixed(0)} km
+                  {rider.motorcycle_id ?? rider.asset_id ?? "Unassigned"} • {rider.wallet ? `${rider.wallet.slice(0, 6)}...` : `${rider.total_distance_km.toFixed(0)} km`}
                 </p>
               </div>
 
@@ -209,19 +208,19 @@ export default function RiderLeaderboard({ currentUserId }: { currentUserId?: st
         })}
       </div>
 
-      {/* Footer Stats */}
+      {/* Footer Stats — computed from real data */}
       <div className="mt-6 p-4 bg-muted/20 rounded-xl border border-border/30">
         <div className="grid grid-cols-3 gap-4 text-center">
           <div>
-            <div className="font-display font-bold text-lg text-primary">120</div>
+            <div className="font-display font-bold text-lg text-primary">{stats.activeRiders}</div>
             <div className="text-xs text-muted-foreground">Active Riders</div>
           </div>
           <div>
-            <div className="font-display font-bold text-lg text-secondary">576</div>
+            <div className="font-display font-bold text-lg text-secondary">{stats.totalNTC.toFixed(0)}</div>
             <div className="text-xs text-muted-foreground">Total NTC Supply</div>
           </div>
           <div>
-            <div className="font-display font-bold text-lg text-green-500">$57.6K</div>
+            <div className="font-display font-bold text-lg text-green-500">${(stats.creditsValue / 1000).toFixed(1)}K</div>
             <div className="text-xs text-muted-foreground">Credits Value</div>
           </div>
         </div>
