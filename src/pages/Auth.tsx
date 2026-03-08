@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -27,11 +27,27 @@ const Auth = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { signIn, signUp, user, loading, userRole } = useAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { toast } = useToast();
+
+  // Read the portal context from query param
+  const portal = searchParams.get("portal") || null;
 
   useEffect(() => {
     if (!loading && user) {
-      // Wait for role to be fetched before redirecting
+      // If portal param is set, redirect directly to that portal
+      if (portal) {
+        const portalRedirects: Record<string, string> = {
+          rider: "/rider-dashboard",
+          investor: "/investor-portal",
+          offsetter: "/offsetter-dashboard",
+          "investor-portal": "/investor-portal",
+        };
+        navigate(portalRedirects[portal] || "/rider-dashboard");
+        return;
+      }
+
+      // Otherwise, wait for role and redirect based on role
       if (userRole === null) return;
       
       if (userRole === 'investor') {
@@ -42,7 +58,7 @@ const Auth = () => {
         navigate("/rider-dashboard");
       }
     }
-  }, [user, loading, userRole, navigate]);
+  }, [user, loading, userRole, portal, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

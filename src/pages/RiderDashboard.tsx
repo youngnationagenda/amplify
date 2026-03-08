@@ -40,7 +40,7 @@ const RiderDashboard = () => {
 
   useEffect(() => {
     if (!loading && !user) {
-      navigate("/auth");
+      navigate("/auth?portal=rider");
     }
   }, [user, loading, navigate]);
 

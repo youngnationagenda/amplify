@@ -18,7 +18,7 @@ const InvestorPortal = () => {
 
   useEffect(() => {
     if (!loading && !user) {
-      navigate("/auth");
+      navigate("/auth?portal=investor-portal");
     }
   }, [user, loading, navigate]);
 
