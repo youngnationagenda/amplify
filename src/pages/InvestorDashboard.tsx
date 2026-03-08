@@ -50,7 +50,7 @@ const InvestorDashboard = () => {
 
   useEffect(() => {
     if (!loading && !user) {
-      navigate("/auth");
+      navigate("/auth?portal=investor");
     }
   }, [user, loading, navigate]);
 
