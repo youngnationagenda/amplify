@@ -11,6 +11,7 @@ import { DeFiLending } from "@/components/investor/DeFiLending";
 import { CarbonMarketplace } from "@/components/investor/CarbonMarketplace";
 import { MotorcycleFinancing } from "@/components/investor/MotorcycleFinancing";
 import { GovernanceAnalytics } from "@/components/investor/GovernanceAnalytics";
+import InvestorWalletPage from "@/components/investor/InvestorWalletPage";
 
 const InvestorPortal = () => {
   const { user, loading } = useAuth();
