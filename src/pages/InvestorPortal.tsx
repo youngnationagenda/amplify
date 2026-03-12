@@ -11,6 +11,7 @@ import { DeFiLending } from "@/components/investor/DeFiLending";
 import { CarbonMarketplace } from "@/components/investor/CarbonMarketplace";
 import { MotorcycleFinancing } from "@/components/investor/MotorcycleFinancing";
 import { GovernanceAnalytics } from "@/components/investor/GovernanceAnalytics";
+import InvestorWalletPage from "@/components/investor/InvestorWalletPage";
 
 const InvestorPortal = () => {
   const { user, loading } = useAuth();
@@ -42,6 +43,7 @@ const InvestorPortal = () => {
           <div className="p-4 md:p-6 max-w-6xl">
             <Routes>
               <Route index element={<PortfolioOverview />} />
+              <Route path="wallet" element={<InvestorWalletPage />} />
               <Route path="roi" element={<ROIDashboard />} />
               <Route path="abt" element={<AssetBackedTokens />} />
               <Route path="icu" element={<ICUOfferings />} />

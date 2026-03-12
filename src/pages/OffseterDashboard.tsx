@@ -13,6 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { ConnectWalletButton } from "@/components/celo/ConnectWalletButton";
 import { CeloPaymentModal } from "@/components/celo/CeloPaymentModal";
+import WalletPanel from "@/components/wallet/WalletPanel";
 import { 
   Leaf, 
   Flame, 
@@ -385,6 +386,10 @@ const OffseterDashboard = () => {
 
         <Tabs defaultValue="marketplace" className="space-y-6">
           <TabsList className="glass-card p-1">
+            <TabsTrigger value="wallet" className="gap-2">
+              <Wallet className="w-4 h-4" />
+              Wallet
+            </TabsTrigger>
             <TabsTrigger value="marketplace" className="gap-2">
               <ShoppingCart className="w-4 h-4" />
               Marketplace
@@ -402,6 +407,11 @@ const OffseterDashboard = () => {
               Burn Certificates
             </TabsTrigger>
           </TabsList>
+
+          {/* Wallet Tab */}
+          <TabsContent value="wallet" className="space-y-6">
+            <WalletPanel compact />
+          </TabsContent>
 
           {/* Marketplace Tab */}
           <TabsContent value="marketplace" className="space-y-6">
