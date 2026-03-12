@@ -13,6 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { ConnectWalletButton } from "@/components/celo/ConnectWalletButton";
 import { CeloPaymentModal } from "@/components/celo/CeloPaymentModal";
+import WalletPanel from "@/components/wallet/WalletPanel";
 import { 
   Leaf, 
   Flame, 
