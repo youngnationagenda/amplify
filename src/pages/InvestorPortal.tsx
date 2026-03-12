@@ -43,6 +43,7 @@ const InvestorPortal = () => {
           <div className="p-4 md:p-6 max-w-6xl">
             <Routes>
               <Route index element={<PortfolioOverview />} />
+              <Route path="wallet" element={<InvestorWalletPage />} />
               <Route path="roi" element={<ROIDashboard />} />
               <Route path="abt" element={<AssetBackedTokens />} />
               <Route path="icu" element={<ICUOfferings />} />

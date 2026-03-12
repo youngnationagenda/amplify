@@ -23,6 +23,7 @@ import {
 
 const navItems = [
   { title: "Overview", url: "/investor-portal", icon: LayoutDashboard },
+  { title: "Wallet & DeFi", url: "/investor-portal/wallet", icon: Wallet },
   { title: "ROI Dashboard", url: "/investor-portal/roi", icon: BarChart3 },
   { title: "Asset Tokens", url: "/investor-portal/abt", icon: Coins },
   { title: "ICU Offerings", url: "/investor-portal/icu", icon: TrendingUp },
