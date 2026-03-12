@@ -386,6 +386,10 @@ const OffseterDashboard = () => {
 
         <Tabs defaultValue="marketplace" className="space-y-6">
           <TabsList className="glass-card p-1">
+            <TabsTrigger value="wallet" className="gap-2">
+              <Wallet className="w-4 h-4" />
+              Wallet
+            </TabsTrigger>
             <TabsTrigger value="marketplace" className="gap-2">
               <ShoppingCart className="w-4 h-4" />
               Marketplace
