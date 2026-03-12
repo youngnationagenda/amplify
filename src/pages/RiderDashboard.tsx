@@ -130,9 +130,17 @@ const RiderDashboard = () => {
           </div>
         </div>
 
-        {/* Leaderboard */}
-        <div className="mb-8">
-          <RiderLeaderboard currentUserId={user?.id} />
+        {/* Wallet & DeFi */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+          <div>
+            <h3 className="font-display text-xl font-bold mb-4 flex items-center gap-2">
+              <span className="text-primary">💰</span> Wallet & DeFi
+            </h3>
+            <WalletPanel />
+          </div>
+          <div>
+            <RiderLeaderboard currentUserId={user?.id} />
+          </div>
         </div>
 
         {/* IoT Status */}

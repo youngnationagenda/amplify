@@ -408,6 +408,11 @@ const OffseterDashboard = () => {
             </TabsTrigger>
           </TabsList>
 
+          {/* Wallet Tab */}
+          <TabsContent value="wallet" className="space-y-6">
+            <WalletPanel compact />
+          </TabsContent>
+
           {/* Marketplace Tab */}
           <TabsContent value="marketplace" className="space-y-6">
             <Card className="glass-card">
