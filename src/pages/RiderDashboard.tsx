@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Bike, Leaf, Zap, LogOut, User, TrendingUp } from "lucide-react";
 import LiveRideSection from "@/components/rider/LiveRideSection";
 import RiderLeaderboard from "@/components/rider/RiderLeaderboard";
+import WalletPanel from "@/components/wallet/WalletPanel";
 
 // Simulated real-time data
 const useRideSimulation = () => {
