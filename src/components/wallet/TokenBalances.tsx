@@ -1,5 +1,5 @@
 import { useAccount, useBalance, useReadContract } from "wagmi";
-import { TOKENS, TOKEN_LABELS, ERC20_ABI } from "@/config/defi";
+import { getContracts, TOKEN_LABELS, ERC20_ABI } from "@/config/defi";
 import { formatUnits } from "viem";
 import { Coins, DollarSign } from "lucide-react";
 
