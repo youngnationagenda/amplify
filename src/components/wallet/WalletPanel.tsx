@@ -7,7 +7,7 @@ import SwapPanel from "./SwapPanel";
 import DeFiActions from "./DeFiActions";
 import { Wallet, Copy, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { BLOCK_EXPLORER } from "@/config/defi";
+import { getContracts } from "@/config/defi";
 import { useToast } from "@/hooks/use-toast";
 
 interface WalletPanelProps {
@@ -15,9 +15,10 @@ interface WalletPanelProps {
 }
 
 const WalletPanel = ({ compact = false }: WalletPanelProps) => {
-  const { address, isConnected } = useAccount();
+  const { address, isConnected, chain } = useAccount();
   const { userRole } = useAuth();
   const { toast } = useToast();
+  const contracts = getContracts(chain?.id);
 
   const isOffsetter = userRole === "offsetter";
 
@@ -58,7 +59,7 @@ const WalletPanel = ({ compact = false }: WalletPanelProps) => {
               <Copy className="w-3 h-3" />
             </Button>
             <Button variant="ghost" size="icon" className="h-7 w-7" asChild>
-              <a href={`${BLOCK_EXPLORER}/address/${address}`} target="_blank" rel="noopener noreferrer">
+              <a href={`${contracts.blockExplorer}/address/${address}`} target="_blank" rel="noopener noreferrer">
                 <ExternalLink className="w-3 h-3" />
               </a>
             </Button>

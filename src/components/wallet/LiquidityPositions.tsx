@@ -1,16 +1,20 @@
-import { LP_POSITIONS } from "@/config/defi";
+import { getContracts } from "@/config/defi";
+import { useAccount } from "wagmi";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ExternalLink, Droplets } from "lucide-react";
 
 const LiquidityPositions = () => {
+  const { chain } = useAccount();
+  const contracts = getContracts(chain?.id);
+
   return (
     <div className="space-y-3">
       <div className="flex items-center gap-2 mb-1">
         <Droplets className="w-4 h-4 text-secondary" />
         <h4 className="font-display font-bold text-sm">Liquidity Positions (LP NFTs)</h4>
       </div>
-      {LP_POSITIONS.map((lp) => (
+      {contracts.lpPositions.map((lp) => (
         <div
           key={lp.tokenId}
           className="glass-card p-4 hover:border-secondary/40 transition-all"
