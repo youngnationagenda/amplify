@@ -7,7 +7,7 @@ import SwapPanel from "./SwapPanel";
 import DeFiActions from "./DeFiActions";
 import { Wallet, Copy, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { BLOCK_EXPLORER } from "@/config/defi";
+import { getContracts } from "@/config/defi";
 import { useToast } from "@/hooks/use-toast";
 
 interface WalletPanelProps {
