@@ -59,7 +59,7 @@ const WalletPanel = ({ compact = false }: WalletPanelProps) => {
               <Copy className="w-3 h-3" />
             </Button>
             <Button variant="ghost" size="icon" className="h-7 w-7" asChild>
-              <a href={`${BLOCK_EXPLORER}/address/${address}`} target="_blank" rel="noopener noreferrer">
+              <a href={`${contracts.blockExplorer}/address/${address}`} target="_blank" rel="noopener noreferrer">
                 <ExternalLink className="w-3 h-3" />
               </a>
             </Button>

@@ -5,24 +5,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { TOKENS, TOKEN_DECIMALS, UBESWAP_POOLS, UBESWAP_ROUTER, UBESWAP_ROUTER_ABI, ERC20_ABI, BLOCK_EXPLORER } from "@/config/defi";
+import { getContracts, TOKEN_DECIMALS, UBESWAP_ROUTER_ABI, ERC20_ABI } from "@/config/defi";
 import { ArrowDownUp, Loader2, AlertCircle, ShieldCheck, ShieldAlert, ExternalLink, CheckCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Badge } from "@/components/ui/badge";
 
 interface SwapPanelProps {
   availableTokens?: string[];
 }
-
-type SwapPair = { tokenIn: string; tokenOut: string; pool: typeof UBESWAP_POOLS[keyof typeof UBESWAP_POOLS] };
-
-const SWAP_ROUTES: SwapPair[] = [
-  { tokenIn: "CELO", tokenOut: "NTC", pool: UBESWAP_POOLS.NTC_CELO },
-  { tokenIn: "USDC", tokenOut: "NTC", pool: UBESWAP_POOLS.NTC_USDC },
-  { tokenIn: "USDC", tokenOut: "NTEV", pool: UBESWAP_POOLS.NTEV_USDC },
-  { tokenIn: "NTC", tokenOut: "CELO", pool: UBESWAP_POOLS.NTC_CELO },
-  { tokenIn: "NTC", tokenOut: "USDC", pool: UBESWAP_POOLS.NTC_USDC },
-  { tokenIn: "NTEV", tokenOut: "USDC", pool: UBESWAP_POOLS.NTEV_USDC },
-];
 
 type SwapStep = "input" | "confirm" | "success";
 
@@ -30,6 +20,18 @@ const SwapPanel = ({ availableTokens }: SwapPanelProps) => {
   const { address, chain } = useAccount();
   const publicClient = usePublicClient();
   const { toast } = useToast();
+
+  // Get network-specific contracts
+  const contracts = getContracts(chain?.id);
+  const SWAP_ROUTES = [
+    { tokenIn: "CELO", tokenOut: "NTC", pool: contracts.pools.NTC_CELO },
+    { tokenIn: "USDC", tokenOut: "NTC", pool: contracts.pools.NTC_USDC },
+    { tokenIn: "USDC", tokenOut: "NTEV", pool: contracts.pools.NTEV_USDC },
+    { tokenIn: "NTC", tokenOut: "CELO", pool: contracts.pools.NTC_CELO },
+    { tokenIn: "NTC", tokenOut: "USDC", pool: contracts.pools.NTC_USDC },
+    { tokenIn: "NTEV", tokenOut: "USDC", pool: contracts.pools.NTEV_USDC },
+  ];
+
   const [tokenIn, setTokenIn] = useState("CELO");
   const [tokenOut, setTokenOut] = useState("NTC");
   const [amountIn, setAmountIn] = useState("");
@@ -41,7 +43,6 @@ const SwapPanel = ({ availableTokens }: SwapPanelProps) => {
 
   const { writeContract, isPending, data: writeTxHash } = useWriteContract();
 
-  // Track tx hash from writeContract
   useEffect(() => {
     if (writeTxHash) {
       setTxHash(writeTxHash);
@@ -55,8 +56,7 @@ const SwapPanel = ({ availableTokens }: SwapPanelProps) => {
       if (!publicClient) return;
       setCheckingRouter(true);
       try {
-        const code = await publicClient.getCode({ address: getAddress(UBESWAP_ROUTER) });
-        // code is "0x" for EOA, longer for contracts
+        const code = await publicClient.getCode({ address: getAddress(contracts.swapRouter) });
         setRouterIsContract(!!code && code !== "0x");
       } catch {
         setRouterIsContract(null);
@@ -65,7 +65,7 @@ const SwapPanel = ({ availableTokens }: SwapPanelProps) => {
       }
     };
     checkRouter();
-  }, [publicClient]);
+  }, [publicClient, contracts.swapRouter]);
 
   const route = SWAP_ROUTES.find(
     (r) => r.tokenIn === tokenIn && r.tokenOut === tokenOut
@@ -93,6 +93,8 @@ const SwapPanel = ({ availableTokens }: SwapPanelProps) => {
 
   const canSwap = address && route && amountIn && !isPending && routerIsContract === true;
 
+  const networkLabel = chain?.name ?? "Unknown Network";
+
   const handleConfirm = () => {
     if (routerIsContract === false) {
       toast({
@@ -108,7 +110,6 @@ const SwapPanel = ({ availableTokens }: SwapPanelProps) => {
   const handleSwap = async () => {
     if (!address || !route || !amountIn || !chain) return;
 
-    // Final safety check
     if (routerIsContract !== true) {
       toast({
         title: "Swap Blocked",
@@ -127,8 +128,8 @@ const SwapPanel = ({ availableTokens }: SwapPanelProps) => {
       decimalsOut
     );
 
-    const tokenInAddress = TOKENS[tokenIn as keyof typeof TOKENS];
-    const tokenOutAddress = TOKENS[tokenOut as keyof typeof TOKENS];
+    const tokenInAddress = contracts.tokens[tokenIn as keyof typeof contracts.tokens];
+    const tokenOutAddress = contracts.tokens[tokenOut as keyof typeof contracts.tokens];
 
     // Step 1: Approve if ERC-20 (not native CELO)
     if (tokenIn !== "CELO") {
@@ -136,7 +137,7 @@ const SwapPanel = ({ availableTokens }: SwapPanelProps) => {
         address: tokenInAddress,
         abi: ERC20_ABI,
         functionName: "approve",
-        args: [UBESWAP_ROUTER, parsedAmountIn],
+        args: [contracts.swapRouter, parsedAmountIn],
         chain,
         account: address,
       });
@@ -144,7 +145,7 @@ const SwapPanel = ({ availableTokens }: SwapPanelProps) => {
 
     // Step 2: Swap via Ubeswap Router
     writeContract({
-      address: UBESWAP_ROUTER,
+      address: contracts.swapRouter,
       abi: UBESWAP_ROUTER_ABI,
       functionName: "exactInputSingle",
       args: [
@@ -171,13 +172,12 @@ const SwapPanel = ({ availableTokens }: SwapPanelProps) => {
     setTxHash(null);
   };
 
-  // Router safety banner
   const RouterStatus = () => {
     if (checkingRouter) {
       return (
         <div className="flex items-center gap-2 text-xs p-2 rounded bg-muted/30 border border-border/50">
           <Loader2 className="w-3 h-3 animate-spin text-muted-foreground" />
-          <span className="text-muted-foreground">Verifying router contract…</span>
+          <span className="text-muted-foreground">Verifying router on {networkLabel}…</span>
         </div>
       );
     }
@@ -186,9 +186,9 @@ const SwapPanel = ({ availableTokens }: SwapPanelProps) => {
         <div className="flex items-center gap-2 text-xs p-3 rounded-lg bg-destructive/10 border border-destructive/30">
           <ShieldAlert className="w-4 h-4 text-destructive flex-shrink-0" />
           <div>
-            <p className="font-medium text-destructive">Router is NOT a contract</p>
+            <p className="font-medium text-destructive">Router is NOT a contract on {networkLabel}</p>
             <p className="text-muted-foreground">
-              {UBESWAP_ROUTER.slice(0, 10)}… is an EOA on this network. Swaps are disabled to protect your funds.
+              {contracts.swapRouter.slice(0, 10)}… is an EOA. Swaps disabled to protect your funds.
             </p>
           </div>
         </div>
@@ -198,7 +198,7 @@ const SwapPanel = ({ availableTokens }: SwapPanelProps) => {
       return (
         <div className="flex items-center gap-2 text-xs p-2 rounded bg-primary/10 border border-primary/30">
           <ShieldCheck className="w-3 h-3 text-primary" />
-          <span className="text-primary">Router verified as contract</span>
+          <span className="text-primary">Router verified on {networkLabel}</span>
         </div>
       );
     }
@@ -219,7 +219,7 @@ const SwapPanel = ({ availableTokens }: SwapPanelProps) => {
             {txHash}
           </div>
           <Button variant="outline" size="sm" asChild>
-            <a href={`${BLOCK_EXPLORER}/tx/${txHash}`} target="_blank" rel="noopener noreferrer">
+            <a href={`${contracts.blockExplorer}/tx/${txHash}`} target="_blank" rel="noopener noreferrer">
               <ExternalLink className="w-3 h-3 mr-1" /> View on Explorer
             </a>
           </Button>
@@ -235,9 +235,12 @@ const SwapPanel = ({ availableTokens }: SwapPanelProps) => {
   if (step === "confirm") {
     return (
       <div className="glass-card p-5 space-y-4">
-        <div className="flex items-center gap-2">
-          <ShieldCheck className="w-4 h-4 text-primary" />
-          <h4 className="font-display font-bold text-sm">Confirm Swap</h4>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <ShieldCheck className="w-4 h-4 text-primary" />
+            <h4 className="font-display font-bold text-sm">Confirm Swap</h4>
+          </div>
+          <Badge variant="outline" className="text-[10px]">{networkLabel}</Badge>
         </div>
 
         <div className="space-y-2 text-xs p-4 rounded-lg bg-muted/20 border border-border/50">
@@ -260,7 +263,7 @@ const SwapPanel = ({ availableTokens }: SwapPanelProps) => {
           </div>
           <div className="flex justify-between">
             <span className="text-muted-foreground">Router</span>
-            <span className="font-mono text-[10px]">{UBESWAP_ROUTER.slice(0, 10)}…{UBESWAP_ROUTER.slice(-6)}</span>
+            <span className="font-mono text-[10px]">{contracts.swapRouter.slice(0, 10)}…{contracts.swapRouter.slice(-6)}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-muted-foreground">Pool</span>
@@ -302,9 +305,12 @@ const SwapPanel = ({ availableTokens }: SwapPanelProps) => {
   // Input view
   return (
     <div className="glass-card p-5 space-y-4">
-      <div className="flex items-center gap-2">
-        <ArrowDownUp className="w-4 h-4 text-primary" />
-        <h4 className="font-display font-bold text-sm">Swap via Ubeswap</h4>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <ArrowDownUp className="w-4 h-4 text-primary" />
+          <h4 className="font-display font-bold text-sm">Swap via Ubeswap</h4>
+        </div>
+        <Badge variant="outline" className="text-[10px]">{networkLabel}</Badge>
       </div>
 
       <RouterStatus />

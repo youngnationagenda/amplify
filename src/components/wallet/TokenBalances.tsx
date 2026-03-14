@@ -8,26 +8,27 @@ interface TokenBalancesProps {
 }
 
 const TokenBalances = ({ hideTokens = [] }: TokenBalancesProps) => {
-  const { address } = useAccount();
+  const { address, chain } = useAccount();
+  const contracts = getContracts(chain?.id);
 
   const { data: celoBalance } = useBalance({ address });
 
   const { data: ntcRaw } = useReadContract({
-    address: TOKENS.NTC,
+    address: contracts.tokens.NTC,
     abi: ERC20_ABI,
     functionName: "balanceOf",
     args: address ? [address] : undefined,
   });
 
   const { data: usdcRaw } = useReadContract({
-    address: TOKENS.USDC,
+    address: contracts.tokens.USDC,
     abi: ERC20_ABI,
     functionName: "balanceOf",
     args: address ? [address] : undefined,
   });
 
   const { data: ntevRaw } = useReadContract({
-    address: TOKENS.NTEV,
+    address: contracts.tokens.NTEV,
     abi: ERC20_ABI,
     functionName: "balanceOf",
     args: address ? [address] : undefined,
