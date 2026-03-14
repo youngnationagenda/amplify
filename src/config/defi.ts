@@ -1,18 +1,175 @@
 // ============================
 // DeFi Configuration: Pools, Tokens, LP NFTs
-// Network: Celo Sepolia Testnet
+// Supports: Celo Mainnet + Celo Sepolia Testnet
 // ============================
 
+import { celo } from "viem/chains";
+
+// Celo Sepolia chain ID (defined in web3.ts)
+export const CELO_SEPOLIA_ID = 11142220;
+export const CELO_MAINNET_ID = celo.id; // 42220
+
+// ── Treasury ──
 export const TREASURY_ADDRESS = "0x57651B018Fa4aC931Ec585da641078988Ef1213B" as const;
 
-// Token Addresses
-export const TOKENS = {
-  CELO: "0x471ece3750da237f93b8e339c536989b8978a438" as const,
-  NTC: "0xde6dbd244fbe84141a97dde4043029d9c61767ae" as const,
-  USDC: "0x01c5c0122039549ad1493b8220cabedd739bc44e" as const,
-  NTEV: "0xcdb1d119eda8f7a04a820b5002ef2ea8b189bb18" as const,
-} as const;
+// ── Per-network contract addresses ──
+export interface NetworkContracts {
+  swapRouter: `0x${string}`;
+  positionManager: `0x${string}`;
+  factory: `0x${string}`;
+  quoter: `0x${string}`;
+  universalRouter: `0x${string}`;
+  blockExplorer: string;
+  tokens: {
+    CELO: `0x${string}`;
+    NTC: `0x${string}`;
+    USDC: `0x${string}`;
+    NTEV: `0x${string}`;
+  };
+  pools: {
+    NTC_CELO: PoolConfig;
+    NTEV_USDC: PoolConfig;
+    NTC_USDC: PoolConfig;
+  };
+  lpPositions: LPPosition[];
+}
 
+export interface PoolConfig {
+  address: `0x${string}`;
+  token0: string;
+  token1: string;
+  fee: number;
+  lpTokenId: number;
+  currentPrice: number;
+}
+
+export interface LPPosition {
+  tokenId: number;
+  pair: string;
+  token0Symbol: string;
+  token1Symbol: string;
+  poolAddress: `0x${string}`;
+  currentPrice: number;
+  fee: string;
+  explorerUrl: string;
+}
+
+// ── Celo Mainnet (official Ubeswap V3 deployments) ──
+const MAINNET_CONTRACTS: NetworkContracts = {
+  swapRouter: "0xE389f92B47d913F773254962eD638E12C28aA82d",
+  positionManager: "0x897387c7B996485c3AAa85c94272Cd6C506f8c8F",
+  factory: "0x67FEa58D5a5a4162cED847E13c2c81c73bf8aeC4",
+  quoter: "0x1f34a843832044A085bB9cAe48cc7294D5478FAA",
+  universalRouter: "0x3C255DED9B25f0BFB4EF1D14234BD2514d7A7A0d",
+  blockExplorer: "https://celoscan.io",
+  tokens: {
+    CELO: "0x471ece3750da237f93b8e339c536989b8978a438",
+    NTC: "0xde6dbd244fbe84141a97dde4043029d9c61767ae",
+    USDC: "0x01c5c0122039549ad1493b8220cabedd739bc44e",
+    NTEV: "0xcdb1d119eda8f7a04a820b5002ef2ea8b189bb18",
+  },
+  pools: {
+    NTC_CELO: {
+      address: "0xa34776ea7354d6d7ff475c23b43f1b316d5171b2",
+      token0: "NTC",
+      token1: "CELO",
+      fee: 3000,
+      lpTokenId: 8,
+      currentPrice: 0.76921,
+    },
+    NTEV_USDC: {
+      address: "0x6efa97b293629af7266912897a03800c1c7a178a",
+      token0: "NTEV",
+      token1: "USDC",
+      fee: 3000,
+      lpTokenId: 9,
+      currentPrice: 1.0,
+    },
+    NTC_USDC: {
+      address: "0x9375ceea175dd6188f6ed7915f8bde3dbd5a0ea2",
+      token0: "NTC",
+      token1: "USDC",
+      fee: 3000,
+      lpTokenId: 10,
+      currentPrice: 0.1,
+    },
+  },
+  lpPositions: [], // populated below
+};
+
+// ── Celo Sepolia Testnet ──
+const TESTNET_CONTRACTS: NetworkContracts = {
+  swapRouter: "0x5615CDAb10dc425a742d643d949a7F474C01abc4",
+  positionManager: "0xb178deF6aeaBb437E161B252b7BF213A1C864e32",
+  factory: "0x0000000000000000000000000000000000000000", // TODO: deploy or find testnet factory
+  quoter: "0x0000000000000000000000000000000000000000",
+  universalRouter: "0x0000000000000000000000000000000000000000",
+  blockExplorer: "https://celo-sepolia.blockscout.com",
+  tokens: {
+    CELO: "0x471ece3750da237f93b8e339c536989b8978a438",
+    NTC: "0xde6dbd244fbe84141a97dde4043029d9c61767ae",
+    USDC: "0x01c5c0122039549ad1493b8220cabedd739bc44e",
+    NTEV: "0xcdb1d119eda8f7a04a820b5002ef2ea8b189bb18",
+  },
+  pools: {
+    NTC_CELO: {
+      address: "0xa34776ea7354d6d7ff475c23b43f1b316d5171b2",
+      token0: "NTC",
+      token1: "CELO",
+      fee: 3000,
+      lpTokenId: 8,
+      currentPrice: 0.76921,
+    },
+    NTEV_USDC: {
+      address: "0x6efa97b293629af7266912897a03800c1c7a178a",
+      token0: "NTEV",
+      token1: "USDC",
+      fee: 3000,
+      lpTokenId: 9,
+      currentPrice: 1.0,
+    },
+    NTC_USDC: {
+      address: "0x9375ceea175dd6188f6ed7915f8bde3dbd5a0ea2",
+      token0: "NTC",
+      token1: "USDC",
+      fee: 3000,
+      lpTokenId: 10,
+      currentPrice: 0.1,
+    },
+  },
+  lpPositions: [], // populated below
+};
+
+// ── Build LP positions from pool config ──
+function buildLPPositions(contracts: NetworkContracts): LPPosition[] {
+  const { pools, blockExplorer, positionManager } = contracts;
+  return Object.values(pools).map((pool) => ({
+    tokenId: pool.lpTokenId,
+    pair: `${pool.token0} / ${pool.token1}`,
+    token0Symbol: pool.token0,
+    token1Symbol: pool.token1,
+    poolAddress: pool.address,
+    currentPrice: pool.currentPrice,
+    fee: `${pool.fee / 10000}%`,
+    explorerUrl: `${blockExplorer}/token/${positionManager}/instance/${pool.lpTokenId}`,
+  }));
+}
+
+MAINNET_CONTRACTS.lpPositions = buildLPPositions(MAINNET_CONTRACTS);
+TESTNET_CONTRACTS.lpPositions = buildLPPositions(TESTNET_CONTRACTS);
+
+// ── Network registry ──
+export const NETWORK_CONTRACTS: Record<number, NetworkContracts> = {
+  [CELO_MAINNET_ID]: MAINNET_CONTRACTS,
+  [CELO_SEPOLIA_ID]: TESTNET_CONTRACTS,
+};
+
+/** Get contracts for the connected chain. Falls back to mainnet. */
+export function getContracts(chainId: number | undefined): NetworkContracts {
+  return NETWORK_CONTRACTS[chainId ?? CELO_MAINNET_ID] ?? MAINNET_CONTRACTS;
+}
+
+// ── Shared constants (network-agnostic) ──
 export const TOKEN_DECIMALS: Record<string, number> = {
   CELO: 18,
   NTC: 18,
@@ -27,38 +184,9 @@ export const TOKEN_LABELS: Record<string, string> = {
   NTEV: "EV Asset (RWA)",
 };
 
-// Ubeswap V3 Pools
-export const UBESWAP_POOLS = {
-  NTC_CELO: {
-    address: "0xa34776ea7354d6d7ff475c23b43f1b316d5171b2" as const,
-    token0: "NTC",
-    token1: "CELO",
-    fee: 3000, // 0.3%
-    lpTokenId: 8,
-    currentPrice: 0.76921, // NTC per CELO
-  },
-  NTEV_USDC: {
-    address: "0x6efa97b293629af7266912897a03800c1c7a178a" as const,
-    token0: "NTEV",
-    token1: "USDC",
-    fee: 3000,
-    lpTokenId: 9,
-    currentPrice: 1.0, // NTEV per USDC
-  },
-  NTC_USDC: {
-    address: "0x9375ceea175dd6188f6ed7915f8bde3dbd5a0ea2" as const,
-    token0: "NTC",
-    token1: "USDC",
-    fee: 3000,
-    lpTokenId: 10,
-    currentPrice: 0.1, // USDC per NTC
-  },
-} as const;
+export type TokenSymbol = "CELO" | "NTC" | "USDC" | "NTEV";
 
-// LP NFT Contract (Ubeswap V3 Positions Manager)
-export const LP_NFT_CONTRACT = "0xb178deF6aeaBb437E161B252b7BF213A1C864e32" as const;
-
-// LP NFT ABI (minimal for reading positions)
+// ── ABIs (unchanged, network-agnostic) ──
 export const LP_NFT_ABI = [
   {
     name: "ownerOf",
@@ -89,7 +217,6 @@ export const LP_NFT_ABI = [
   },
 ] as const;
 
-// ERC-20 ABI (minimal)
 export const ERC20_ABI = [
   {
     name: "balanceOf",
@@ -126,7 +253,6 @@ export const ERC20_ABI = [
   },
 ] as const;
 
-// Ubeswap Router ABI (minimal for swaps)
 export const UBESWAP_ROUTER_ABI = [
   {
     name: "exactInputSingle",
@@ -151,54 +277,11 @@ export const UBESWAP_ROUTER_ABI = [
   },
 ] as const;
 
-// Ubeswap V3 Router on Celo
-export const UBESWAP_ROUTER = "0x5615CDAb10dc425a742d643d949a7F474C01abc4" as const;
-
-// Celo Sepolia Block Explorer
-export const BLOCK_EXPLORER = "https://celo-sepolia.blockscout.com";
-
-export type TokenSymbol = keyof typeof TOKENS;
-
-export interface LPPosition {
-  tokenId: number;
-  pair: string;
-  token0Symbol: string;
-  token1Symbol: string;
-  poolAddress: string;
-  currentPrice: number;
-  fee: string;
-  explorerUrl: string;
-}
-
-export const LP_POSITIONS: LPPosition[] = [
-  {
-    tokenId: 8,
-    pair: "NTC / CELO",
-    token0Symbol: "NTC",
-    token1Symbol: "CELO",
-    poolAddress: UBESWAP_POOLS.NTC_CELO.address,
-    currentPrice: UBESWAP_POOLS.NTC_CELO.currentPrice,
-    fee: "0.3%",
-    explorerUrl: `${BLOCK_EXPLORER}/token/${LP_NFT_CONTRACT}/instance/8`,
-  },
-  {
-    tokenId: 9,
-    pair: "NTEV / USDC",
-    token0Symbol: "NTEV",
-    token1Symbol: "USDC",
-    poolAddress: UBESWAP_POOLS.NTEV_USDC.address,
-    currentPrice: UBESWAP_POOLS.NTEV_USDC.currentPrice,
-    fee: "0.3%",
-    explorerUrl: `${BLOCK_EXPLORER}/token/${LP_NFT_CONTRACT}/instance/9`,
-  },
-  {
-    tokenId: 10,
-    pair: "NTC / USDC",
-    token0Symbol: "NTC",
-    token1Symbol: "USDC",
-    poolAddress: UBESWAP_POOLS.NTC_USDC.address,
-    currentPrice: UBESWAP_POOLS.NTC_USDC.currentPrice,
-    fee: "0.3%",
-    explorerUrl: `${BLOCK_EXPLORER}/token/${LP_NFT_CONTRACT}/instance/10`,
-  },
-];
+// ── Legacy exports (backward compat) ──
+// These resolve to mainnet by default; prefer getContracts(chainId) in new code.
+export const TOKENS = MAINNET_CONTRACTS.tokens;
+export const UBESWAP_POOLS = MAINNET_CONTRACTS.pools;
+export const UBESWAP_ROUTER = MAINNET_CONTRACTS.swapRouter;
+export const LP_NFT_CONTRACT = MAINNET_CONTRACTS.positionManager;
+export const BLOCK_EXPLORER = MAINNET_CONTRACTS.blockExplorer;
+export const LP_POSITIONS = MAINNET_CONTRACTS.lpPositions;
