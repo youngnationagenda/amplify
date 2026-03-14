@@ -15,9 +15,10 @@ interface WalletPanelProps {
 }
 
 const WalletPanel = ({ compact = false }: WalletPanelProps) => {
-  const { address, isConnected } = useAccount();
+  const { address, isConnected, chain } = useAccount();
   const { userRole } = useAuth();
   const { toast } = useToast();
+  const contracts = getContracts(chain?.id);
 
   const isOffsetter = userRole === "offsetter";
 
