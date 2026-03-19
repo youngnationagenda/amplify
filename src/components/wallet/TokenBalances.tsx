@@ -34,6 +34,13 @@ const TokenBalances = ({ hideTokens = [] }: TokenBalancesProps) => {
     args: address ? [address] : undefined,
   });
 
+  const { data: usdmRaw } = useReadContract({
+    address: contracts.tokens.USDm,
+    abi: ERC20_ABI,
+    functionName: "balanceOf",
+    args: address ? [address] : undefined,
+  });
+
   const balances = [
     {
       symbol: "CELO",
@@ -50,6 +57,14 @@ const TokenBalances = ({ hideTokens = [] }: TokenBalancesProps) => {
       usdValue: usdcRaw ? Number(formatUnits(usdcRaw as bigint, 6)).toFixed(2) : "0.00",
       icon: <DollarSign className="w-5 h-5 text-[hsl(var(--cusd-blue))]" />,
       color: "from-[hsl(var(--cusd-blue))] to-[hsl(var(--cusd-blue))]",
+    },
+    {
+      symbol: "USDm",
+      label: TOKEN_LABELS.USDm,
+      balance: usdmRaw ? Number(formatUnits(usdmRaw as bigint, 18)).toFixed(4) : "0.0000",
+      usdValue: usdmRaw ? Number(formatUnits(usdmRaw as bigint, 18)).toFixed(2) : "0.00",
+      icon: <DollarSign className="w-5 h-5 text-accent" />,
+      color: "from-accent to-primary",
     },
     {
       symbol: "NTC",
