@@ -21,14 +21,17 @@ const SwapPanel = ({ availableTokens }: SwapPanelProps) => {
   const publicClient = usePublicClient();
   const { toast } = useToast();
 
-  // Get network-specific contracts
   const contracts = getContracts(chain?.id);
+
+  // Build swap routes dynamically including USDm
   const SWAP_ROUTES = [
     { tokenIn: "CELO", tokenOut: "NTC", pool: contracts.pools.NTC_CELO },
     { tokenIn: "USDC", tokenOut: "NTC", pool: contracts.pools.NTC_USDC },
     { tokenIn: "USDC", tokenOut: "NTEV", pool: contracts.pools.NTEV_USDC },
+    { tokenIn: "USDm", tokenOut: "NTC", pool: contracts.pools.USDm_NTC },
     { tokenIn: "NTC", tokenOut: "CELO", pool: contracts.pools.NTC_CELO },
     { tokenIn: "NTC", tokenOut: "USDC", pool: contracts.pools.NTC_USDC },
+    { tokenIn: "NTC", tokenOut: "USDm", pool: contracts.pools.USDm_NTC },
     { tokenIn: "NTEV", tokenOut: "USDC", pool: contracts.pools.NTEV_USDC },
   ];
 
@@ -72,17 +75,14 @@ const SwapPanel = ({ availableTokens }: SwapPanelProps) => {
   );
 
   const estimatedOut = route
-    ? tokenIn === "CELO" && tokenOut === "NTC"
-      ? Number(amountIn) * route.pool.currentPrice
-      : tokenIn === "USDC" && tokenOut === "NTC"
-        ? Number(amountIn) / 0.1
-        : tokenIn === "USDC" && tokenOut === "NTEV"
-          ? Number(amountIn) * route.pool.currentPrice
-          : tokenIn === "NTC" && tokenOut === "CELO"
-            ? Number(amountIn) / route.pool.currentPrice
-            : tokenIn === "NTC" && tokenOut === "USDC"
-              ? Number(amountIn) * 0.1
-              : Number(amountIn) / route.pool.currentPrice
+    ? (() => {
+        const price = route.pool.currentPrice;
+        const amt = Number(amountIn);
+        // Determine direction based on token position in pool
+        if (tokenIn === route.pool.token0) return amt * price;
+        if (tokenIn === route.pool.token1) return amt / price;
+        return amt * price;
+      })()
     : 0;
 
   const inTokens = availableTokens

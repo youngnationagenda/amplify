@@ -5,7 +5,7 @@
 
 import { celo } from "viem/chains";
 
-// Celo Sepolia chain ID (defined in web3.ts)
+// Chain IDs
 export const CELO_SEPOLIA_ID = 11142220;
 export const CELO_MAINNET_ID = celo.id; // 42220
 
@@ -19,17 +19,20 @@ export interface NetworkContracts {
   factory: `0x${string}`;
   quoter: `0x${string}`;
   universalRouter: `0x${string}`;
+  permit2: `0x${string}`;
   blockExplorer: string;
   tokens: {
     CELO: `0x${string}`;
     NTC: `0x${string}`;
     USDC: `0x${string}`;
     NTEV: `0x${string}`;
+    USDm: `0x${string}`;
   };
   pools: {
     NTC_CELO: PoolConfig;
     NTEV_USDC: PoolConfig;
     NTC_USDC: PoolConfig;
+    USDm_NTC: PoolConfig;
   };
   lpPositions: LPPosition[];
 }
@@ -61,12 +64,14 @@ const MAINNET_CONTRACTS: NetworkContracts = {
   factory: "0x67FEa58D5a5a4162cED847E13c2c81c73bf8aeC4",
   quoter: "0x1f34a843832044A085bB9cAe48cc7294D5478FAA",
   universalRouter: "0x3C255DED9B25f0BFB4EF1D14234BD2514d7A7A0d",
+  permit2: "0x000000000022D473030F116dDEE9F6B43aC78BA3",
   blockExplorer: "https://celoscan.io",
   tokens: {
     CELO: "0x471ece3750da237f93b8e339c536989b8978a438",
     NTC: "0xde6dbd244fbe84141a97dde4043029d9c61767ae",
     USDC: "0x01c5c0122039549ad1493b8220cabedd739bc44e",
     NTEV: "0xcdb1d119eda8f7a04a820b5002ef2ea8b189bb18",
+    USDm: "0xde9e4c3ce781b4ba68120d6261cbad65ce0ab00b",
   },
   pools: {
     NTC_CELO: {
@@ -93,23 +98,33 @@ const MAINNET_CONTRACTS: NetworkContracts = {
       lpTokenId: 10,
       currentPrice: 0.1,
     },
+    USDm_NTC: {
+      address: "0x58c12ff92110cadb2fe8d9081fd86243a6ab85ff",
+      token0: "USDm",
+      token1: "NTC",
+      fee: 3000,
+      lpTokenId: 12,
+      currentPrice: 0.1,
+    },
   },
-  lpPositions: [], // populated below
+  lpPositions: [],
 };
 
-// ── Celo Sepolia Testnet ──
+// ── Celo Sepolia Testnet (deployed Uniswap V3 contracts) ──
 const TESTNET_CONTRACTS: NetworkContracts = {
   swapRouter: "0x5615CDAb10dc425a742d643d949a7F474C01abc4",
   positionManager: "0xb178deF6aeaBb437E161B252b7BF213A1C864e32",
-  factory: "0x0000000000000000000000000000000000000000", // TODO: deploy or find testnet factory
+  factory: "0xAfE208a311B21f13EF87E33A90049fC17A7acDE",
   quoter: "0x0000000000000000000000000000000000000000",
-  universalRouter: "0x0000000000000000000000000000000000000000",
+  universalRouter: "0x643770E279d5D0733F21d6DC03A8efbABf3255B4",
+  permit2: "0x000000000022D473030F116dDEE9F6B43aC78BA3",
   blockExplorer: "https://celo-sepolia.blockscout.com",
   tokens: {
     CELO: "0x471ece3750da237f93b8e339c536989b8978a438",
     NTC: "0xde6dbd244fbe84141a97dde4043029d9c61767ae",
     USDC: "0x01c5c0122039549ad1493b8220cabedd739bc44e",
     NTEV: "0xcdb1d119eda8f7a04a820b5002ef2ea8b189bb18",
+    USDm: "0xde9e4c3ce781b4ba68120d6261cbad65ce0ab00b",
   },
   pools: {
     NTC_CELO: {
@@ -136,8 +151,16 @@ const TESTNET_CONTRACTS: NetworkContracts = {
       lpTokenId: 10,
       currentPrice: 0.1,
     },
+    USDm_NTC: {
+      address: "0x58c12ff92110cadb2fe8d9081fd86243a6ab85ff",
+      token0: "USDm",
+      token1: "NTC",
+      fee: 3000,
+      lpTokenId: 12,
+      currentPrice: 0.1,
+    },
   },
-  lpPositions: [], // populated below
+  lpPositions: [],
 };
 
 // ── Build LP positions from pool config ──
@@ -175,6 +198,7 @@ export const TOKEN_DECIMALS: Record<string, number> = {
   NTC: 18,
   USDC: 6,
   NTEV: 18,
+  USDm: 18,
 };
 
 export const TOKEN_LABELS: Record<string, string> = {
@@ -182,11 +206,12 @@ export const TOKEN_LABELS: Record<string, string> = {
   NTC: "Net Tribe Carbon",
   USDC: "USD Coin",
   NTEV: "EV Asset (RWA)",
+  USDm: "USD Marble",
 };
 
-export type TokenSymbol = "CELO" | "NTC" | "USDC" | "NTEV";
+export type TokenSymbol = "CELO" | "NTC" | "USDC" | "NTEV" | "USDm";
 
-// ── ABIs (unchanged, network-agnostic) ──
+// ── ABIs (network-agnostic) ──
 export const LP_NFT_ABI = [
   {
     name: "ownerOf",
@@ -278,7 +303,6 @@ export const UBESWAP_ROUTER_ABI = [
 ] as const;
 
 // ── Legacy exports (backward compat) ──
-// These resolve to mainnet by default; prefer getContracts(chainId) in new code.
 export const TOKENS = MAINNET_CONTRACTS.tokens;
 export const UBESWAP_POOLS = MAINNET_CONTRACTS.pools;
 export const UBESWAP_ROUTER = MAINNET_CONTRACTS.swapRouter;
