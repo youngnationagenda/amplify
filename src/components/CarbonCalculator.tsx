@@ -10,11 +10,11 @@ const CarbonCalculator = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setIsAnimating(true);
-      setDistance(prev => {
+      setDistance((prev) => {
         const newDistance = prev + Math.random() * 0.5;
         // Generate credits every 100m to 1km
         if (Math.floor(newDistance / 0.1) > Math.floor(prev / 0.1)) {
-          setCredits(c => c + 0.01); // 0.01 token per 100m
+          setCredits((c) => c + 0.01); // 0.01 token per 100m
         }
         return newDistance;
       });
@@ -63,9 +63,9 @@ const CarbonCalculator = () => {
           <span className="text-primary font-medium">{progressToNextToken.toFixed(0)}%</span>
         </div>
         <Progress value={progressToNextToken} className="h-3 bg-muted" />
-        <p className="text-xs text-muted-foreground mt-2">
-          1 Carbon Credit Token = $100 | 10 Tokens = 1 Ton CO₂
-        </p>
+        <p className="text-xs text-muted-foreground mt-2">1 Carbon Credit Token = $100 | 100 Tokens = 1 Ton CO₂
+
+      </p>
       </div>
 
       {/* Rider Behavior Score */}
