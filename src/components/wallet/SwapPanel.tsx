@@ -29,10 +29,12 @@ const SwapPanel = ({ availableTokens }: SwapPanelProps) => {
     { tokenIn: "USDC", tokenOut: "NTC", pool: contracts.pools.NTC_USDC },
     { tokenIn: "USDC", tokenOut: "NTEV", pool: contracts.pools.NTEV_USDC },
     { tokenIn: "USDm", tokenOut: "NTC", pool: contracts.pools.USDm_NTC },
+    { tokenIn: "USDm", tokenOut: "NTEV", pool: contracts.pools.USDm_NTEV },
     { tokenIn: "NTC", tokenOut: "CELO", pool: contracts.pools.NTC_CELO },
     { tokenIn: "NTC", tokenOut: "USDC", pool: contracts.pools.NTC_USDC },
     { tokenIn: "NTC", tokenOut: "USDm", pool: contracts.pools.USDm_NTC },
     { tokenIn: "NTEV", tokenOut: "USDC", pool: contracts.pools.NTEV_USDC },
+    { tokenIn: "NTEV", tokenOut: "USDm", pool: contracts.pools.USDm_NTEV },
   ];
 
   const [tokenIn, setTokenIn] = useState("CELO");
