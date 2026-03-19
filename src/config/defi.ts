@@ -33,6 +33,7 @@ export interface NetworkContracts {
     NTEV_USDC: PoolConfig;
     NTC_USDC: PoolConfig;
     USDm_NTC: PoolConfig;
+    USDm_NTEV: PoolConfig;
   };
   lpPositions: LPPosition[];
 }
