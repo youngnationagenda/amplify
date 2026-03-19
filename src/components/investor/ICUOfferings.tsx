@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { TrendingUp, Clock, DollarSign, Leaf, ArrowUpRight } from "lucide-react";
+import { TrendingUp, DollarSign, Leaf, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Progress } from "@/components/ui/progress";
+import { TOKEN_LABELS } from "@/config/defi";
 
 const icuRounds = [
   {
@@ -35,12 +37,17 @@ const icuRounds = [
   },
 ];
 
+type PayToken = "USDC" | "USDm" | "CELO" | "NTC";
+const tokenPrices: Record<PayToken, number> = { USDC: 1, USDm: 1, CELO: 0.5, NTC: 0.1 };
+
 export function ICUOfferings() {
   const [selectedRound, setSelectedRound] = useState<number | null>(null);
   const [purchaseAmount, setPurchaseAmount] = useState("10");
+  const [payToken, setPayToken] = useState<PayToken>("USDC");
 
   const selected = icuRounds.find(r => r.id === selectedRound);
-  const totalCost = selected ? Number(purchaseAmount) * selected.pricePerTon : 0;
+  const totalCostUsd = selected ? Number(purchaseAmount) * selected.pricePerTon : 0;
+  const tokenAmount = totalCostUsd / tokenPrices[payToken];
   const savings = selected ? (selected.marketPrice - selected.pricePerTon) * Number(purchaseAmount) : 0;
 
   return (
@@ -153,19 +160,36 @@ export function ICUOfferings() {
                   className="bg-background/50"
                 />
               </div>
-              <div className="p-3 bg-success/10 rounded-lg border border-success/20">
+              <div>
+                <label className="text-sm text-muted-foreground block mb-1">Pay With</label>
+                <Select value={payToken} onValueChange={(v) => setPayToken(v as PayToken)}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {(["USDC", "USDm", "CELO", "NTC"] as PayToken[]).map((t) => (
+                      <SelectItem key={t} value={t}>{t} — {TOKEN_LABELS[t]}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="p-3 bg-success/10 rounded-lg border border-success/20 space-y-1">
                 <div className="flex justify-between text-sm">
-                  <span>Total Cost</span>
-                  <span className="font-bold">${totalCost.toLocaleString()}</span>
+                  <span>Total Cost (USD)</span>
+                  <span className="font-bold">${totalCostUsd.toLocaleString()}</span>
                 </div>
-                <div className="flex justify-between text-sm mt-1">
+                <div className="flex justify-between text-sm">
+                  <span>You Pay</span>
+                  <span className="font-bold">{tokenAmount.toFixed(2)} {payToken}</span>
+                </div>
+                <div className="flex justify-between text-sm">
                   <span>You Save</span>
                   <span className="font-bold text-success">${savings.toLocaleString()}</span>
                 </div>
               </div>
               <Button className="w-full bg-gradient-to-r from-secondary to-primary text-primary-foreground">
                 <Leaf className="w-4 h-4 mr-2" />
-                Purchase {purchaseAmount} ICU Credits
+                Purchase {purchaseAmount} ICU Credits with {payToken}
               </Button>
             </div>
             <div className="space-y-3">

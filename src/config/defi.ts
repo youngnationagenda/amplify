@@ -33,6 +33,7 @@ export interface NetworkContracts {
     NTEV_USDC: PoolConfig;
     NTC_USDC: PoolConfig;
     USDm_NTC: PoolConfig;
+    USDm_NTEV: PoolConfig;
   };
   lpPositions: LPPosition[];
 }
@@ -106,6 +107,14 @@ const MAINNET_CONTRACTS: NetworkContracts = {
       lpTokenId: 12,
       currentPrice: 0.1,
     },
+    USDm_NTEV: {
+      address: "0x5b6e22edd5567118becc690f35f06e519abc38f0",
+      token0: "USDm",
+      token1: "NTEV",
+      fee: 3000,
+      lpTokenId: 13,
+      currentPrice: 1.0,
+    },
   },
   lpPositions: [],
 };
@@ -158,6 +167,14 @@ const TESTNET_CONTRACTS: NetworkContracts = {
       fee: 3000,
       lpTokenId: 12,
       currentPrice: 0.1,
+    },
+    USDm_NTEV: {
+      address: "0x5b6e22edd5567118becc690f35f06e519abc38f0",
+      token0: "USDm",
+      token1: "NTEV",
+      fee: 3000,
+      lpTokenId: 13,
+      currentPrice: 1.0,
     },
   },
   lpPositions: [],
