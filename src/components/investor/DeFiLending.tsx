@@ -3,7 +3,9 @@ import { Landmark, TrendingUp, ShieldCheck, AlertTriangle, DollarSign } from "lu
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Progress } from "@/components/ui/progress";
+import { TOKEN_LABELS } from "@/config/defi";
 
 const pools = [
   {
@@ -23,12 +25,17 @@ const pools = [
   },
 ];
 
+type DepositToken = "USDC" | "USDm" | "CELO" | "NTC";
+const tokenPrices: Record<DepositToken, number> = { USDC: 1, USDm: 1, CELO: 0.5, NTC: 0.1 };
+
 export function DeFiLending() {
   const [selectedPool, setSelectedPool] = useState<number | null>(null);
   const [depositAmount, setDepositAmount] = useState("500");
+  const [depositToken, setDepositToken] = useState<DepositToken>("USDC");
 
   const selected = pools.find(p => p.id === selectedPool);
-  const dailyYield = selected ? (Number(depositAmount) * selected.apy / 100 / 365) : 0;
+  const usdValue = Number(depositAmount) * tokenPrices[depositToken];
+  const dailyYield = selected ? (usdValue * selected.apy / 100 / 365) : 0;
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -103,19 +110,34 @@ export function DeFiLending() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="space-y-4">
               <div>
-                <label className="text-sm text-muted-foreground block mb-1">Deposit Amount (USDC/cUSD)</label>
+                <label className="text-sm text-muted-foreground block mb-1">Deposit Token</label>
+                <Select value={depositToken} onValueChange={(v) => setDepositToken(v as DepositToken)}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {(["USDC", "USDm", "CELO", "NTC"] as DepositToken[]).map((t) => (
+                      <SelectItem key={t} value={t}>{t} — {TOKEN_LABELS[t]}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <label className="text-sm text-muted-foreground block mb-1">Amount ({depositToken})</label>
                 <Input
                   type="number"
-                  min={selected.minDeposit}
+                  min={selected.minDeposit / tokenPrices[depositToken]}
                   value={depositAmount}
                   onChange={e => setDepositAmount(e.target.value)}
                   className="bg-background/50"
                 />
-                <p className="text-xs text-muted-foreground mt-1">Min: ${selected.minDeposit}</p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  ≈ ${usdValue.toFixed(2)} USD • Min: ${selected.minDeposit}
+                </p>
               </div>
               <Button className="w-full bg-gradient-to-r from-warning to-primary text-primary-foreground">
                 <DollarSign className="w-4 h-4 mr-2" />
-                Deposit ${depositAmount}
+                Deposit {depositAmount} {depositToken}
               </Button>
               <p className="text-[10px] text-muted-foreground text-center">Withdraw anytime if liquidity available</p>
             </div>

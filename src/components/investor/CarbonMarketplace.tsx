@@ -2,7 +2,9 @@ import { useState } from "react";
 import { Store, TrendingUp, Leaf, ArrowUpRight, ArrowDownRight, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { TOKEN_LABELS } from "@/config/defi";
 
 const priceHistory = [85, 88, 92, 87, 95, 98, 100, 96, 102, 105, 100, 108];
 const holdings = [
@@ -11,15 +13,36 @@ const holdings = [
   { source: "Fleet Generated", amount: 14.4, avgCost: 0, currentPrice: 100 },
 ];
 
+type PayToken = "USDC" | "USDm" | "CELO" | "NTC";
+
 export function CarbonMarketplace() {
   const [buyAmount, setBuyAmount] = useState("5");
   const [sellAmount, setSellAmount] = useState("5");
+  const [buyToken, setBuyToken] = useState<PayToken>("USDC");
+  const [sellToken, setSellToken] = useState<PayToken>("USDC");
   const currentPrice = 100;
   const priceChange = ((currentPrice - priceHistory[priceHistory.length - 2]) / priceHistory[priceHistory.length - 2] * 100);
   const isUp = priceChange >= 0;
 
   const totalHoldings = holdings.reduce((a, b) => a + b.amount, 0);
   const totalValue = totalHoldings * currentPrice;
+
+  const tokenPrices: Record<PayToken, number> = { USDC: 1, USDm: 1, CELO: 0.5, NTC: 0.1 };
+  const buyTokenAmount = (Number(buyAmount) * currentPrice) / tokenPrices[buyToken];
+  const sellTokenAmount = (Number(sellAmount) * currentPrice) / tokenPrices[sellToken];
+
+  const TokenSelector = ({ value, onChange }: { value: PayToken; onChange: (v: PayToken) => void }) => (
+    <Select value={value} onValueChange={(v) => onChange(v as PayToken)}>
+      <SelectTrigger className="w-32">
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent>
+        {(["USDC", "USDm", "CELO", "NTC"] as PayToken[]).map((t) => (
+          <SelectItem key={t} value={t}>{t} — {TOKEN_LABELS[t]}</SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  );
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -48,7 +71,6 @@ export function CarbonMarketplace() {
               {Math.abs(priceChange).toFixed(1)}%
             </div>
           </div>
-          {/* Mini chart */}
           <div className="flex items-end gap-1 h-20">
             {priceHistory.map((p, i) => {
               const max = Math.max(...priceHistory);
@@ -95,15 +117,23 @@ export function CarbonMarketplace() {
                   <label className="text-sm text-muted-foreground block mb-1">Amount (tCO₂e)</label>
                   <Input type="number" min="1" value={buyAmount} onChange={e => setBuyAmount(e.target.value)} className="bg-background/50" />
                 </div>
-                <div className="p-3 bg-background/50 rounded-lg">
+                <div>
+                  <label className="text-sm text-muted-foreground block mb-1">Pay With</label>
+                  <TokenSelector value={buyToken} onChange={setBuyToken} />
+                </div>
+                <div className="p-3 bg-background/50 rounded-lg space-y-1">
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Total Cost</span>
                     <span className="font-bold">${(Number(buyAmount) * currentPrice).toLocaleString()}</span>
                   </div>
+                  <div className="flex justify-between text-xs">
+                    <span className="text-muted-foreground">You Pay</span>
+                    <span className="font-medium">{buyTokenAmount.toFixed(2)} {buyToken}</span>
+                  </div>
                 </div>
                 <Button className="w-full bg-gradient-to-r from-success to-primary text-primary-foreground">
                   <ShoppingCart className="w-4 h-4 mr-2" />
-                  Buy {buyAmount} Carbon Credits
+                  Buy {buyAmount} Credits with {buyToken}
                 </Button>
               </div>
               <div className="p-4 bg-success/5 rounded-xl border border-success/20">
@@ -124,14 +154,22 @@ export function CarbonMarketplace() {
                   <label className="text-sm text-muted-foreground block mb-1">Amount to sell (tCO₂e)</label>
                   <Input type="number" min="1" max={totalHoldings} value={sellAmount} onChange={e => setSellAmount(e.target.value)} className="bg-background/50" />
                 </div>
-                <div className="p-3 bg-background/50 rounded-lg">
+                <div>
+                  <label className="text-sm text-muted-foreground block mb-1">Receive As</label>
+                  <TokenSelector value={sellToken} onChange={setSellToken} />
+                </div>
+                <div className="p-3 bg-background/50 rounded-lg space-y-1">
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">You Receive</span>
-                    <span className="font-bold text-success">${(Number(sellAmount) * currentPrice).toLocaleString()}</span>
+                    <span className="font-bold text-success">{sellTokenAmount.toFixed(2)} {sellToken}</span>
+                  </div>
+                  <div className="flex justify-between text-xs">
+                    <span className="text-muted-foreground">USD Value</span>
+                    <span>${(Number(sellAmount) * currentPrice).toLocaleString()}</span>
                   </div>
                 </div>
                 <Button variant="outline" className="w-full border-success text-success hover:bg-success/10">
-                  Sell {sellAmount} Credits at ${currentPrice}/ton
+                  Sell {sellAmount} Credits → {sellToken}
                 </Button>
               </div>
               <div className="p-4 bg-background/50 rounded-xl border border-border/50">
