@@ -387,7 +387,7 @@ const DeFiActions = () => {
               onChange={(e) => setBorrowAmount(e.target.value)}
             />
           </div>
-          <div className="text-xs p-2 rounded bg-yellow-500/10 text-yellow-600">
+          <div className="text-xs p-2 rounded bg-accent/10 text-accent-foreground">
             Swaps collateral via pool • Max LTV: 75% • Collateral: NTC / NTEV
           </div>
           <Button
