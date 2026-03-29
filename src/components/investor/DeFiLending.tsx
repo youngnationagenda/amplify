@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Progress } from "@/components/ui/progress";
 import { TOKEN_LABELS } from "@/config/defi";
+import PoolInvestment from "@/components/wallet/PoolInvestment";
 
 const pools = [
   {
@@ -100,6 +101,9 @@ export function DeFiLending() {
           </div>
         ))}
       </div>
+
+      {/* Pool Seeding */}
+      <PoolInvestment />
 
       {/* Deposit Panel */}
       {selected && (

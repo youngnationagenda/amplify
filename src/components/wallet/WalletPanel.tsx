@@ -5,6 +5,7 @@ import TokenBalances from "./TokenBalances";
 import LiquidityPositions from "./LiquidityPositions";
 import SwapPanel from "./SwapPanel";
 import DeFiActions from "./DeFiActions";
+import PoolInvestment from "./PoolInvestment";
 import { Wallet, Copy, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getContracts } from "@/config/defi";
@@ -75,6 +76,9 @@ const WalletPanel = ({ compact = false }: WalletPanelProps) => {
 
       {/* Swap Panel */}
       <SwapPanel availableTokens={availableSwapTokens} />
+
+      {/* Pool Investment — not for offsetter */}
+      {!isOffsetter && !compact && <PoolInvestment />}
 
       {/* DeFi Actions — not for offsetter */}
       {!isOffsetter && !compact && <DeFiActions />}
