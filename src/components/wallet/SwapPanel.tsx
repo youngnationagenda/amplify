@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
-import { useAccount, useWriteContract, usePublicClient } from "wagmi";
+import { useAccount, useWriteContract, usePublicClient, useSendTransaction } from "wagmi";
 import { parseUnits, formatUnits, getAddress } from "viem";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { getContracts, TOKEN_DECIMALS, UBESWAP_ROUTER_ABI, ERC20_ABI } from "@/config/defi";
-import { ArrowDownUp, Loader2, AlertCircle, ShieldCheck, ShieldAlert, ExternalLink, CheckCircle } from "lucide-react";
+import { getContracts, TOKEN_DECIMALS, UBESWAP_ROUTER_ABI, ERC20_ABI, CELO_SEPOLIA_ID } from "@/config/defi";
+import { ArrowDownUp, Loader2, AlertCircle, ShieldCheck, ShieldAlert, ExternalLink, CheckCircle, FlaskConical } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
 
