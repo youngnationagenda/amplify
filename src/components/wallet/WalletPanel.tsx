@@ -83,6 +83,9 @@ const WalletPanel = ({ compact = false }: WalletPanelProps) => {
 
       {/* DeFi Actions — not for offsetter */}
       {!isOffsetter && !compact && <DeFiActions />}
+
+      {/* Transaction History */}
+      <TransactionHistory />
     </div>
   );
 };
