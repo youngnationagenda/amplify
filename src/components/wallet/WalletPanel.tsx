@@ -6,6 +6,7 @@ import LiquidityPositions from "./LiquidityPositions";
 import SwapPanel from "./SwapPanel";
 import DeFiActions from "./DeFiActions";
 import PoolInvestment from "./PoolInvestment";
+import TransactionHistory from "./TransactionHistory";
 import { Wallet, Copy, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getContracts } from "@/config/defi";
