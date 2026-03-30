@@ -22,6 +22,9 @@ const SwapPanel = ({ availableTokens }: SwapPanelProps) => {
   const { toast } = useToast();
 
   const contracts = getContracts(chain?.id);
+  const isTestnet = chain?.id === CELO_SEPOLIA_ID;
+  const noRouter = contracts.swapRouter === "0x0000000000000000000000000000000000000000";
+  const { sendTransaction, isPending: isSendPending, data: sendTxHash } = useSendTransaction();
 
   // Build swap routes dynamically including USDm
   const SWAP_ROUTES = [
