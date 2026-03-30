@@ -120,12 +120,14 @@ const MAINNET_CONTRACTS: NetworkContracts = {
 };
 
 // ── Celo Sepolia Testnet (deployed Uniswap V3 contracts) ──
+// NOTE: No SwapRouter is deployed on Celo Sepolia. Pools & PositionManager exist.
+// swapRouter is set to 0x0 to trigger testnet simulation mode in SwapPanel.
 const TESTNET_CONTRACTS: NetworkContracts = {
-  swapRouter: "0x5615CDAb10dc425a742d643d949a7F474C01abc4",
+  swapRouter: "0x0000000000000000000000000000000000000000",
   positionManager: "0xb178deF6aeaBb437E161B252b7BF213A1C864e32",
-  factory: "0xAfE208a311B21f13EF87E33A90049fC17A7acDE",
+  factory: "0xb1b7df1fa99dd9e2f32f13128232766cc964bddc",
   quoter: "0x0000000000000000000000000000000000000000",
-  universalRouter: "0x643770E279d5D0733F21d6DC03A8efbABf3255B4",
+  universalRouter: "0x0000000000000000000000000000000000000000",
   permit2: "0x000000000022D473030F116dDEE9F6B43aC78BA3",
   blockExplorer: "https://celo-sepolia.blockscout.com",
   tokens: {
