@@ -451,10 +451,12 @@ const SwapPanel = ({ availableTokens }: SwapPanelProps) => {
         variant="glow"
         className="w-full"
         onClick={handleConfirm}
-        disabled={!address || !route || !amountIn || isPending || routerIsContract === false}
+        disabled={!address || !route || !amountIn || (isPending || isSendPending) || (!noRouter && routerIsContract === false)}
       >
-        {routerIsContract === false ? (
+        {!noRouter && routerIsContract === false ? (
           <><ShieldAlert className="w-4 h-4 mr-2" /> Swaps Disabled (Router Not a Contract)</>
+        ) : noRouter ? (
+          <><FlaskConical className="w-4 h-4 mr-2" /> Testnet Swap: {tokenIn} → {tokenOut}</>
         ) : (
           <>Review Swap: {tokenIn} → {tokenOut}</>
         )}
