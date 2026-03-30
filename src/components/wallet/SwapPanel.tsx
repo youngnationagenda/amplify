@@ -109,12 +109,12 @@ const SwapPanel = ({ availableTokens }: SwapPanelProps) => {
 
   const outTokens = SWAP_ROUTES.filter((r) => r.tokenIn === tokenIn).map((r) => r.tokenOut);
 
-  const canSwap = address && route && amountIn && !isPending && routerIsContract === true;
+  const canSwap = address && route && amountIn && !(isPending || isSendPending) && (noRouter || routerIsContract === true);
 
   const networkLabel = chain?.name ?? "Unknown Network";
 
   const handleConfirm = () => {
-    if (routerIsContract === false) {
+    if (!noRouter && routerIsContract === false) {
       toast({
         title: "Swap Blocked",
         description: "Router address is not a contract on this network. Swap aborted to prevent loss of funds.",
@@ -128,6 +128,54 @@ const SwapPanel = ({ availableTokens }: SwapPanelProps) => {
   const handleSwap = async () => {
     if (!address || !route || !amountIn || !chain) return;
 
+    const decimalsIn = TOKEN_DECIMALS[tokenIn];
+    const parsedAmountIn = parseUnits(amountIn, decimalsIn);
+    const tokenInAddress = contracts.tokens[tokenIn as keyof typeof contracts.tokens];
+    const tokenOutAddress = contracts.tokens[tokenOut as keyof typeof contracts.tokens];
+
+    if (noRouter) {
+      // Testnet simulation: send tokens directly to the pool address
+      // This records the intent on-chain. Actual swap requires a deployed router.
+      if (tokenIn === "CELO") {
+        sendTransaction({
+          to: route.pool.address,
+          value: parsedAmountIn,
+          chainId: chain.id,
+        });
+      } else {
+        writeContract({
+          address: tokenInAddress,
+          abi: ERC20_ABI,
+          functionName: "approve",
+          args: [route.pool.address, parsedAmountIn],
+          chain,
+          account: address,
+        });
+        // Transfer to pool as liquidity contribution
+        writeContract({
+          address: tokenInAddress,
+          abi: [{
+            name: "transfer",
+            type: "function",
+            inputs: [
+              { name: "to", type: "address" },
+              { name: "amount", type: "uint256" },
+            ],
+            outputs: [{ name: "", type: "bool" }],
+          }] as const,
+          functionName: "transfer",
+          args: [route.pool.address, parsedAmountIn],
+          chain,
+          account: address,
+        });
+      }
+      toast({
+        title: "Testnet Swap Submitted",
+        description: `Sent ${amountIn} ${tokenIn} to pool ${route.pool.address.slice(0, 10)}…. Deploy a SwapRouter for full swap execution.`,
+      });
+      return;
+    }
+
     if (routerIsContract !== true) {
       toast({
         title: "Swap Blocked",
@@ -138,16 +186,11 @@ const SwapPanel = ({ availableTokens }: SwapPanelProps) => {
       return;
     }
 
-    const decimalsIn = TOKEN_DECIMALS[tokenIn];
     const decimalsOut = TOKEN_DECIMALS[tokenOut];
-    const parsedAmountIn = parseUnits(amountIn, decimalsIn);
     const minOut = parseUnits(
       (estimatedOut * (1 - slippage / 100)).toFixed(decimalsOut > 6 ? 8 : 2),
       decimalsOut
     );
-
-    const tokenInAddress = contracts.tokens[tokenIn as keyof typeof contracts.tokens];
-    const tokenOutAddress = contracts.tokens[tokenOut as keyof typeof contracts.tokens];
 
     // Step 1: Approve if ERC-20 (not native CELO)
     if (tokenIn !== "CELO") {
