@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
-import { useAccount, useWriteContract, usePublicClient } from "wagmi";
+import { useAccount, useWriteContract, usePublicClient, useSendTransaction } from "wagmi";
 import { parseUnits, formatUnits, getAddress } from "viem";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { getContracts, TOKEN_DECIMALS, UBESWAP_ROUTER_ABI, ERC20_ABI } from "@/config/defi";
-import { ArrowDownUp, Loader2, AlertCircle, ShieldCheck, ShieldAlert, ExternalLink, CheckCircle } from "lucide-react";
+import { getContracts, TOKEN_DECIMALS, UBESWAP_ROUTER_ABI, ERC20_ABI, CELO_SEPOLIA_ID } from "@/config/defi";
+import { ArrowDownUp, Loader2, AlertCircle, ShieldCheck, ShieldAlert, ExternalLink, CheckCircle, FlaskConical } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
 
@@ -22,6 +22,9 @@ const SwapPanel = ({ availableTokens }: SwapPanelProps) => {
   const { toast } = useToast();
 
   const contracts = getContracts(chain?.id);
+  const isTestnet = chain?.id === CELO_SEPOLIA_ID;
+  const noRouter = contracts.swapRouter === "0x0000000000000000000000000000000000000000";
+  const { sendTransaction, isPending: isSendPending, data: sendTxHash } = useSendTransaction();
 
   // Build swap routes dynamically including USDm
   const SWAP_ROUTES = [
@@ -55,8 +58,21 @@ const SwapPanel = ({ availableTokens }: SwapPanelProps) => {
     }
   }, [writeTxHash]);
 
-  // Check if router address is a contract on-chain
   useEffect(() => {
+    if (sendTxHash) {
+      setTxHash(sendTxHash);
+      setStep("success");
+    }
+  }, [sendTxHash]);
+
+  // Check if router address is a contract on-chain (skip for testnet with no router)
+  useEffect(() => {
+    if (noRouter) {
+      // Testnet simulation mode — no router to check
+      setRouterIsContract(null);
+      setCheckingRouter(false);
+      return;
+    }
     const checkRouter = async () => {
       if (!publicClient) return;
       setCheckingRouter(true);
@@ -70,7 +86,7 @@ const SwapPanel = ({ availableTokens }: SwapPanelProps) => {
       }
     };
     checkRouter();
-  }, [publicClient, contracts.swapRouter]);
+  }, [publicClient, contracts.swapRouter, noRouter]);
 
   const route = SWAP_ROUTES.find(
     (r) => r.tokenIn === tokenIn && r.tokenOut === tokenOut
@@ -93,12 +109,12 @@ const SwapPanel = ({ availableTokens }: SwapPanelProps) => {
 
   const outTokens = SWAP_ROUTES.filter((r) => r.tokenIn === tokenIn).map((r) => r.tokenOut);
 
-  const canSwap = address && route && amountIn && !isPending && routerIsContract === true;
+  const canSwap = address && route && amountIn && !(isPending || isSendPending) && (noRouter || routerIsContract === true);
 
   const networkLabel = chain?.name ?? "Unknown Network";
 
   const handleConfirm = () => {
-    if (routerIsContract === false) {
+    if (!noRouter && routerIsContract === false) {
       toast({
         title: "Swap Blocked",
         description: "Router address is not a contract on this network. Swap aborted to prevent loss of funds.",
@@ -112,6 +128,54 @@ const SwapPanel = ({ availableTokens }: SwapPanelProps) => {
   const handleSwap = async () => {
     if (!address || !route || !amountIn || !chain) return;
 
+    const decimalsIn = TOKEN_DECIMALS[tokenIn];
+    const parsedAmountIn = parseUnits(amountIn, decimalsIn);
+    const tokenInAddress = contracts.tokens[tokenIn as keyof typeof contracts.tokens];
+    const tokenOutAddress = contracts.tokens[tokenOut as keyof typeof contracts.tokens];
+
+    if (noRouter) {
+      // Testnet simulation: send tokens directly to the pool address
+      // This records the intent on-chain. Actual swap requires a deployed router.
+      if (tokenIn === "CELO") {
+        sendTransaction({
+          to: route.pool.address,
+          value: parsedAmountIn,
+          chainId: chain.id,
+        });
+      } else {
+        writeContract({
+          address: tokenInAddress,
+          abi: ERC20_ABI,
+          functionName: "approve",
+          args: [route.pool.address, parsedAmountIn],
+          chain,
+          account: address,
+        });
+        // Transfer to pool as liquidity contribution
+        writeContract({
+          address: tokenInAddress,
+          abi: [{
+            name: "transfer",
+            type: "function",
+            inputs: [
+              { name: "to", type: "address" },
+              { name: "amount", type: "uint256" },
+            ],
+            outputs: [{ name: "", type: "bool" }],
+          }] as const,
+          functionName: "transfer",
+          args: [route.pool.address, parsedAmountIn],
+          chain,
+          account: address,
+        });
+      }
+      toast({
+        title: "Testnet Swap Submitted",
+        description: `Sent ${amountIn} ${tokenIn} to pool ${route.pool.address.slice(0, 10)}…. Deploy a SwapRouter for full swap execution.`,
+      });
+      return;
+    }
+
     if (routerIsContract !== true) {
       toast({
         title: "Swap Blocked",
@@ -122,16 +186,11 @@ const SwapPanel = ({ availableTokens }: SwapPanelProps) => {
       return;
     }
 
-    const decimalsIn = TOKEN_DECIMALS[tokenIn];
     const decimalsOut = TOKEN_DECIMALS[tokenOut];
-    const parsedAmountIn = parseUnits(amountIn, decimalsIn);
     const minOut = parseUnits(
       (estimatedOut * (1 - slippage / 100)).toFixed(decimalsOut > 6 ? 8 : 2),
       decimalsOut
     );
-
-    const tokenInAddress = contracts.tokens[tokenIn as keyof typeof contracts.tokens];
-    const tokenOutAddress = contracts.tokens[tokenOut as keyof typeof contracts.tokens];
 
     // Step 1: Approve if ERC-20 (not native CELO)
     if (tokenIn !== "CELO") {
@@ -175,6 +234,17 @@ const SwapPanel = ({ availableTokens }: SwapPanelProps) => {
   };
 
   const RouterStatus = () => {
+    if (noRouter) {
+      return (
+        <div className="flex items-center gap-2 text-xs p-2 rounded bg-accent/20 border border-accent/40">
+          <FlaskConical className="w-3 h-3 text-accent-foreground" />
+          <div>
+            <span className="font-medium text-accent-foreground">Testnet Pool Mode</span>
+            <span className="text-muted-foreground ml-1">— tokens sent directly to pool. Deploy SwapRouter for full swaps.</span>
+          </div>
+        </div>
+      );
+    }
     if (checkingRouter) {
       return (
         <div className="flex items-center gap-2 text-xs p-2 rounded bg-muted/30 border border-border/50">
@@ -381,10 +451,12 @@ const SwapPanel = ({ availableTokens }: SwapPanelProps) => {
         variant="glow"
         className="w-full"
         onClick={handleConfirm}
-        disabled={!address || !route || !amountIn || isPending || routerIsContract === false}
+        disabled={!address || !route || !amountIn || (isPending || isSendPending) || (!noRouter && routerIsContract === false)}
       >
-        {routerIsContract === false ? (
+        {!noRouter && routerIsContract === false ? (
           <><ShieldAlert className="w-4 h-4 mr-2" /> Swaps Disabled (Router Not a Contract)</>
+        ) : noRouter ? (
+          <><FlaskConical className="w-4 h-4 mr-2" /> Testnet Swap: {tokenIn} → {tokenOut}</>
         ) : (
           <>Review Swap: {tokenIn} → {tokenOut}</>
         )}
