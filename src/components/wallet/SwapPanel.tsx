@@ -234,6 +234,17 @@ const SwapPanel = ({ availableTokens }: SwapPanelProps) => {
   };
 
   const RouterStatus = () => {
+    if (noRouter) {
+      return (
+        <div className="flex items-center gap-2 text-xs p-2 rounded bg-accent/20 border border-accent/40">
+          <FlaskConical className="w-3 h-3 text-accent-foreground" />
+          <div>
+            <span className="font-medium text-accent-foreground">Testnet Pool Mode</span>
+            <span className="text-muted-foreground ml-1">— tokens sent directly to pool. Deploy SwapRouter for full swaps.</span>
+          </div>
+        </div>
+      );
+    }
     if (checkingRouter) {
       return (
         <div className="flex items-center gap-2 text-xs p-2 rounded bg-muted/30 border border-border/50">
