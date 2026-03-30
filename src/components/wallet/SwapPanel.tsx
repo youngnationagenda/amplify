@@ -58,8 +58,21 @@ const SwapPanel = ({ availableTokens }: SwapPanelProps) => {
     }
   }, [writeTxHash]);
 
-  // Check if router address is a contract on-chain
   useEffect(() => {
+    if (sendTxHash) {
+      setTxHash(sendTxHash);
+      setStep("success");
+    }
+  }, [sendTxHash]);
+
+  // Check if router address is a contract on-chain (skip for testnet with no router)
+  useEffect(() => {
+    if (noRouter) {
+      // Testnet simulation mode — no router to check
+      setRouterIsContract(null);
+      setCheckingRouter(false);
+      return;
+    }
     const checkRouter = async () => {
       if (!publicClient) return;
       setCheckingRouter(true);
@@ -73,7 +86,7 @@ const SwapPanel = ({ availableTokens }: SwapPanelProps) => {
       }
     };
     checkRouter();
-  }, [publicClient, contracts.swapRouter]);
+  }, [publicClient, contracts.swapRouter, noRouter]);
 
   const route = SWAP_ROUTES.find(
     (r) => r.tokenIn === tokenIn && r.tokenOut === tokenOut
