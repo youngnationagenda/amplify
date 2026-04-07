@@ -134,44 +134,14 @@ const SwapPanel = ({ availableTokens }: SwapPanelProps) => {
     const tokenOutAddress = contracts.tokens[tokenOut as keyof typeof contracts.tokens];
 
     if (noRouter) {
-      // Testnet simulation: send tokens directly to the pool address
-      // This records the intent on-chain. Actual swap requires a deployed router.
-      if (tokenIn === "CELO") {
-        sendTransaction({
-          to: route.pool.address,
-          value: parsedAmountIn,
-          chainId: chain.id,
-        });
-      } else {
-        writeContract({
-          address: tokenInAddress,
-          abi: ERC20_ABI,
-          functionName: "approve",
-          args: [route.pool.address, parsedAmountIn],
-          chain,
-          account: address,
-        });
-        // Transfer to pool as liquidity contribution
-        writeContract({
-          address: tokenInAddress,
-          abi: [{
-            name: "transfer",
-            type: "function",
-            inputs: [
-              { name: "to", type: "address" },
-              { name: "amount", type: "uint256" },
-            ],
-            outputs: [{ name: "", type: "bool" }],
-          }] as const,
-          functionName: "transfer",
-          args: [route.pool.address, parsedAmountIn],
-          chain,
-          account: address,
-        });
-      }
+      // Testnet DRY-RUN simulation — NO tokens are sent on-chain.
+      // This protects user funds until a SwapRouter is deployed.
+      const simHash = `0xSIM_${Date.now().toString(16)}_${tokenIn}_${tokenOut}`;
+      setTxHash(simHash);
+      setStep("success");
       toast({
-        title: "Testnet Swap Submitted",
-        description: `Sent ${amountIn} ${tokenIn} to pool ${route.pool.address.slice(0, 10)}…. Deploy a SwapRouter for full swap execution.`,
+        title: "Simulated Swap (Testnet)",
+        description: `${amountIn} ${tokenIn} → ~${estimatedOut.toFixed(4)} ${tokenOut}. No tokens moved. Deploy a SwapRouter for real execution.`,
       });
       return;
     }

@@ -119,14 +119,13 @@ const MAINNET_CONTRACTS: NetworkContracts = {
   lpPositions: [],
 };
 
-// ── Celo Sepolia Testnet (deployed Uniswap V3 contracts) ──
-// NOTE: No SwapRouter is deployed on Celo Sepolia. Pools & PositionManager exist.
-// swapRouter is set to 0x0 to trigger testnet simulation mode in SwapPanel.
+// ── Celo Sepolia Testnet ──
+// Reads from env vars if you deploy your own Uniswap V3 stack; otherwise falls back to simulation mode.
 const TESTNET_CONTRACTS: NetworkContracts = {
-  swapRouter: "0x0000000000000000000000000000000000000000",
-  positionManager: "0xb178deF6aeaBb437E161B252b7BF213A1C864e32",
-  factory: "0xb1b7df1fa99dd9e2f32f13128232766cc964bddc",
-  quoter: "0x0000000000000000000000000000000000000000",
+  swapRouter: (import.meta.env.VITE_TESTNET_SWAP_ROUTER ?? "0x0000000000000000000000000000000000000000") as `0x${string}`,
+  positionManager: (import.meta.env.VITE_TESTNET_POSITION_MANAGER ?? "0xb178deF6aeaBb437E161B252b7BF213A1C864e32") as `0x${string}`,
+  factory: (import.meta.env.VITE_TESTNET_FACTORY ?? "0xb1b7df1fa99dd9e2f32f13128232766cc964bddc") as `0x${string}`,
+  quoter: (import.meta.env.VITE_TESTNET_QUOTER ?? "0x0000000000000000000000000000000000000000") as `0x${string}`,
   universalRouter: "0x0000000000000000000000000000000000000000",
   permit2: "0x000000000022D473030F116dDEE9F6B43aC78BA3",
   blockExplorer: "https://celo-sepolia.blockscout.com",
