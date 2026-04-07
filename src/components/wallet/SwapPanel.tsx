@@ -249,25 +249,31 @@ const SwapPanel = ({ availableTokens }: SwapPanelProps) => {
 
   // Success view
   if (step === "success" && txHash) {
+    const isSimulated = txHash.startsWith("0xSIM_");
     return (
       <div className="glass-card p-5 space-y-4">
         <div className="text-center space-y-3 py-4">
-          <CheckCircle className="w-10 h-10 mx-auto text-primary" />
-          <h4 className="font-display font-bold">Swap Submitted</h4>
+          <CheckCircle className={`w-10 h-10 mx-auto ${isSimulated ? "text-accent-foreground" : "text-primary"}`} />
+          <h4 className="font-display font-bold">{isSimulated ? "Swap Simulated" : "Swap Submitted"}</h4>
+          {isSimulated && (
+            <Badge variant="outline" className="text-[10px]">
+              <FlaskConical className="w-3 h-3 mr-1" /> Dry Run — No tokens moved
+            </Badge>
+          )}
           <p className="text-xs text-muted-foreground">
             {amountIn} {tokenIn} → ~{estimatedOut.toFixed(4)} {tokenOut}
           </p>
-          <div className="font-mono text-[10px] text-muted-foreground break-all">
-            {txHash}
-          </div>
-          <Button variant="outline" size="sm" asChild>
-            <a href={`${contracts.blockExplorer}/tx/${txHash}`} target="_blank" rel="noopener noreferrer">
-              <ExternalLink className="w-3 h-3 mr-1" /> View on Explorer
-            </a>
-          </Button>
-          <Button variant="glow" className="w-full" onClick={resetSwap}>
-            New Swap
-          </Button>
+          {!isSimulated && (
+            <>
+              <div className="font-mono text-[10px] text-muted-foreground break-all">{txHash}</div>
+              <Button variant="outline" size="sm" asChild>
+                <a href={`${contracts.blockExplorer}/tx/${txHash}`} target="_blank" rel="noopener noreferrer">
+                  <ExternalLink className="w-3 h-3 mr-1" /> View on Explorer
+                </a>
+              </Button>
+            </>
+          )}
+          <Button variant="glow" className="w-full" onClick={resetSwap}>New Swap</Button>
         </div>
       </div>
     );
