@@ -3,14 +3,11 @@ frontend:
   phases:
     preBuild:
       commands:
-        # Install your dependencies
         - npm ci
     build:
       commands:
-        # Build your Vite React project
         - npm run build
   artifacts:
-    # Vite outputs compiled files to the dist directory by default
     baseDirectory: dist
     files:
       - '**/*'
