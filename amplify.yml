@@ -9,6 +9,8 @@ frontend:
         - npm ci
     build:
       commands:
+        - echo "VITE_SUPABASE_URL=$VITE_SUPABASE_URL" >> .env.production
+        - echo "VITE_SUPABASE_PUBLISHABLE_KEY=$VITE_SUPABASE_PUBLISHABLE_KEY" >> .env.production
         - npm run build
   artifacts:
     baseDirectory: dist
