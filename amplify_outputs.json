@@ -1,3 +1,15 @@
 {
-  "version": "1.4"
+  "version": "1.4",
+  "auth": {
+    "user_pool_id": "PLACEHOLDER_UNTIL_DEPLOYED",
+    "user_pool_client_id": "PLACEHOLDER_UNTIL_DEPLOYED",
+    "aws_region": "us-east-1",
+    "identity_pool_id": "PLACEHOLDER_UNTIL_DEPLOYED"
+  },
+  "data": {
+    "url": "PLACEHOLDER_UNTIL_DEPLOYED",
+    "aws_region": "us-east-1",
+    "api_key": "PLACEHOLDER_UNTIL_DEPLOYED",
+    "default_authorization_type": "AMAZON_COGNITO_USER_POOLS"
+  }
 }

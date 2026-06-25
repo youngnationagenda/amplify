@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAccount } from "wagmi";
 import { useAuth } from "@/contexts/AuthContext";
-import { supabase } from "@/integrations/supabase/client";
+import { client } from "@/integrations/amplify/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -104,32 +104,60 @@ const OffseterDashboard = () => {
 
   const fetchData = async () => {
     // Fetch available credits
-    const { data: creditsData } = await supabase
-      .from('carbon_credits')
-      .select('*')
-      .eq('status', 'available');
-    if (creditsData) setCredits(creditsData);
+    const { data: creditsData } = await client.models.CarbonCredit.list({
+      filter: { status: { eq: 'AVAILABLE' } },
+    });
+    if (creditsData) setCredits(creditsData.map((c: any) => ({
+      id: c.id,
+      amount: c.amount,
+      price_per_credit: c.pricePerCredit,
+      source_type: c.sourceType,
+      status: c.status?.toLowerCase() || 'available',
+    })));
 
     // Fetch active ICOs
-    const { data: icosData } = await supabase
-      .from('initial_carbon_offerings')
-      .select('*')
-      .in('status', ['upcoming', 'active']);
-    if (icosData) setIcos(icosData);
+    const { data: icosData } = await client.models.InitialCarbonOffering.list({
+      filter: { or: [{ status: { eq: 'UPCOMING' } }, { status: { eq: 'ACTIVE' } }] },
+    });
+    if (icosData) setIcos(icosData.map((i: any) => ({
+      id: i.id,
+      name: i.name,
+      description: i.description || '',
+      total_credits: i.totalCredits,
+      credits_sold: i.creditsSold,
+      price_per_credit: i.pricePerCredit,
+      market_price: i.marketPrice,
+      start_date: i.startDate,
+      end_date: i.endDate,
+      delivery_date: i.deliveryDate,
+      status: i.status?.toLowerCase() || 'upcoming',
+    })));
 
     // Fetch user purchases
-    const { data: purchasesData } = await supabase
-      .from('carbon_purchases')
-      .select('*')
-      .order('created_at', { ascending: false });
-    if (purchasesData) setPurchases(purchasesData);
+    if (user) {
+      const { data: purchasesData } = await client.models.CarbonPurchase.list({
+        filter: { userId: { eq: user.id } },
+      });
+      if (purchasesData) setPurchases(purchasesData.map((p: any) => ({
+        id: p.id,
+        amount: p.amount,
+        price_paid: p.pricePaid,
+        status: p.status?.toLowerCase() || 'active',
+        burned_at: p.burnedAt,
+        created_at: p.createdAt,
+      })));
 
-    // Fetch burned credits
-    const { data: burnedData } = await supabase
-      .from('burned_credits')
-      .select('*')
-      .order('burned_at', { ascending: false });
-    if (burnedData) setBurnedCredits(burnedData);
+      // Fetch burned credits
+      const { data: burnedData } = await client.models.BurnedCredit.list({
+        filter: { userId: { eq: user.id } },
+      });
+      if (burnedData) setBurnedCredits(burnedData.map((b: any) => ({
+        id: b.id,
+        amount: b.amount,
+        certificate_number: b.certificateNumber,
+        burned_at: b.burnedAt,
+      })));
+    }
   };
 
   const initiatePayment = (creditId: string, amount: number, pricePerCredit: number) => {
@@ -150,17 +178,15 @@ const OffseterDashboard = () => {
     setIsProcessing(true);
     
     try {
-      const { error } = await supabase
-        .from('carbon_purchases')
-        .insert({
-          user_id: user.id,
-          credit_id: pendingPurchase.creditId,
-          amount: pendingPurchase.amount,
-          price_paid: pendingPurchase.amount * pendingPurchase.pricePerCredit,
-          status: 'active'
-        });
+      const { errors } = await client.models.CarbonPurchase.create({
+        userId: user.id,
+        creditId: pendingPurchase.creditId,
+        amount: pendingPurchase.amount,
+        pricePaid: pendingPurchase.amount * pendingPurchase.pricePerCredit,
+        status: 'ACTIVE',
+      });
 
-      if (error) throw error;
+      if (errors) throw new Error(errors[0]?.message || 'Create failed');
 
       toast({
         title: "Purchase Successful!",
@@ -190,24 +216,24 @@ const OffseterDashboard = () => {
       const certificateNumber = `EOT-BURN-${new Date().toISOString().slice(0, 10).replace(/-/g, '')}-${purchase.id.slice(0, 8)}`;
 
       // Create burn record
-      const { error: burnError } = await supabase
-        .from('burned_credits')
-        .insert({
-          user_id: user.id,
-          purchase_id: purchase.id,
-          amount: purchase.amount,
-          certificate_number: certificateNumber
-        });
+      const { errors: burnErrors } = await client.models.BurnedCredit.create({
+        userId: user.id,
+        purchaseId: purchase.id,
+        amount: purchase.amount,
+        certificateNumber: certificateNumber,
+        burnedAt: new Date().toISOString(),
+      });
 
-      if (burnError) throw burnError;
+      if (burnErrors) throw new Error(burnErrors[0]?.message || 'Burn failed');
 
       // Update purchase status
-      const { error: updateError } = await supabase
-        .from('carbon_purchases')
-        .update({ status: 'burned', burned_at: new Date().toISOString() })
-        .eq('id', purchase.id);
+      const { errors: updateErrors } = await client.models.CarbonPurchase.update({
+        id: purchase.id,
+        status: 'BURNED',
+        burnedAt: new Date().toISOString(),
+      });
 
-      if (updateError) throw updateError;
+      if (updateErrors) throw new Error(updateErrors[0]?.message || 'Update failed');
 
       toast({
         title: "Credits Burned Successfully! 🔥",
@@ -248,17 +274,15 @@ const OffseterDashboard = () => {
     setIsProcessing(true);
 
     try {
-      const { error } = await supabase
-        .from('ico_purchases')
-        .insert({
-          user_id: user.id,
-          ico_id: pendingICO.ico.id,
-          credits_purchased: pendingICO.amount,
-          price_paid: pendingICO.amount * pendingICO.ico.price_per_credit,
-          status: 'pending'
-        });
+      const { errors } = await client.models.IcoPurchase.create({
+        userId: user.id,
+        icoId: pendingICO.ico.id,
+        creditsPurchased: pendingICO.amount,
+        pricePaid: pendingICO.amount * pendingICO.ico.price_per_credit,
+        status: 'PENDING',
+      });
 
-      if (error) throw error;
+      if (errors) throw new Error(errors[0]?.message || 'ICO purchase failed');
 
       toast({
         title: "ICO Purchase Successful!",

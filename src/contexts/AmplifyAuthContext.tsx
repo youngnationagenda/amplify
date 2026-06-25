@@ -1,0 +1,142 @@
+import { createContext, useContext, useEffect, useState, ReactNode } from "react";
+import {
+  signUp as amplifySignUp,
+  signIn as amplifySignIn,
+  signOut as amplifySignOut,
+  getCurrentUser,
+  fetchAuthSession,
+  fetchUserAttributes,
+} from "aws-amplify/auth";
+import { Hub } from "aws-amplify/utils";
+import { client } from "@/integrations/amplify/client";
+
+type AppRole = 'rider' | 'investor' | 'admin' | 'offsetter';
+
+interface AuthUser {
+  id: string;
+  email: string;
+  fullName?: string;
+}
+
+interface AuthContextType {
+  user: AuthUser | null;
+  loading: boolean;
+  userRole: AppRole | null;
+  signUp: (email: string, password: string, fullName: string, role?: string) => Promise<{ error: Error | null }>;
+  signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
+  signOut: () => Promise<void>;
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const [user, setUser] = useState<AuthUser | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [userRole, setUserRole] = useState<AppRole | null>(null);
+
+  const fetchUserRole = async (userId: string) => {
+    try {
+      const { data } = await client.models.UserRole.list({
+        filter: { userId: { eq: userId } },
+      });
+      if (data && data.length > 0) {
+        setUserRole(data[0].role?.toLowerCase() as AppRole);
+      }
+    } catch (err) {
+      console.error('Failed to fetch user role:', err);
+    }
+  };
+
+  const loadUser = async () => {
+    try {
+      const currentUser = await getCurrentUser();
+      const attributes = await fetchUserAttributes();
+      
+      const authUser: AuthUser = {
+        id: currentUser.userId,
+        email: attributes.email || '',
+        fullName: attributes.name || attributes['custom:full_name'] || '',
+      };
+      
+      setUser(authUser);
+      await fetchUserRole(currentUser.userId);
+    } catch {
+      setUser(null);
+      setUserRole(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadUser();
+
+    const hubListener = Hub.listen('auth', ({ payload }) => {
+      switch (payload.event) {
+        case 'signedIn':
+          loadUser();
+          break;
+        case 'signedOut':
+          setUser(null);
+          setUserRole(null);
+          break;
+      }
+    });
+
+    return () => hubListener();
+  }, []);
+
+  const signUp = async (
+    email: string,
+    password: string,
+    fullName: string,
+    role: string = 'rider'
+  ): Promise<{ error: Error | null }> => {
+    try {
+      await amplifySignUp({
+        username: email,
+        password,
+        options: {
+          userAttributes: {
+            email,
+            name: fullName,
+            'custom:role': role,
+          },
+        },
+      });
+
+      return { error: null };
+    } catch (err) {
+      return { error: err as Error };
+    }
+  };
+
+  const signIn = async (email: string, password: string): Promise<{ error: Error | null }> => {
+    try {
+      await amplifySignIn({ username: email, password });
+      return { error: null };
+    } catch (err) {
+      return { error: err as Error };
+    }
+  };
+
+  const signOut = async () => {
+    await amplifySignOut();
+    setUser(null);
+    setUserRole(null);
+  };
+
+  return (
+    <AuthContext.Provider value={{ user, loading, userRole, signUp, signIn, signOut }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
+};

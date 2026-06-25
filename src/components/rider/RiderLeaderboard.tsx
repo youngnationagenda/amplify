@@ -8,7 +8,7 @@ import {
   NTC_CONTRACT,
   type TelemetryRider,
 } from "@/services/evTelemetry";
-import { supabase } from "@/integrations/supabase/client";
+import { client } from "@/integrations/amplify/client";
 
 interface LeaderboardEntry extends TelemetryRider {
   rank?: number;
@@ -61,19 +61,18 @@ export default function RiderLeaderboard({ currentUserId }: { currentUserId?: st
 
     // Try to merge current user's DB data
     if (currentUserId) {
-      const { data: myRider } = await supabase
-        .from("riders")
-        .select("*")
-        .eq("user_id", currentUserId)
-        .maybeSingle();
+      const { data: riderData } = await client.models.Rider.list({
+        filter: { userId: { eq: currentUserId } },
+      });
+      const myRider = riderData?.[0];
 
       if (myRider) {
         const userEntry: LeaderboardEntry = {
-          total_carbon_credits: myRider.total_carbon_credits ?? 0,
-          total_distance_km: myRider.total_distance_km ?? 0,
-          efficiency_score: myRider.efficiency_score ?? 85,
-          is_active: myRider.is_active ?? true,
-          motorcycle_id: myRider.motorcycle_id,
+          total_carbon_credits: myRider.totalCarbonCredits ?? 0,
+          total_distance_km: myRider.totalDistanceKm ?? 0,
+          efficiency_score: myRider.efficiencyScore ?? 85,
+          is_active: myRider.isActive ?? true,
+          motorcycle_id: myRider.motorcycleId ?? undefined,
           rider_id: myRider.id,
           wallet: undefined,
           name: "You",

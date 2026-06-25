@@ -1,14 +1,18 @@
 import { defineBackend } from '@aws-amplify/backend';
+import { auth } from './auth/resource';
+import { data } from './data/resource';
+import { athenaQuery } from './functions/athena-query/resource';
 
 /**
- * Minimal Amplify Gen 2 backend definition.
+ * Amplify Gen 2 backend definition for NetTribe.
  * 
- * This app uses Supabase for:
- * - Authentication (supabase auth)
- * - Database (PostgreSQL with RLS)
- * - Edge Functions (athena-query)
- * 
- * Amplify is used solely for static frontend hosting (CI/CD + CDN).
- * No Amplify auth, data, or storage resources are needed.
+ * Migrated from Supabase:
+ * - Auth: Cognito (replaces Supabase Auth)
+ * - Data: DynamoDB + AppSync GraphQL (replaces Supabase PostgreSQL)
+ * - Functions: Lambda (replaces Supabase Edge Functions)
  */
-const backend = defineBackend({});
+const backend = defineBackend({
+  auth,
+  data,
+  athenaQuery,
+});
