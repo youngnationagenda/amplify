@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { Web3Provider } from "@/providers/Web3Provider";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import RiderDashboard from "./pages/RiderDashboard";
@@ -22,10 +23,10 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
-            <Route path="/rider-dashboard" element={<RiderDashboard />} />
-            <Route path="/investor-dashboard" element={<InvestorDashboard />} />
-            <Route path="/investor-portal/*" element={<InvestorPortal />} />
-            <Route path="/offsetter-dashboard" element={<OffseterDashboard />} />
+            <Route path="/rider-dashboard" element={<ProtectedRoute allowedRoles={["rider", "admin"]}><RiderDashboard /></ProtectedRoute>} />
+            <Route path="/investor-dashboard" element={<ProtectedRoute allowedRoles={["investor", "admin"]}><InvestorDashboard /></ProtectedRoute>} />
+            <Route path="/investor-portal/*" element={<ProtectedRoute allowedRoles={["investor", "admin"]}><InvestorPortal /></ProtectedRoute>} />
+            <Route path="/offsetter-dashboard" element={<ProtectedRoute allowedRoles={["offsetter", "admin"]}><OffseterDashboard /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
