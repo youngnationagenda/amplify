@@ -1,0 +1,77 @@
+name: Terraform Validation
+
+on:
+  pull_request:
+    paths:
+      - 'infra/**'
+
+jobs:
+  validate:
+    name: Validate Terraform
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: infra
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "~> 1.5"
+
+      - name: Check formatting
+        id: fmt
+        run: terraform fmt -check -recursive
+        continue-on-error: true
+
+      - name: Initialize Terraform
+        id: init
+        run: terraform init -backend=false
+
+      - name: Validate configuration
+        id: validate
+        run: terraform validate
+
+      - name: Plan (dry-run with example vars)
+        id: plan
+        run: terraform plan -var-file=environments/dev.tfvars.example -input=false -no-color
+        continue-on-error: true
+
+      - name: Comment PR with results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fmtOutcome = '${{ steps.fmt.outcome }}';
+            const initOutcome = '${{ steps.init.outcome }}';
+            const validateOutcome = '${{ steps.validate.outcome }}';
+            const planOutcome = '${{ steps.plan.outcome }}';
+
+            const statusIcon = (outcome) => outcome === 'success' ? '✅' : '❌';
+
+            const body = `### Terraform Validation Results
+
+            | Step | Status |
+            |------|--------|
+            | Format Check | ${statusIcon(fmtOutcome)} |
+            | Init | ${statusIcon(initOutcome)} |
+            | Validate | ${statusIcon(validateOutcome)} |
+            | Plan | ${statusIcon(planOutcome)} |
+
+            *Triggered by changes to \`infra/\` directory.*`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body.split('\n').map(l => l.trim()).join('\n')
+            });
+
+      - name: Fail if format check failed
+        if: steps.fmt.outcome == 'failure'
+        run: |
+          echo "::error::Terraform formatting check failed. Run 'terraform fmt -recursive' to fix."
+          exit 1

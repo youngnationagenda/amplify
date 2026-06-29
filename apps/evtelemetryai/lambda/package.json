@@ -1,0 +1,9 @@
+{
+  "name": "ev-telemetry-lambda",
+  "version": "1.0.0",
+  "description": "AWS Lambda function for EV Telemetry AI analysis",
+  "main": "analyze.js",
+  "dependencies": {
+    "@google/genai": "^1.41.0"
+  }
+}

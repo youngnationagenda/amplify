@@ -1,0 +1,11 @@
+# Copy this to terraform.tfvars and fill in values
+aws_region           = "us-east-1"
+environment          = "dev"
+telemetry_bucket     = "nettribe-telemetry-data"
+firehose_stream_name = "nettribe-telemetry-stream"
+athena_database      = "nettribe_carbon"
+athena_workgroup     = "primary"
+
+# These come from Amplify outputs after first deploy
+cognito_user_pool_id = ""
+athena_lambda_arn    = ""

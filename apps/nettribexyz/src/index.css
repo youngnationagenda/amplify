@@ -1,0 +1,179 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 160 30% 4%;
+    --foreground: 160 20% 95%;
+
+    --card: 160 25% 8%;
+    --card-foreground: 160 20% 95%;
+
+    --popover: 160 25% 8%;
+    --popover-foreground: 160 20% 95%;
+
+    --primary: 160 84% 39%;
+    --primary-foreground: 160 30% 4%;
+
+    --secondary: 185 90% 48%;
+    --secondary-foreground: 185 30% 4%;
+
+    --muted: 160 20% 15%;
+    --muted-foreground: 160 15% 55%;
+
+    --accent: 160 60% 25%;
+    --accent-foreground: 160 20% 95%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 142 76% 36%;
+    --success-foreground: 142 30% 4%;
+
+    --warning: 38 92% 50%;
+    --warning-foreground: 38 30% 4%;
+
+    --border: 160 20% 18%;
+    --input: 160 20% 15%;
+    --ring: 160 84% 39%;
+
+    --radius: 0.75rem;
+
+    /* Celo brand colors */
+    --celo-gold: 45 95% 55%;
+    --celo-green: 142 70% 48%;
+    --cusd-blue: 200 90% 50%;
+
+    /* Custom tokens */
+    --gradient-primary: linear-gradient(135deg, hsl(160 84% 39%), hsl(185 90% 48%));
+    --gradient-card: linear-gradient(145deg, hsl(160 25% 10%), hsl(160 25% 6%));
+    --gradient-glow: radial-gradient(ellipse at center, hsl(160 84% 39% / 0.15), transparent 70%);
+    --gradient-hero: linear-gradient(180deg, hsl(160 30% 6%), hsl(160 30% 4%));
+    
+    --shadow-glow: 0 0 60px hsl(160 84% 39% / 0.3);
+    --shadow-card: 0 4px 24px hsl(160 30% 4% / 0.5);
+    --shadow-elevated: 0 8px 32px hsl(160 30% 4% / 0.6);
+
+    --sidebar-background: 160 25% 6%;
+    --sidebar-foreground: 160 20% 95%;
+    --sidebar-primary: 160 84% 39%;
+    --sidebar-primary-foreground: 160 30% 4%;
+    --sidebar-accent: 160 20% 12%;
+    --sidebar-accent-foreground: 160 20% 95%;
+    --sidebar-border: 160 20% 15%;
+    --sidebar-ring: 160 84% 39%;
+  }
+
+  .dark {
+    --background: 160 30% 4%;
+    --foreground: 160 20% 95%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', sans-serif;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-card/60 backdrop-blur-xl border border-border/50 rounded-xl;
+    background: var(--gradient-card);
+  }
+
+  .gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: var(--gradient-primary);
+  }
+
+  .glow-effect {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: var(--gradient-glow);
+    filter: blur(100px);
+    pointer-events: none;
+  }
+}
+
+@layer utilities {
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+
+  .animate-slide-up {
+    animation: slide-up 0.6s ease-out forwards;
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.8s ease-out forwards;
+  }
+
+  .animate-count-up {
+    animation: count-up 1s ease-out forwards;
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes count-up {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--primary) / 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary) / 0.7);
+}

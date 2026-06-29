@@ -1,0 +1,25 @@
+{
+  "network": {
+    "name": "Celo Sepolia",
+    "chainId": 11142220,
+    "rpcUrl": "https://forno.celo-sepolia.celo-testnet.org",
+    "blockExplorer": "https://sepolia.celoscan.io",
+    "deployer": "0x57651b018fa4ac931ec585da641078988ef1213b"
+  },
+  "uniswap": {
+    "factoryV3": "0xE0af690969AFff1A07b23555a6B7C716395Af80D",
+    "wrappedNativeToken": "0x2cE73DC897A3E10b3FF3F86470847c36ddB735cf",
+    "nftDescriptor": "0xbA1c33526F2Ee9A6f5a9ed82cB59924b72e54353",
+    "positionDescriptor": "0x6B5c19fb480012fE172e390Ad2f3f8Abb8Bb5665",
+    "nonfungiblePositionManager": "0xf1C20CEb0eeB7f0e5f2A093cEe5B5B96C16C1786",
+    "swapRouter": "0x3504bB166247eEe664D027D36505925d5A6728B2",
+    "quoterV2": "0x2b8aeaF519F6Ea889FC76d50F671543F0f965E51"
+  },
+  "tokens": {
+    "NTC": "0xdE6DBd244FBe84141a97DDe4043029D9c61767ae",
+    "NTEV": "0xcdb1D119EdA8f7A04a820B5002Ef2eA8b189bb18",
+    "USDC": "0x01c5C0122039549Ad1493b8220CAbEdD739Bc44E",
+    "USDm": "0xeF4D55D6De8E8d73232827Cd1e9B2f2dBb45bC80",
+    "WETH": "0x2cE73DC897A3E10b3FF3F86470847c36ddB735cf"
+  }
+}

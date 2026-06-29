@@ -1,19 +1,75 @@
 version: 1
-frontend:
-  phases:
-    preBuild:
-      commands:
-        - nvm install 24
-        - nvm use 24
-        - node -v
-        - npm ci
-    build:
-      commands:
-        - npm run build
-  artifacts:
-    baseDirectory: dist
-    files:
-      - '**/*'
-  cache:
-    paths:
-      - node_modules/**/*
+applications:
+  # ─── nettribexyz: Platform frontend/backend (primary) ───
+  - appRoot: apps/nettribexyz
+    backend:
+      phases:
+        build:
+          commands:
+            - npm ci --cache .npm --prefer-offline
+            - npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            - nvm install 20
+            - nvm use 20
+            - npm ci
+            - npm run lint
+            - npm run test -- --run
+        build:
+          commands:
+            - npm run build
+      artifacts:
+        baseDirectory: dist
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - .npm/**/*
+          - node_modules/**/*
+
+  # ─── evtelemetryai: Telemetry frontend + ingestion ───
+  - appRoot: apps/evtelemetryai
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            - nvm install 20
+            - nvm use 20
+            - npm ci
+            - npm run lint
+            - npm run test -- --run
+        build:
+          commands:
+            - npm run build
+      artifacts:
+        baseDirectory: dist
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - node_modules/**/*
+
+  # ─── nettribeblockchain: Smart contracts (build only, no frontend artifacts) ───
+  - appRoot: apps/nettribeblockchain
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            - nvm install 20
+            - nvm use 20
+            - npm install -g pnpm
+            - pnpm install
+        build:
+          commands:
+            - npx hardhat test
+            - npx hardhat compile
+      artifacts:
+        baseDirectory: artifacts
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - node_modules/**/*
+          - .pnpm-store/**/*

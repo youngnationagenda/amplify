@@ -1,0 +1,44 @@
+{
+  "name": "uniswap-hardhat",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "compile": "hardhat compile",
+    "deploy:factory": "node scripts/deploy-factory.mjs",
+    "deploy:all": "bash scripts/deploy-all.sh",
+    "deploy:periphery": "hardhat run --no-compile scripts/deploy-periphery.js --network celoSepolia",
+    "deploy:nfpm": "hardhat run --no-compile scripts/deploy-nfpm.js --network celoSepolia",
+    "deploy:router": "hardhat run --no-compile scripts/deploy-router.js --network celoSepolia",
+    "deploy:quoter": "hardhat run --no-compile scripts/deploy-quoter-v2.js --network celoSepolia",
+    "verify": "node scripts/verify.js",
+    "pool:create": "hardhat run --no-compile scripts/create-pool.js --network celoSepolia",
+    "pool:add": "hardhat run --no-compile scripts/mint-liquidity.js --network celoSepolia",
+    "pool:remove": "hardhat run --no-compile scripts/remove-liquidity.js --network celoSepolia",
+    "quote": "hardhat run --no-compile scripts/quoter.js --network celoSepolia",
+    "swap": "hardhat run --no-compile scripts/router.js --network celoSepolia"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "This repo is configured for:",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-chai-matchers": "^3.0.0",
+    "@nomicfoundation/hardhat-ethers": "^4.0.13",
+    "@nomicfoundation/hardhat-mocha": "^3.0.21",
+    "@types/node": "^22.19.17",
+    "chai": "^6.2.2",
+    "ethers": "^6.16.0",
+    "hardhat": "^3.9.0",
+    "typescript": "~5.8.0"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^3.4.0",
+    "@uniswap/v3-core": "^1.0.1",
+    "@uniswap/v3-periphery": "^1.3.0",
+    "dotenv": "^17.4.2"
+  },
+  "directories": {
+    "test": "test"
+  }
+}

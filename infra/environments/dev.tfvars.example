@@ -1,0 +1,15 @@
+# NetTribe Dev Environment Configuration Template
+# Copy this file to dev.tfvars and fill in the values:
+#   cp dev.tfvars.example dev.tfvars
+#
+# Values for cognito_user_pool_id and athena_lambda_arn come from
+# Amplify backend deployment outputs (amplify_outputs.json).
+
+aws_region           = "us-east-1"
+environment          = "dev"
+telemetry_bucket     = "nettribe-telemetry-data-dev"
+firehose_stream_name = "nettribe-telemetry-stream-dev"
+athena_database      = "nettribe_carbon_dev"
+athena_workgroup     = "nettribe-workgroup-dev"
+cognito_user_pool_id = ""  # From Amplify: amplify_outputs.json → auth.user_pool_id
+athena_lambda_arn    = ""  # From Amplify: amplify_outputs.json → custom.athena_function_arn

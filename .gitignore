@@ -25,3 +25,19 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Secrets and sensitive files
+.env
+.env.*
+!.env.example
+terraform.tfvars
+*.tfvars
+!*.tfvars.example
+amplify_outputs.json
+*.pem
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

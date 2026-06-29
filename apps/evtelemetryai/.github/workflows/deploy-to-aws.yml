@@ -1,0 +1,54 @@
+name: Build and Deploy to AWS S3 + CloudFront
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    env:
+      VITE_LAMBDA_API_ENDPOINT: ${{ secrets.VITE_LAMBDA_API_ENDPOINT }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build React app
+        run: npm run build
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Deploy React app to S3
+        run: |
+          aws s3 sync dist/ s3://evai/evtelemetryai/ \
+            --delete \
+            --cache-control "max-age=3600" \
+            --exclude ".git*"
+
+      - name: Invalidate CloudFront cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id E3QRQJMK8TW6IV \
+            --paths "/*"
+
+      - name: Deployment Summary
+        run: |
+          echo "✅ Frontend deployed to S3"
+          echo "📍 CloudFront: https://d3mter6ln9bf58.cloudfront.net"
+          echo "🌐 Domain: https://evtelemetryai.yna.co.ke"

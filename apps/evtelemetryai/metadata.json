@@ -1,0 +1,5 @@
+{
+  "name": "EV Telemetry & Carbon AI",
+  "description": "A high-performance simulated telemetry dashboard for an EV motorcycle fleet. It generates realistic GPS, speed, and battery data from 2022-2026 with fleet evolution logic, calculating carbon credits and revenue.",
+  "requestFramePermissions": []
+}

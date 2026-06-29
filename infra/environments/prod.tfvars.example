@@ -1,0 +1,16 @@
+# NetTribe Production Environment Configuration Template
+# Copy this file to prod.tfvars and fill in the values:
+#   cp prod.tfvars.example prod.tfvars
+#
+# ⚠ PRODUCTION: Double-check all values before applying.
+# Values for cognito_user_pool_id and athena_lambda_arn come from
+# Amplify backend deployment outputs (amplify_outputs.json).
+
+aws_region           = "us-east-1"
+environment          = "prod"
+telemetry_bucket     = "nettribe-telemetry-data-prod"
+firehose_stream_name = "nettribe-telemetry-stream-prod"
+athena_database      = "nettribe_carbon_prod"
+athena_workgroup     = "nettribe-workgroup-prod"
+cognito_user_pool_id = ""  # From Amplify: amplify_outputs.json → auth.user_pool_id
+athena_lambda_arn    = ""  # From Amplify: amplify_outputs.json → custom.athena_function_arn

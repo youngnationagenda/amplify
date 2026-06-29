@@ -1,17 +1,30 @@
 {
-  "name": "vite_react_shadcn_ts",
+  "name": "nettribe-monorepo",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "engines": {
     "node": ">=20.0.0"
   },
+  "workspaces": [
+    "apps/nettribexyz",
+    "apps/evtelemetryai"
+  ],
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "build:dev": "vite build --mode development",
+    "prepare": "husky",
+    "dev": "npm run dev --workspace=apps/nettribexyz",
+    "dev:telemetry": "npm run dev --workspace=apps/evtelemetryai",
+    "build": "npm run build --workspace=apps/nettribexyz",
+    "build:telemetry": "npm run build --workspace=apps/evtelemetryai",
+    "build:contracts": "cd apps/nettribeblockchain && pnpm run compile",
+    "build:all": "npm run build && npm run build:telemetry && npm run build:contracts",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "lint:all": "npm run lint --workspaces --if-present && eslint .",
+    "preview": "vite preview",
+    "test": "vitest --run",
+    "test:coverage": "vitest --run --coverage",
+    "test:nettribexyz": "vitest --run --project apps/nettribexyz",
+    "test:telemetry": "vitest --run --project apps/evtelemetryai"
   },
   "dependencies": {
     "@aws-amplify/ui-react": "^6.15.4",
@@ -74,28 +87,38 @@
     "@aws-amplify/backend": "^1.23.0",
     "@aws-amplify/backend-cli": "^1.8.3",
     "@aws-sdk/client-athena": "^3.1075.0",
+    "@aws-sdk/client-firehose": "^3.1075.0",
     "@eslint/js": "^9.32.0",
     "@tailwindcss/typography": "^0.5.16",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.1.0",
+    "@types/aws-lambda": "^8.10.162",
     "@types/node": "^22.16.5",
     "@types/react": "^18.3.23",
     "@types/react-dom": "^18.3.7",
     "@typescript-eslint/eslint-plugin": "^8.62.0",
     "@typescript-eslint/parser": "^8.62.0",
     "@vitejs/plugin-react-swc": "^3.11.0",
+    "@vitest/coverage-v8": "^2.1.8",
     "autoprefixer": "^10.4.21",
     "aws-cdk-lib": "^2.244.0",
+    "aws-sdk-client-mock": "^4.1.0",
+    "aws-sdk-client-mock-jest": "^4.1.0",
     "constructs": "^10.6.0",
     "esbuild": "^0.28.1",
     "eslint": "^9.32.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^15.15.0",
+    "husky": "^9.1.7",
+    "jsdom": "^25.0.1",
     "lovable-tagger": "^1.1.13",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.17",
     "tsx": "^4.22.4",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.62.0",
-    "vite": "^5.4.19"
+    "vite": "^5.4.19",
+    "vitest": "^2.1.8"
   }
 }
