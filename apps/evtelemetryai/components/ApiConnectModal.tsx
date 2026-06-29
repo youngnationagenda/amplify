@@ -25,8 +25,8 @@ console.log("Total Carbon Saved (kg):", history.reduce((acc, d) => acc + d.total
 
   const restCode = `# Production API Endpoints (For Audit Integration)
 
-# Base URL
-https://www.google.com/url?sa=E&q=https%3A%2F%2Fai.studio%2Fapps%2Fdrive%2F1UDB2q2aAQth_CQQuA6P9D9ZixznwLeaa/api.ev-telemetry/v1 
+# Base URL (set via environment variable)
+# VITE_API_ENDPOINT=https://your-api-gateway.execute-api.us-east-1.amazonaws.com/v1
 
 # 1. Ingest Telemetry (IoT Device)
 POST /telemetry/ingest
