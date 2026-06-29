@@ -39,7 +39,7 @@ Content-Type: application/json
 
 # 2. Fetch Fleet Export (Admin)
 GET /fleet/export?start_date=2024-01-01&end_date=2024-01-31&format=csv
-Authorization: Bearer AIzaSyDSW24O6uH_azibc2SfUK5AQpfe-DAunnE`;
+Authorization: Bearer YOUR_API_KEY_HERE`;
 
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
