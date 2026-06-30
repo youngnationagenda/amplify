@@ -24,6 +24,12 @@ export function CarbonMarketplace() {
   const [sellAmount, setSellAmount] = useState("5");
   const [buyToken, setBuyToken] = useState<PayToken>("USDC");
   const [sellToken, setSellToken] = useState<PayToken>("USDC");
+  const { address, isConnected, chain } = useAccount();
+  const { writeContract, isPending, data: txHash } = useWriteContract();
+  const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({ hash: txHash });
+  const { toast } = useToast();
+  const contracts = getContracts(chain?.id);
+
   const currentPrice = 100;
   const priceChange = ((currentPrice - priceHistory[priceHistory.length - 2]) / priceHistory[priceHistory.length - 2] * 100);
   const isUp = priceChange >= 0;
@@ -34,6 +40,94 @@ export function CarbonMarketplace() {
   const tokenPrices: Record<PayToken, number> = { USDC: 1, USDm: 1, CELO: 0.5, NTC: 0.1 };
   const buyTokenAmount = (Number(buyAmount) * currentPrice) / tokenPrices[buyToken];
   const sellTokenAmount = (Number(sellAmount) * currentPrice) / tokenPrices[sellToken];
+
+  const handleBuyCredits = async () => {
+    if (!address || !chain) {
+      toast({ title: "Connect Wallet", description: "Please connect your wallet to buy credits.", variant: "destructive" });
+      return;
+    }
+
+    const decimals = TOKEN_DECIMALS[buyToken];
+    const parsedAmount = parseUnits(buyTokenAmount.toFixed(decimals > 6 ? 8 : 2), decimals);
+    const tokenAddress = contracts.tokens[buyToken as keyof typeof contracts.tokens];
+
+    if (buyToken === "CELO") {
+      toast({ title: "Buy via Swap", description: "Use the Swap panel to acquire NTC carbon credits with CELO." });
+      return;
+    }
+
+    try {
+      writeContract({
+        address: tokenAddress,
+        abi: ERC20_ABI,
+        functionName: "approve",
+        args: [TREASURY_ADDRESS as `0x${string}`, parsedAmount],
+        chain,
+        account: address,
+      });
+
+      toast({
+        title: "Transaction Submitted",
+        description: `Buying ${buyAmount} carbon credits with ${buyTokenAmount.toFixed(2)} ${buyToken}. Confirm in your wallet.`,
+      });
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Transaction failed";
+      toast({ title: "Transaction Failed", description: message, variant: "destructive" });
+    }
+  };
+
+  const handleSellCredits = async () => {
+    if (!address || !chain) {
+      toast({ title: "Connect Wallet", description: "Please connect your wallet to sell credits.", variant: "destructive" });
+      return;
+    }
+
+    const ntcAmount = Number(sellAmount) * 10;
+    const parsedNTC = parseUnits(ntcAmount.toFixed(8), 18);
+
+    if (contracts.swapRouter === "0x0000000000000000000000000000000000000000") {
+      toast({ title: "Testnet Mode", description: `Simulated: Sell ${sellAmount} credits → ${sellTokenAmount.toFixed(2)} ${sellToken}. Deploy SwapRouter for real execution.` });
+      return;
+    }
+
+    try {
+      writeContract({
+        address: contracts.tokens.NTC,
+        abi: ERC20_ABI,
+        functionName: "approve",
+        args: [contracts.swapRouter, parsedNTC],
+        chain,
+        account: address,
+      });
+
+      const tokenOutAddress = contracts.tokens[sellToken as keyof typeof contracts.tokens];
+      writeContract({
+        address: contracts.swapRouter,
+        abi: UBESWAP_ROUTER_ABI,
+        functionName: "exactInputSingle",
+        args: [{
+          tokenIn: contracts.tokens.NTC,
+          tokenOut: tokenOutAddress,
+          fee: 3000,
+          recipient: address,
+          deadline: BigInt(Math.floor(Date.now() / 1000) + 600),
+          amountIn: parsedNTC,
+          amountOutMinimum: 0n,
+          sqrtPriceLimitX96: 0n,
+        }],
+        chain,
+        account: address,
+      });
+
+      toast({
+        title: "Sell Submitted",
+        description: `Selling ${sellAmount} credits for ~${sellTokenAmount.toFixed(2)} ${sellToken}. Confirm in your wallet.`,
+      });
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Transaction failed";
+      toast({ title: "Transaction Failed", description: message, variant: "destructive" });
+    }
+  };
 
   const TokenSelector = ({ value, onChange }: { value: PayToken; onChange: (v: PayToken) => void }) => (
     <Select value={value} onValueChange={(v) => onChange(v as PayToken)}>
