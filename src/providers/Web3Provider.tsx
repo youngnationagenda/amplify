@@ -15,7 +15,13 @@ createWeb3Modal({
   themeVariables: {
     '--w3m-accent': '#22c55e',
     '--w3m-border-radius-master': '0.75rem',
-  }
+  },
+  featuredWalletIds: [
+    'c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96', // MetaMask
+  ],
+  includeWalletIds: [
+    'c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96', // MetaMask
+  ],
 })
 
 interface Web3ProviderProps {
