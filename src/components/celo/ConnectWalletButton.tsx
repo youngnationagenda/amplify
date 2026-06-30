@@ -1,5 +1,6 @@
 import { useWeb3Modal } from "@web3modal/wagmi/react";
-import { useAccount, useDisconnect } from "wagmi";
+import { useAccount, useDisconnect, useConnect } from "wagmi";
+import { injected } from "wagmi/connectors";
 import { Button } from "@/components/ui/button";
 import { Wallet, LogOut, ChevronDown } from "lucide-react";
 import {
@@ -13,6 +14,11 @@ export function ConnectWalletButton() {
   const { open } = useWeb3Modal();
   const { address, isConnected } = useAccount();
   const { disconnect } = useDisconnect();
+  const { connect } = useConnect();
+
+  const connectMetaMask = () => {
+    connect({ connector: injected({ target: 'metaMask' }) });
+  };
 
   if (isConnected && address) {
     return (
@@ -42,12 +48,26 @@ export function ConnectWalletButton() {
   }
 
   return (
-    <Button
-      onClick={() => open()}
-      className="bg-gradient-to-r from-[hsl(var(--celo-green))] to-[hsl(var(--celo-gold))] text-background hover:opacity-90"
-    >
-      <Wallet className="w-4 h-4 mr-2" />
-      Connect Wallet
-    </Button>
+    <div className="flex items-center gap-2">
+      <Button
+        onClick={() => open()}
+        className="bg-gradient-to-r from-[hsl(var(--celo-green))] to-[hsl(var(--celo-gold))] text-background hover:opacity-90"
+      >
+        <Wallet className="w-4 h-4 mr-2" />
+        Connect Wallet
+      </Button>
+      <Button
+        onClick={connectMetaMask}
+        variant="outline"
+        className="border-orange-500/50 text-foreground hover:bg-orange-500/10"
+      >
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg"
+          alt="MetaMask"
+          className="w-4 h-4 mr-2"
+        />
+        MetaMask
+      </Button>
+    </div>
   );
 }
