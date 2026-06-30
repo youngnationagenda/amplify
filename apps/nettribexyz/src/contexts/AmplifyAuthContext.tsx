@@ -74,7 +74,30 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       };
       
       setUser(authUser);
-      await fetchUserRole(currentUser.userId);
+      
+      // Try DynamoDB first, then fallback to Cognito attribute
+      let roleFound = false;
+      try {
+        const { data } = await client.models.UserRole.list({
+          filter: { userId: { eq: currentUser.userId } },
+        });
+        if (data && data.length > 0 && data[0].role) {
+          setUserRole(data[0].role.toLowerCase() as AppRole);
+          roleFound = true;
+        }
+      } catch (dbErr) {
+        console.warn('DynamoDB UserRole query failed:', dbErr);
+      }
+
+      if (!roleFound) {
+        // Use Cognito custom:role attribute (set during sign-up)
+        const cognitoRole = attributes['custom:role'];
+        if (cognitoRole) {
+          setUserRole(cognitoRole.toLowerCase() as AppRole);
+        } else {
+          setUserRole('rider');
+        }
+      }
     } catch {
       setUser(null);
       setUserRole(null);
