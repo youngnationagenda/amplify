@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 
-type AppRole = "rider" | "investor" | "admin" | "offsetter";
+type AppRole = "rider" | "investor" | "admin" | "offsetter" | "user";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
