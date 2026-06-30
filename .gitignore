@@ -34,6 +34,7 @@ terraform.tfvars
 *.tfvars
 !*.tfvars.example
 amplify_outputs.json
+!apps/nettribexyz/amplify_outputs.json
 *.pem
 
 # Playwright

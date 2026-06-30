@@ -36,11 +36,31 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const fetchUserRole = async (userId: string) => {
     try {
+      // First try DynamoDB
       const { data } = await client.models.UserRole.list({
         filter: { userId: { eq: userId } },
       });
       if (data && data.length > 0) {
         setUserRole(data[0].role?.toLowerCase() as AppRole);
+        return;
+      }
+
+      // Fallback: read from Cognito custom:role attribute
+      const attributes = await fetchUserAttributes();
+      const cognitoRole = attributes['custom:role'];
+      if (cognitoRole) {
+        const role = cognitoRole.toLowerCase() as AppRole;
+        setUserRole(role);
+
+        // Create the DynamoDB record so future lookups work
+        try {
+          await client.models.UserRole.create({
+            userId,
+            role: role.toUpperCase() as any,
+          });
+        } catch (createErr) {
+          console.warn('Failed to create UserRole record:', createErr);
+        }
       }
     } catch (err) {
       console.error('Failed to fetch user role:', err);
