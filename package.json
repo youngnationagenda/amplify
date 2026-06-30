@@ -24,7 +24,8 @@
     "test": "vitest --run",
     "test:coverage": "vitest --run --coverage",
     "test:nettribexyz": "vitest --run --project apps/nettribexyz",
-    "test:telemetry": "vitest --run --project apps/evtelemetryai"
+    "test:telemetry": "vitest --run --project apps/evtelemetryai",
+    "seed:demo-users": "tsx scripts/seed-demo-users.ts"
   },
   "dependencies": {
     "@aws-amplify/ui-react": "^6.15.4",
@@ -87,6 +88,7 @@
     "@aws-amplify/backend": "^1.23.0",
     "@aws-amplify/backend-cli": "^1.8.3",
     "@aws-sdk/client-athena": "^3.1075.0",
+    "@aws-sdk/client-cognito-identity-provider": "^3.1076.0",
     "@aws-sdk/client-firehose": "^3.1075.0",
     "@eslint/js": "^9.32.0",
     "@tailwindcss/typography": "^0.5.16",
