@@ -1,10 +1,14 @@
 import { useState } from "react";
-import { Store, TrendingUp, Leaf, ArrowUpRight, ArrowDownRight, ShoppingCart } from "lucide-react";
+import { useAccount, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
+import { parseUnits } from "viem";
+import { Store, TrendingUp, Leaf, ArrowUpRight, ArrowDownRight, ShoppingCart, Loader2, CheckCircle, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { TOKEN_LABELS } from "@/config/defi";
+import { TOKEN_LABELS, TOKEN_DECIMALS, ERC20_ABI, UBESWAP_ROUTER_ABI, getContracts, TREASURY_ADDRESS } from "@/config/defi";
+import { ConnectWalletButton } from "@/components/celo/ConnectWalletButton";
+import { useToast } from "@/hooks/use-toast";
 
 const priceHistory = [85, 88, 92, 87, 95, 98, 100, 96, 102, 105, 100, 108];
 const holdings = [
