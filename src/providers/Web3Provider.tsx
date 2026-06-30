@@ -19,6 +19,23 @@ createWeb3Modal({
   featuredWalletIds: [
     'c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96', // MetaMask
   ],
+  customWallets: [
+    {
+      id: 'metamask',
+      name: 'MetaMask',
+      homepage: 'https://metamask.io',
+      image_url: 'https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg',
+      mobile_link: 'https://metamask.app.link',
+      desktop_link: 'https://metamask.io/download',
+      webapp_link: 'https://portfolio.metamask.io',
+      injected: [
+        {
+          namespace: 'eip155',
+          injected_id: 'isMetaMask',
+        },
+      ],
+    },
+  ],
 })
 
 interface Web3ProviderProps {
