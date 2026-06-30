@@ -2,6 +2,7 @@ import { defaultWagmiConfig } from '@web3modal/wagmi/react/config'
 import { celo } from 'viem/chains'
 import { defineChain } from 'viem'
 import { http } from 'wagmi'
+import { injected } from 'wagmi/connectors'
 
 // Define Celo Sepolia Testnet (not yet in viem/chains)
 export const celoSepolia = defineChain({
