@@ -6,11 +6,13 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { Web3Provider } from "@/providers/Web3Provider";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
-import Auth from "./pages/Auth";
+import PortalSelect from "./pages/PortalSelect";
+import PortalAuth from "./pages/PortalAuth";
 import RiderDashboard from "./pages/RiderDashboard";
 import InvestorDashboard from "./pages/InvestorDashboard";
 import InvestorPortal from "./pages/InvestorPortal";
 import OffseterDashboard from "./pages/OffseterDashboard";
+import UserDashboard from "./pages/UserDashboard";
 import NotFound from "./pages/NotFound";
 
 const App = () => (
@@ -22,11 +24,16 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/auth" element={<Auth />} />
+            {/* Portal selection — no default portal */}
+            <Route path="/auth" element={<PortalSelect />} />
+            {/* Portal-specific login pages */}
+            <Route path="/auth/:portal" element={<PortalAuth />} />
+            {/* Protected dashboards */}
             <Route path="/rider-dashboard" element={<ProtectedRoute allowedRoles={["rider", "admin"]}><RiderDashboard /></ProtectedRoute>} />
             <Route path="/investor-dashboard" element={<ProtectedRoute allowedRoles={["investor", "admin"]}><InvestorDashboard /></ProtectedRoute>} />
             <Route path="/investor-portal/*" element={<ProtectedRoute allowedRoles={["investor", "admin"]}><InvestorPortal /></ProtectedRoute>} />
             <Route path="/offsetter-dashboard" element={<ProtectedRoute allowedRoles={["offsetter", "admin"]}><OffseterDashboard /></ProtectedRoute>} />
+            <Route path="/user-dashboard" element={<ProtectedRoute allowedRoles={["user", "admin"]}><UserDashboard /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
