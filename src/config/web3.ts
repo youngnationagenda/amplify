@@ -48,6 +48,9 @@ export const wagmiConfig = defaultWagmiConfig({
     [celo.id]: http(),
     [celoSepolia.id]: http(),
   },
+  connectors: [
+    injected({ target: 'metaMask' }),
+  ],
 })
 
 // Celo token addresses
