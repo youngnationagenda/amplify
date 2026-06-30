@@ -233,10 +233,24 @@ export function CarbonMarketplace() {
                     <span className="font-medium">{buyTokenAmount.toFixed(2)} {buyToken}</span>
                   </div>
                 </div>
-                <Button className="w-full bg-gradient-to-r from-success to-primary text-primary-foreground">
-                  <ShoppingCart className="w-4 h-4 mr-2" />
-                  Buy {buyAmount} Credits with {buyToken}
+                <Button className="w-full bg-gradient-to-r from-success to-primary text-primary-foreground" onClick={handleBuyCredits} disabled={isPending || isConfirming || !buyAmount}>
+                  {isPending || isConfirming ? (
+                    <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> {isConfirming ? "Confirming..." : "Processing..."}</>
+                  ) : !isConnected ? (
+                    <><ShoppingCart className="w-4 h-4 mr-2" /> Connect Wallet to Buy</>
+                  ) : (
+                    <><ShoppingCart className="w-4 h-4 mr-2" /> Buy {buyAmount} Credits with {buyToken}</>
+                  )}
                 </Button>
+                {isConfirmed && txHash && (
+                  <div className="flex items-center gap-2 p-2 rounded bg-success/10 text-success text-xs mt-2">
+                    <CheckCircle className="w-3 h-3" />
+                    <span>Confirmed!</span>
+                    <a href={`${contracts.blockExplorer}/tx/${txHash}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 underline">
+                      View <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </div>
+                )}
               </div>
               <div className="p-4 bg-success/5 rounded-xl border border-success/20">
                 <p className="text-sm font-medium mb-2">Why buy carbon credits?</p>
