@@ -151,6 +151,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const signIn = async (email: string, password: string): Promise<{ error: Error | null }> => {
     try {
       await amplifySignIn({ username: email, password });
+      // Explicitly load user after sign-in in case Hub event is delayed
+      await loadUser();
       return { error: null };
     } catch (err) {
       return { error: err as Error };
