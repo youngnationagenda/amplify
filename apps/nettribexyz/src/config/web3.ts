@@ -48,6 +48,10 @@ export const wagmiConfig = defaultWagmiConfig({
     [celo.id]: http(),
     [celoSepolia.id]: http(),
   },
+  connectors: [
+    injected({ shimDisconnect: true }),
+    walletConnect({ projectId: WALLETCONNECT_PROJECT_ID, metadata, showQrModal: false }),
+  ],
 })
 
 // Celo token addresses
