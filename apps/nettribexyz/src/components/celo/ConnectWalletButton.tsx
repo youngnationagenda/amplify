@@ -1,5 +1,6 @@
 import { useWeb3Modal } from "@web3modal/wagmi/react";
-import { useAccount, useDisconnect } from "wagmi";
+import { useAccount, useDisconnect, useConnect } from "wagmi";
+import { injected } from "wagmi/connectors";
 import { Button } from "@/components/ui/button";
 import { Wallet, LogOut, ChevronDown } from "lucide-react";
 import {
@@ -8,6 +9,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { useState } from "react";
 
 function MetaMaskIcon({ className }: { className?: string }) {
   return (
@@ -37,6 +46,18 @@ export function ConnectWalletButton() {
   const { open } = useWeb3Modal();
   const { address, isConnected } = useAccount();
   const { disconnect } = useDisconnect();
+  const { connect } = useConnect();
+  const [showDialog, setShowDialog] = useState(false);
+
+  const connectMetaMask = () => {
+    setShowDialog(false);
+    connect({ connector: injected({ target: 'metaMask' }) });
+  };
+
+  const openWalletConnect = () => {
+    setShowDialog(false);
+    open();
+  };
 
   if (isConnected && address) {
     return (
@@ -66,12 +87,75 @@ export function ConnectWalletButton() {
   }
 
   return (
-    <Button
-      onClick={() => open()}
-      className="bg-gradient-to-r from-[hsl(var(--celo-green))] to-[hsl(var(--celo-gold))] text-background hover:opacity-90"
-    >
-      <MetaMaskIcon className="w-5 h-5 mr-2" />
-      Connect Wallet
-    </Button>
+    <>
+      <Button
+        onClick={() => setShowDialog(true)}
+        className="bg-gradient-to-r from-[hsl(var(--celo-green))] to-[hsl(var(--celo-gold))] text-background hover:opacity-90"
+      >
+        <Wallet className="w-4 h-4 mr-2" />
+        Connect Wallet
+      </Button>
+
+      <Dialog open={showDialog} onOpenChange={setShowDialog}>
+        <DialogContent className="sm:max-w-md bg-[#1a1a2e] border-gray-700 text-white p-6">
+          <DialogHeader className="text-center">
+            <DialogTitle className="text-center text-xl font-bold text-white">
+              Connect Wallet
+            </DialogTitle>
+            <DialogDescription className="text-center text-gray-400">
+              Choose your preferred wallet to connect
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="flex flex-col gap-3 mt-4">
+            {/* WalletConnect option */}
+            <button
+              onClick={openWalletConnect}
+              className="flex items-center gap-3 w-full p-4 rounded-xl bg-[#232340] hover:bg-[#2a2a4a] transition-colors border border-gray-700"
+            >
+              <div className="w-10 h-10 rounded-full bg-[#3b99fc] flex items-center justify-center shrink-0">
+                <svg width="20" height="12" viewBox="0 0 400 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M81.9 76.3c65.6-64.2 171.9-64.2 237.5 0l7.9 7.7c3.3 3.2 3.3 8.4 0 11.6l-27 26.4c-1.6 1.6-4.3 1.6-5.9 0l-10.9-10.6c-45.8-44.8-120-44.8-165.8 0l-11.6 11.4c-1.6 1.6-4.3 1.6-5.9 0l-27-26.4c-3.3-3.2-3.3-8.4 0-11.6l8.7-8.5zm293.4 54.7l24 23.5c3.3 3.2 3.3 8.4 0 11.6L291.1 271.9c-3.3 3.2-8.6 3.2-11.8 0l-76.8-75.2c-.8-.8-2.1-.8-3 0l-76.8 75.2c-3.3 3.2-8.6 3.2-11.8 0L2.7 166.1c-3.3-3.2-3.3-8.4 0-11.6l24-23.5c3.3-3.2 8.6-3.2 11.8 0l76.8 75.2c.8.8 2.1.8 3 0l76.8-75.2c3.3-3.2 8.6-3.2 11.8 0l76.8 75.2c.8.8 2.1.8 3 0l76.8-75.2c3.3-3.2 8.6-3.2 11.9 0z" fill="white"/>
+                </svg>
+              </div>
+              <span className="text-white font-medium text-base">WalletConnect</span>
+              <span className="ml-auto text-xs font-semibold text-[#22c55e] bg-[#22c55e]/10 px-2 py-1 rounded">
+                QR CODE
+              </span>
+            </button>
+
+            {/* MetaMask option */}
+            <button
+              onClick={connectMetaMask}
+              className="flex items-center gap-3 w-full p-4 rounded-xl bg-[#232340] hover:bg-[#2a2a4a] transition-colors border border-orange-500/30"
+            >
+              <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shrink-0 p-1.5">
+                <MetaMaskIcon className="w-full h-full" />
+              </div>
+              <span className="text-white font-medium text-base">MetaMask</span>
+              <span className="ml-auto text-xs font-semibold text-orange-400 bg-orange-400/10 px-2 py-1 rounded">
+                EXTENSION
+              </span>
+            </button>
+
+            {/* All Wallets option */}
+            <button
+              onClick={openWalletConnect}
+              className="flex items-center gap-3 w-full p-4 rounded-xl bg-[#232340] hover:bg-[#2a2a4a] transition-colors border border-gray-700"
+            >
+              <div className="w-10 h-10 rounded-full bg-[#232340] border border-gray-600 flex items-center justify-center shrink-0">
+                <div className="grid grid-cols-2 gap-0.5">
+                  <div className="w-2 h-2 rounded-full bg-[#22c55e]" />
+                  <div className="w-2 h-2 rounded-full bg-[#22c55e]" />
+                  <div className="w-2 h-2 rounded-full bg-[#22c55e]" />
+                  <div className="w-2 h-2 rounded-full bg-[#22c55e]" />
+                </div>
+              </div>
+              <span className="text-white font-medium text-base">All Wallets</span>
+            </button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
