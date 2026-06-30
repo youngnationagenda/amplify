@@ -92,7 +92,7 @@ const OffseterDashboard = () => {
 
   useEffect(() => {
     if (!loading && !user) {
-      navigate("/auth?portal=offsetter");
+      navigate("/auth/offsetter");
     }
   }, [user, loading, navigate]);
 
