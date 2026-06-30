@@ -10,7 +10,7 @@ import {
 import { Hub } from "aws-amplify/utils";
 import { client } from "@/integrations/amplify/client";
 
-type AppRole = 'rider' | 'investor' | 'admin' | 'offsetter';
+type AppRole = 'rider' | 'investor' | 'admin' | 'offsetter' | 'user';
 
 interface AuthUser {
   id: string;
