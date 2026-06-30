@@ -70,7 +70,7 @@ export function ConnectWalletButton() {
       onClick={() => open()}
       className="bg-gradient-to-r from-[hsl(var(--celo-green))] to-[hsl(var(--celo-gold))] text-background hover:opacity-90"
     >
-      <Wallet className="w-4 h-4 mr-2" />
+      <MetaMaskIcon className="w-5 h-5 mr-2" />
       Connect Wallet
     </Button>
   );
