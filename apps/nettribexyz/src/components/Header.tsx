@@ -98,19 +98,19 @@ const Header = () => {
                     Login
                   </Button>
                 </a>
-                <a href="/auth?portal=rider">
+                <a href="/auth/rider">
                   <Button variant="outline" className="w-full">
                     <Zap className="w-4 h-4" />
                     Rider Dashboard
                   </Button>
                 </a>
-                <a href="/auth?portal=offsetter">
+                <a href="/auth/offsetter">
                   <Button variant="outline" className="w-full border-warning/50 text-warning">
                     <Flame className="w-4 h-4" />
                     Offsetter Dashboard
                   </Button>
                 </a>
-                <a href="/auth?portal=investor-portal">
+                <a href="/auth/investor">
                   <Button variant="glow" className="w-full">
                     <TrendingUp className="w-4 h-4" />
                     Investor Portal
