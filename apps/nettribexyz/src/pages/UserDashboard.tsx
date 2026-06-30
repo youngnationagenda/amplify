@@ -1,11 +1,31 @@
 import { useNavigate } from "react-router-dom";
+import { useAccount, useReadContract } from "wagmi";
+import { formatUnits } from "viem";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ShoppingCart, LogOut, TrendingUp, ArrowUpDown, Wallet } from "lucide-react";
+import { ConnectWalletButton } from "@/components/celo/ConnectWalletButton";
+import WalletPanel from "@/components/wallet/WalletPanel";
+import SwapPanel from "@/components/wallet/SwapPanel";
+import { CarbonMarketplace } from "@/components/investor/CarbonMarketplace";
+import { getContracts, ERC20_ABI } from "@/config/defi";
 
 const UserDashboard = () => {
-  const { user, signOut, userRole } = useAuth();
+  const { user, signOut } = useAuth();
   const navigate = useNavigate();
+  const { address, isConnected, chain } = useAccount();
+  const contracts = getContracts(chain?.id);
+
+  // Read NTC balance for portfolio value
+  const { data: ntcBalanceRaw } = useReadContract({
+    address: contracts.tokens.NTC,
+    abi: ERC20_ABI,
+    functionName: "balanceOf",
+    args: address ? [address] : undefined,
+  });
+  const ntcBalance = ntcBalanceRaw ? Number(formatUnits(ntcBalanceRaw as bigint, 18)) : 0;
+  const portfolioValue = ntcBalance * 0.1; // NTC price ~$0.10
 
   const handleSignOut = async () => {
     await signOut();
@@ -27,7 +47,8 @@ const UserDashboard = () => {
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <span className="text-sm text-muted-foreground">
+            <ConnectWalletButton />
+            <span className="text-sm text-muted-foreground hidden md:block">
               {user?.fullName || user?.email}
             </span>
             <Button variant="ghost" size="sm" onClick={handleSignOut}>
@@ -58,8 +79,8 @@ const UserDashboard = () => {
               </div>
               <span className="text-sm text-muted-foreground">Portfolio Value</span>
             </div>
-            <div className="text-2xl font-bold">$0.00</div>
-            <div className="text-xs text-muted-foreground mt-1">0 credits held</div>
+            <div className="text-2xl font-bold">${portfolioValue.toFixed(2)}</div>
+            <div className="text-xs text-muted-foreground mt-1">{ntcBalance.toFixed(2)} NTC held</div>
           </div>
 
           <div className="p-6 rounded-2xl border bg-card">
@@ -67,10 +88,12 @@ const UserDashboard = () => {
               <div className="w-10 h-10 rounded-lg bg-green-500/10 flex items-center justify-center">
                 <ArrowUpDown className="w-5 h-5 text-green-500" />
               </div>
-              <span className="text-sm text-muted-foreground">Trades Today</span>
+              <span className="text-sm text-muted-foreground">Network</span>
             </div>
-            <div className="text-2xl font-bold">0</div>
-            <div className="text-xs text-muted-foreground mt-1">No trades yet</div>
+            <div className="text-2xl font-bold">{chain?.name || "Not Connected"}</div>
+            <div className="text-xs text-muted-foreground mt-1">
+              {isConnected ? `${address?.slice(0, 6)}...${address?.slice(-4)}` : "Connect wallet to trade"}
+            </div>
           </div>
 
           <div className="p-6 rounded-2xl border bg-card">
@@ -78,21 +101,35 @@ const UserDashboard = () => {
               <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center">
                 <TrendingUp className="w-5 h-5 text-blue-500" />
               </div>
-              <span className="text-sm text-muted-foreground">Market Price</span>
+              <span className="text-sm text-muted-foreground">NTC Market Price</span>
             </div>
-            <div className="text-2xl font-bold">$8.50</div>
-            <div className="text-xs text-green-500 mt-1">+2.4% today</div>
+            <div className="text-2xl font-bold">$0.10</div>
+            <div className="text-xs text-green-500 mt-1">NTC / USDC pool</div>
           </div>
         </div>
 
-        {/* Marketplace placeholder */}
-        <div className="p-12 rounded-2xl border-2 border-dashed border-muted-foreground/20 text-center">
-          <ShoppingCart className="w-12 h-12 text-muted-foreground/40 mx-auto mb-4" />
-          <h3 className="font-semibold text-lg mb-2">Marketplace Coming Soon</h3>
-          <p className="text-muted-foreground max-w-md mx-auto">
-            The carbon credit trading marketplace is under development. You'll be able to buy, sell, and trade verified carbon credits here.
-          </p>
-        </div>
+        {/* Main Tabs */}
+        <Tabs defaultValue="marketplace" className="space-y-6">
+          <TabsList className="grid grid-cols-3 w-full max-w-md">
+            <TabsTrigger value="marketplace">Marketplace</TabsTrigger>
+            <TabsTrigger value="swap">Swap</TabsTrigger>
+            <TabsTrigger value="wallet">Wallet</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="marketplace">
+            <CarbonMarketplace />
+          </TabsContent>
+
+          <TabsContent value="swap">
+            <div className="max-w-lg">
+              <SwapPanel />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="wallet">
+            <WalletPanel />
+          </TabsContent>
+        </Tabs>
       </main>
     </div>
   );
