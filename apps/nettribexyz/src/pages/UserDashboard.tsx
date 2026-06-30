@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import { ShoppingCart, Leaf, LogOut, TrendingUp, ArrowUpDown, Wallet } from "lucide-react";
+import { ShoppingCart, LogOut, TrendingUp, ArrowUpDown, Wallet } from "lucide-react";
 
 const UserDashboard = () => {
   const { user, signOut, userRole } = useAuth();
