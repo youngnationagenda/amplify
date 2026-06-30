@@ -280,9 +280,20 @@ export function CarbonMarketplace() {
                     <span>${(Number(sellAmount) * currentPrice).toLocaleString()}</span>
                   </div>
                 </div>
-                <Button variant="outline" className="w-full border-success text-success hover:bg-success/10">
-                  Sell {sellAmount} Credits → {sellToken}
+                <Button variant="outline" className="w-full border-success text-success hover:bg-success/10" onClick={handleSellCredits} disabled={isPending || isConfirming || !sellAmount}>
+                  {isPending || isConfirming ? (
+                    <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> {isConfirming ? "Confirming..." : "Processing..."}</>
+                  ) : !isConnected ? (
+                    <>Connect Wallet to Sell</>
+                  ) : (
+                    <>Sell {sellAmount} Credits → {sellToken}</>
+                  )}
                 </Button>
+                {!isConnected && (
+                  <div className="mt-3">
+                    <ConnectWalletButton />
+                  </div>
+                )}
               </div>
               <div className="p-4 bg-background/50 rounded-xl border border-border/50">
                 <p className="text-sm font-medium mb-2">Available to sell</p>
