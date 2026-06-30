@@ -67,37 +67,36 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const currentUser = await getCurrentUser();
       const attributes = await fetchUserAttributes();
       
-      const authUser: AuthUser = {
-        id: currentUser.userId,
-        email: attributes.email || '',
-        fullName: attributes.name || attributes['custom:full_name'] || '',
-      };
-      
-      setUser(authUser);
-      
-      // Try DynamoDB first, then fallback to Cognito attribute
-      let roleFound = false;
+      // Resolve role FIRST before setting user state
+      let resolvedRole: AppRole = 'rider';
       try {
         const { data } = await client.models.UserRole.list({
           filter: { userId: { eq: currentUser.userId } },
         });
         if (data && data.length > 0 && data[0].role) {
-          setUserRole(data[0].role.toLowerCase() as AppRole);
-          roleFound = true;
+          resolvedRole = data[0].role.toLowerCase() as AppRole;
+        } else {
+          // Fallback to Cognito custom:role attribute
+          const cognitoRole = attributes['custom:role'];
+          if (cognitoRole) {
+            resolvedRole = cognitoRole.toLowerCase() as AppRole;
+          }
         }
       } catch (dbErr) {
-        console.warn('DynamoDB UserRole query failed:', dbErr);
-      }
-
-      if (!roleFound) {
-        // Use Cognito custom:role attribute (set during sign-up)
+        console.warn('DynamoDB UserRole query failed, using Cognito attribute:', dbErr);
         const cognitoRole = attributes['custom:role'];
         if (cognitoRole) {
-          setUserRole(cognitoRole.toLowerCase() as AppRole);
-        } else {
-          setUserRole('rider');
+          resolvedRole = cognitoRole.toLowerCase() as AppRole;
         }
       }
+
+      // Set role first, then user — so the redirect useEffect sees both
+      setUserRole(resolvedRole);
+      setUser({
+        id: currentUser.userId,
+        email: attributes.email || '',
+        fullName: attributes.name || attributes['custom:full_name'] || '',
+      });
     } catch {
       setUser(null);
       setUserRole(null);
