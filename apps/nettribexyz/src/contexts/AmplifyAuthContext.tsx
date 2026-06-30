@@ -51,19 +51,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (cognitoRole) {
         const role = cognitoRole.toLowerCase() as AppRole;
         setUserRole(role);
-
-        // Create the DynamoDB record so future lookups work
-        try {
-          await client.models.UserRole.create({
-            userId,
-            role: role.toUpperCase() as any,
-          });
-        } catch (createErr) {
-          console.warn('Failed to create UserRole record:', createErr);
-        }
+      } else {
+        // Default to rider if no role found anywhere
+        setUserRole('rider');
       }
     } catch (err) {
       console.error('Failed to fetch user role:', err);
+      // Default to rider on error so user isn't stuck
+      setUserRole('rider');
     }
   };
 
