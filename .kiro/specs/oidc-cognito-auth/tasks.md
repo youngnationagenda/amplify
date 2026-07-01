@@ -26,7 +26,7 @@ Replace the existing Amplify SDK authentication calls with a standards-based OID
     - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 8.1, 8.2_
 
 - [ ] 3. Create OidcAuthContext with role resolution
-  - [-] 3.1 Create `src/contexts/OidcAuthContext.tsx` with the custom auth context
+  - [x] 3.1 Create `src/contexts/OidcAuthContext.tsx` with the custom auth context
     - Define `AuthUser` interface with `id` (from `sub`), `email`, and optional `fullName` (from `name`)
     - Define `AppRole` type as `'rider' | 'investor' | 'admin' | 'offsetter'`
     - Define `AuthContextType` interface exposing `user`, `loading`, `userRole`, `signIn`, `signOut`, and `error`
@@ -41,14 +41,14 @@ Replace the existing Amplify SDK authentication calls with a standards-based OID
     - Implement 10-second initialization timeout that resolves to unauthenticated state
     - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 4.1, 4.2, 4.3, 4.4, 4.5, 7.1, 7.2, 7.3, 7.4, 8.3, 8.5_
 
-  - [~] 3.2 Update `src/contexts/AuthContext.tsx` to re-export from `OidcAuthContext`
+  - [-] 3.2 Update `src/contexts/AuthContext.tsx` to re-export from `OidcAuthContext`
     - Change the re-export to point to `OidcAuthContext` instead of `AmplifyAuthContext`
     - Export `OidcAuthProvider as AuthProvider` and `useAuth`
     - This maintains backward compatibility for all existing consumers
     - _Requirements: 2.1, 3.1_
 
 - [ ] 4. Update main.tsx to integrate the OIDC AuthProvider
-  - [~] 4.1 Modify `src/main.tsx` to wrap the app with `AuthProvider` from `react-oidc-context`
+  - [-] 4.1 Modify `src/main.tsx` to wrap the app with `AuthProvider` from `react-oidc-context`
     - Import `AuthProvider` from `react-oidc-context` and `oidcConfig` from `./integrations/oidc/config`
     - Import `OidcAuthProvider` from `./contexts/OidcAuthContext`
     - Keep `configureAmplify()` call executing before render
