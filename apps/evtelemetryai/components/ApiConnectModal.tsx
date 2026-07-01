@@ -71,14 +71,14 @@ Authorization: Bearer YOUR_API_KEY_HERE`;
         <div className="flex border-b border-slate-700 bg-slate-800/50">
             <button 
                 onClick={() => setActiveTab('console')}
-                className={`flex-1 py-3 text-sm font-medium flex items-center justify-center gap-2 transition-colors ${activeTab === 'console' ? 'text-blue-400 border-b-2 border-blue-400 bg-slate-800' : 'text-slate-400 hover:text-slate-200'}`}
+                className={`flex-1 py-3 text-sm font-medium flex items-center justify-center gap-2 transition-colors ${activeTab === 'console' ? 'text-blue-400 border-b-2 border-blue-400 bg-slate-800' : 'text-slate-400 hover:text-slate-300'}`}
             >
                 <Terminal size={16} />
                 Direct Memory Access (JS)
             </button>
             <button 
                 onClick={() => setActiveTab('rest')}
-                className={`flex-1 py-3 text-sm font-medium flex items-center justify-center gap-2 transition-colors ${activeTab === 'rest' ? 'text-brand-green border-b-2 border-brand-green bg-slate-800' : 'text-slate-400 hover:text-slate-200'}`}
+                className={`flex-1 py-3 text-sm font-medium flex items-center justify-center gap-2 transition-colors ${activeTab === 'rest' ? 'text-emerald-400 border-b-2 border-emerald-400 bg-slate-800' : 'text-slate-400 hover:text-slate-300'}`}
             >
                 <Globe size={16} />
                 REST API (Production)
