@@ -1,34 +1,49 @@
-name: Build Validation
+name: Amplify CI/CD
 
 on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
+      - dev
 
 jobs:
-  build:
+  amplify-deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
-          cache: 'npm'
+          node-version: 24
 
-      - name: Install dependencies
-        run: npm install
+      - name: Install dependencies (nettribexyz backend)
+        working-directory: apps/nettribexyz
+        run: |
+          npm ci --cache .npm --prefer-offline --legacy-peer-deps
+          npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
+        env:
+          AWS_BRANCH: main
+          AWS_APP_ID: ${{ secrets.AWS_APP_ID }}
 
-      - name: Run tests
-        run: npm run test --workspace=apps/nettribexyz
+      - name: Build nettribexyz frontend
+        working-directory: apps/nettribexyz
+        run: |
+          npm ci --cache .npm --prefer-offline --legacy-peer-deps
+          npm run build
 
-      - name: Generate amplify_outputs.json placeholder
-        run: echo '{}' > apps/nettribexyz/amplify_outputs.json
+      - name: Build evtelemetryai frontend
+        working-directory: apps/evtelemetryai
+        run: |
+          npm ci --legacy-peer-deps
+          npm run build
 
-      - name: Build nettribexyz
-        run: npm run build --workspace=apps/nettribexyz
+      - name: Build nettribeblockchain contracts
+        working-directory: apps/nettribeblockchain
+        run: |
+          npm install -g pnpm
+          pnpm install
+          npx hardhat test
+          npx hardhat compile
