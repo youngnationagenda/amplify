@@ -12,8 +12,8 @@ Replace the existing Amplify SDK authentication calls with a standards-based OID
     - Verify both packages appear in the `dependencies` section of `package.json` with caret range version specifiers
     - _Requirements: 10.1, 10.2, 10.3, 10.4_
 
-- [ ] 2. Create OIDC configuration module
-  - [-] 2.1 Create `src/integrations/oidc/config.ts` with OIDC client settings
+- [x] 2. Create OIDC configuration module
+  - [x] 2.1 Create `src/integrations/oidc/config.ts` with OIDC client settings
     - Export an `oidcConfig` object of type `UserManagerSettings` from `oidc-client-ts`
     - Set `authority` to `https://cognito-idp.us-east-1.amazonaws.com/us-east-1_9YXVf9jkA`
     - Set `client_id` to `7u0frbk65upesqqvd90jjaictl`
@@ -26,7 +26,7 @@ Replace the existing Amplify SDK authentication calls with a standards-based OID
     - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 8.1, 8.2_
 
 - [ ] 3. Create OidcAuthContext with role resolution
-  - [~] 3.1 Create `src/contexts/OidcAuthContext.tsx` with the custom auth context
+  - [-] 3.1 Create `src/contexts/OidcAuthContext.tsx` with the custom auth context
     - Define `AuthUser` interface with `id` (from `sub`), `email`, and optional `fullName` (from `name`)
     - Define `AppRole` type as `'rider' | 'investor' | 'admin' | 'offsetter'`
     - Define `AuthContextType` interface exposing `user`, `loading`, `userRole`, `signIn`, `signOut`, and `error`
