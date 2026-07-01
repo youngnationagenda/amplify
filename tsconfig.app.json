@@ -4,6 +4,7 @@
     "strict": false,
     "noImplicitAny": false,
     "noFallthroughCasesInSwitch": false,
+    "types": ["node", "react", "react-dom"],
     "paths": {
       "@/*": ["./src/*"]
     }
