@@ -18,8 +18,8 @@ echo ""
 
 # Check Node.js version
 NODE_VERSION=$(node -v | cut -d'v' -f2 | cut -d'.' -f1)
-if [ "$NODE_VERSION" -lt 20 ]; then
-  echo -e "${RED}Error: Node.js >= 20 required (found v${NODE_VERSION})${NC}"
+if [ "$NODE_VERSION" -lt 24 ]; then
+  echo -e "${RED}Error: Node.js >= 24 required (found v${NODE_VERSION})${NC}"
   exit 1
 fi
 
