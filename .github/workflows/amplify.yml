@@ -25,10 +25,10 @@ jobs:
         run: npm install
 
       - name: Run tests
-        run: npm run test
+        run: npm run test --workspace=apps/nettribexyz
 
       - name: Generate amplify_outputs.json placeholder
         run: echo '{}' > apps/nettribexyz/amplify_outputs.json
 
       - name: Build nettribexyz
-        run: npm run build
+        run: npm run build --workspace=apps/nettribexyz
