@@ -19,9 +19,11 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "typeRoots": [],
     "types": []
   },
   "exclude": ["node_modules", "dist", ".amplify"],
-  "include": []
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
 }
