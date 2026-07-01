@@ -2,7 +2,9 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "lib": ["ES2023"],
-    "strict": true
+    "strict": true,
+    "typeRoots": ["./node_modules/@types", "../../node_modules/@types"],
+    "types": ["node"]
   },
   "include": ["vite.config.ts"]
 }
