@@ -57,4 +57,4 @@ npx ampx sandbox
 
 ## Node Version
 
-Requires Node.js >= 20.0.0
+Requires Node.js >= 24.0.0
