@@ -60,16 +60,16 @@ Replace the existing Amplify SDK authentication calls with a standards-based OID
 - [~] 5. Checkpoint - Verify provider integration
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 6. Update ProtectedRoute component
-  - [-] 6.1 Modify `src/components/ProtectedRoute.tsx` to handle null role with allowed roles
+- [x] 6. Update ProtectedRoute component
+  - [x] 6.1 Modify `src/components/ProtectedRoute.tsx` to handle null role with allowed roles
     - Keep import from `@/contexts/AuthContext` (now re-exports OIDC context)
     - Update logic: if `allowedRoles` is specified and `userRole` is `null`, redirect to `/auth`
     - Keep existing behavior: while loading show indicator, if no user redirect, if role mismatch redirect
     - If no `allowedRoles` specified, permit any authenticated user
     - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5, 5.6_
 
-- [ ] 7. Update Auth page with OIDC sign-in/sign-out
-  - [-] 7.1 Replace the form-based login in `src/pages/Auth.tsx` with OIDC redirect flow
+- [x] 7. Update Auth page with OIDC sign-in/sign-out
+  - [x] 7.1 Replace the form-based login in `src/pages/Auth.tsx` with OIDC redirect flow
     - Remove email/password form and sign-up form (OIDC uses Cognito Hosted UI)
     - Present a single "Sign In" button for unauthenticated users that calls `signIn()` from auth context
     - Display error message from `error` field when OIDC redirect fails
@@ -82,14 +82,14 @@ Replace the existing Amplify SDK authentication calls with a standards-based OID
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 9. Write unit tests for OIDC modules
-  - [~] 9.1 Create `src/integrations/oidc/__tests__/config.test.ts`
+  - [-] 9.1 Create `src/integrations/oidc/__tests__/config.test.ts`
     - Assert `authority`, `client_id`, `response_type`, `scope` values match requirements
     - Assert `redirect_uri` and `post_logout_redirect_uri` use `window.location.origin`
     - Assert `automaticSilentRenew` is `true` and notification time is `60`
     - Assert `userStore` uses `sessionStorage`
     - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 8.1, 8.2_
 
-  - [~] 9.2 Create `src/contexts/__tests__/OidcAuthContext.test.tsx`
+  - [-] 9.2 Create `src/contexts/__tests__/OidcAuthContext.test.tsx`
     - Mock `react-oidc-context`'s `useAuth` hook
     - Mock Amplify `client.models.UserRole.list`
     - Test: when OIDC user available, `extractUser` correctly maps `sub`, `email`, `name` claims to `AuthUser`
@@ -101,7 +101,7 @@ Replace the existing Amplify SDK authentication calls with a standards-based OID
     - Test: `error` exposes OIDC error message
     - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 4.1, 4.2, 4.3, 4.4, 4.5_
 
-  - [~] 9.3 Create `src/components/__tests__/ProtectedRoute.test.tsx`
+  - [-] 9.3 Create `src/components/__tests__/ProtectedRoute.test.tsx`
     - Mock auth context with various user/role/loading combinations
     - Test: loading state shows indicator
     - Test: unauthenticated user redirects to `/auth`
