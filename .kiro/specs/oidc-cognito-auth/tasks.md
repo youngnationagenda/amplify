@@ -25,7 +25,7 @@ Replace the existing Amplify SDK authentication calls with a standards-based OID
     - Configure `userStore` with `WebStorageStateStore` using `window.sessionStorage`
     - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 8.1, 8.2_
 
-- [ ] 3. Create OidcAuthContext with role resolution
+- [x] 3. Create OidcAuthContext with role resolution
   - [x] 3.1 Create `src/contexts/OidcAuthContext.tsx` with the custom auth context
     - Define `AuthUser` interface with `id` (from `sub`), `email`, and optional `fullName` (from `name`)
     - Define `AppRole` type as `'rider' | 'investor' | 'admin' | 'offsetter'`
@@ -41,14 +41,14 @@ Replace the existing Amplify SDK authentication calls with a standards-based OID
     - Implement 10-second initialization timeout that resolves to unauthenticated state
     - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 4.1, 4.2, 4.3, 4.4, 4.5, 7.1, 7.2, 7.3, 7.4, 8.3, 8.5_
 
-  - [-] 3.2 Update `src/contexts/AuthContext.tsx` to re-export from `OidcAuthContext`
+  - [x] 3.2 Update `src/contexts/AuthContext.tsx` to re-export from `OidcAuthContext`
     - Change the re-export to point to `OidcAuthContext` instead of `AmplifyAuthContext`
     - Export `OidcAuthProvider as AuthProvider` and `useAuth`
     - This maintains backward compatibility for all existing consumers
     - _Requirements: 2.1, 3.1_
 
-- [ ] 4. Update main.tsx to integrate the OIDC AuthProvider
-  - [-] 4.1 Modify `src/main.tsx` to wrap the app with `AuthProvider` from `react-oidc-context`
+- [x] 4. Update main.tsx to integrate the OIDC AuthProvider
+  - [x] 4.1 Modify `src/main.tsx` to wrap the app with `AuthProvider` from `react-oidc-context`
     - Import `AuthProvider` from `react-oidc-context` and `oidcConfig` from `./integrations/oidc/config`
     - Import `OidcAuthProvider` from `./contexts/OidcAuthContext`
     - Keep `configureAmplify()` call executing before render
@@ -61,7 +61,7 @@ Replace the existing Amplify SDK authentication calls with a standards-based OID
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 6. Update ProtectedRoute component
-  - [~] 6.1 Modify `src/components/ProtectedRoute.tsx` to handle null role with allowed roles
+  - [-] 6.1 Modify `src/components/ProtectedRoute.tsx` to handle null role with allowed roles
     - Keep import from `@/contexts/AuthContext` (now re-exports OIDC context)
     - Update logic: if `allowedRoles` is specified and `userRole` is `null`, redirect to `/auth`
     - Keep existing behavior: while loading show indicator, if no user redirect, if role mismatch redirect
@@ -69,7 +69,7 @@ Replace the existing Amplify SDK authentication calls with a standards-based OID
     - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5, 5.6_
 
 - [ ] 7. Update Auth page with OIDC sign-in/sign-out
-  - [~] 7.1 Replace the form-based login in `src/pages/Auth.tsx` with OIDC redirect flow
+  - [-] 7.1 Replace the form-based login in `src/pages/Auth.tsx` with OIDC redirect flow
     - Remove email/password form and sign-up form (OIDC uses Cognito Hosted UI)
     - Present a single "Sign In" button for unauthenticated users that calls `signIn()` from auth context
     - Display error message from `error` field when OIDC redirect fails
