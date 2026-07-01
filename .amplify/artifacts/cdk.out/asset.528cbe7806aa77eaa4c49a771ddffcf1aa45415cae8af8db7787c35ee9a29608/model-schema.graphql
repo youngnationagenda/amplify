@@ -1,0 +1,153 @@
+type Profile @model @auth(rules: [{allow: owner, ownerField: "owner"},
+  {allow: groups, operations: [read, update], groups: ["admin"]}])
+{
+  userId: ID! @index(queryField: "listProfileByUserId")
+  fullName: String
+  email: String
+  phone: String
+  kycStatus: ProfileKycStatus
+  kycDocuments: AWSJSON
+  avatarUrl: String
+}
+
+type UserRole @model @auth(rules: [{allow: owner, operations: [read], ownerField: "owner"},
+  {allow: groups, operations: [create, read, update, delete], groups: ["admin"]},
+  {allow: private, operations: [read]}])
+{
+  userId: ID! @index(queryField: "listUserRoleByUserId")
+  role: UserRoleRole
+}
+
+type Rider @model @auth(rules: [{allow: owner, ownerField: "owner"},
+  {allow: groups, operations: [read, update], groups: ["admin"]},
+  {allow: private, operations: [read]}])
+{
+  userId: ID! @index(queryField: "listRiderByUserId")
+  motorcycleId: String
+  totalDistanceKm: Float @default(value: "0")
+  totalCarbonCredits: Float @default(value: "0")
+  efficiencyScore: Float @default(value: "85")
+  isActive: Boolean @default(value: "true")
+}
+
+type Motorcycle @model @auth(rules: [{allow: private, operations: [read]},
+  {allow: groups, operations: [create, read, update, delete], groups: ["admin"]}])
+{
+  iotDeviceId: String
+  model: String
+  batteryCapacity: Float
+  currentRiderId: ID @index(queryField: "listMotorcycleByCurrentRiderId")
+  carbonCreditsGenerated: Float @default(value: "0")
+  totalDistanceKm: Float @default(value: "0")
+  isActive: Boolean @default(value: "true")
+}
+
+type Ride @model @auth(rules: [{allow: owner, ownerField: "owner"},
+  {allow: groups, operations: [read], groups: ["admin"]}])
+{
+  riderId: ID! @index(queryField: "listRideByRiderId")
+  motorcycleId: ID
+  distanceKm: Float!
+  energyConsumedKwh: Float
+  carbonCreditsEarned: Float
+  efficiencyScore: Float
+  startTime: AWSDateTime
+  endTime: AWSDateTime
+  iotValidated: Boolean @default(value: "false")
+}
+
+type CarbonCredit @model @auth(rules: [{allow: private, operations: [read]},
+  {allow: groups, operations: [create, read, update, delete], groups: ["admin"]}])
+{
+  amount: Float!
+  pricePerCredit: Float @default(value: "25")
+  sourceType: String @default(value: "ride")
+  sourceId: ID
+  status: CarbonCreditStatus
+}
+
+type CarbonPurchase @model @auth(rules: [{allow: owner, ownerField: "owner"},
+  {allow: groups, operations: [read], groups: ["admin"]}])
+{
+  userId: ID! @index(queryField: "listCarbonPurchaseByUserId")
+  creditId: ID
+  amount: Float!
+  pricePaid: Float!
+  status: CarbonPurchaseStatus
+  burnedAt: AWSDateTime
+}
+
+type InitialCarbonOffering @model @auth(rules: [{allow: private, operations: [read]},
+  {allow: groups, operations: [create, read, update, delete], groups: ["admin"]}])
+{
+  name: String!
+  description: String
+  totalCredits: Float!
+  creditsSold: Float @default(value: "0")
+  pricePerCredit: Float!
+  marketPrice: Float!
+  startDate: AWSDateTime!
+  endDate: AWSDateTime!
+  deliveryDate: AWSDateTime!
+  status: InitialCarbonOfferingStatus
+}
+
+type IcoPurchase @model @auth(rules: [{allow: owner, ownerField: "owner"},
+  {allow: groups, operations: [read, update], groups: ["admin"]}])
+{
+  userId: ID! @index(queryField: "listIcoPurchaseByUserId")
+  icoId: ID! @index(queryField: "listIcoPurchaseByIcoId")
+  creditsPurchased: Float!
+  pricePaid: Float!
+  creditsDelivered: Float @default(value: "0")
+  status: IcoPurchaseStatus
+}
+
+type BurnedCredit @model @auth(rules: [{allow: owner, ownerField: "owner"},
+  {allow: groups, operations: [read], groups: ["admin"]}])
+{
+  userId: ID! @index(queryField: "listBurnedCreditByUserId")
+  purchaseId: ID
+  icoPurchaseId: ID
+  amount: Float!
+  certificateNumber: String!
+  burnedAt: AWSDateTime!
+}
+
+enum ProfileKycStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+}
+
+enum UserRoleRole {
+  ADMIN
+  RIDER
+  INVESTOR
+  OFFSETTER
+}
+
+enum CarbonCreditStatus {
+  AVAILABLE
+  SOLD
+  BURNED
+}
+
+enum CarbonPurchaseStatus {
+  ACTIVE
+  BURNED
+  CANCELLED
+}
+
+enum InitialCarbonOfferingStatus {
+  UPCOMING
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+enum IcoPurchaseStatus {
+  PENDING
+  DELIVERED
+  CANCELLED
+}

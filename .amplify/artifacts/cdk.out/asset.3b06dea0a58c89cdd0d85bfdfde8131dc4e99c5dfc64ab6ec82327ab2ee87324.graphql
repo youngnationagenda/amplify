@@ -1,0 +1,1212 @@
+type Profile @aws_iam @aws_cognito_user_pools {
+  userId: ID!
+  fullName: String
+  email: String
+  phone: String
+  kycStatus: ProfileKycStatus
+  kycDocuments: AWSJSON
+  avatarUrl: String
+  id: ID!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  owner: String
+}
+
+type UserRole @aws_iam @aws_cognito_user_pools {
+  userId: ID!
+  role: UserRoleRole
+  id: ID!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  owner: String
+}
+
+type Rider @aws_iam @aws_cognito_user_pools {
+  userId: ID!
+  motorcycleId: String
+  totalDistanceKm: Float
+  totalCarbonCredits: Float
+  efficiencyScore: Float
+  isActive: Boolean
+  id: ID!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  owner: String
+}
+
+type Motorcycle @aws_iam @aws_cognito_user_pools {
+  iotDeviceId: String
+  model: String
+  batteryCapacity: Float
+  currentRiderId: ID
+  carbonCreditsGenerated: Float
+  totalDistanceKm: Float
+  isActive: Boolean
+  id: ID!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type Ride @aws_iam @aws_cognito_user_pools {
+  riderId: ID!
+  motorcycleId: ID
+  distanceKm: Float!
+  energyConsumedKwh: Float
+  carbonCreditsEarned: Float
+  efficiencyScore: Float
+  startTime: AWSDateTime
+  endTime: AWSDateTime
+  iotValidated: Boolean
+  id: ID!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  owner: String
+}
+
+type CarbonCredit @aws_iam @aws_cognito_user_pools {
+  amount: Float!
+  pricePerCredit: Float
+  sourceType: String
+  sourceId: ID
+  status: CarbonCreditStatus
+  id: ID!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type CarbonPurchase @aws_iam @aws_cognito_user_pools {
+  userId: ID!
+  creditId: ID
+  amount: Float!
+  pricePaid: Float!
+  status: CarbonPurchaseStatus
+  burnedAt: AWSDateTime
+  id: ID!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  owner: String
+}
+
+type InitialCarbonOffering @aws_iam @aws_cognito_user_pools {
+  name: String!
+  description: String
+  totalCredits: Float!
+  creditsSold: Float
+  pricePerCredit: Float!
+  marketPrice: Float!
+  startDate: AWSDateTime!
+  endDate: AWSDateTime!
+  deliveryDate: AWSDateTime!
+  status: InitialCarbonOfferingStatus
+  id: ID!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type IcoPurchase @aws_iam @aws_cognito_user_pools {
+  userId: ID!
+  icoId: ID!
+  creditsPurchased: Float!
+  pricePaid: Float!
+  creditsDelivered: Float
+  status: IcoPurchaseStatus
+  id: ID!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  owner: String
+}
+
+type BurnedCredit @aws_iam @aws_cognito_user_pools {
+  userId: ID!
+  purchaseId: ID
+  icoPurchaseId: ID
+  amount: Float!
+  certificateNumber: String!
+  burnedAt: AWSDateTime!
+  id: ID!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  owner: String
+}
+
+enum ProfileKycStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+}
+
+enum UserRoleRole {
+  ADMIN
+  RIDER
+  INVESTOR
+  OFFSETTER
+}
+
+enum CarbonCreditStatus {
+  AVAILABLE
+  SOLD
+  BURNED
+}
+
+enum CarbonPurchaseStatus {
+  ACTIVE
+  BURNED
+  CANCELLED
+}
+
+enum InitialCarbonOfferingStatus {
+  UPCOMING
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+enum IcoPurchaseStatus {
+  PENDING
+  DELIVERED
+  CANCELLED
+}
+
+input AmplifyAIConversationTurnErrorInput {
+  errorType: String!
+  message: String!
+}
+
+input ModelStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelBooleanInput {
+  ne: Boolean
+  eq: Boolean
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelSubscriptionStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  in: [String]
+  notIn: [String]
+}
+
+input ModelSubscriptionIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  in: [Int]
+  notIn: [Int]
+}
+
+input ModelSubscriptionFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  in: [Float]
+  notIn: [Float]
+}
+
+input ModelSubscriptionBooleanInput {
+  ne: Boolean
+  eq: Boolean
+}
+
+input ModelSubscriptionIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  in: [ID]
+  notIn: [ID]
+}
+
+enum ModelAttributeTypes {
+  binary
+  binarySet
+  bool
+  list
+  map
+  number
+  numberSet
+  string
+  stringSet
+  _null
+}
+
+input ModelSizeInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+type ModelProfileConnection @aws_iam @aws_cognito_user_pools {
+  items: [Profile]!
+  nextToken: String
+}
+
+input ModelProfileKycStatusInput {
+  eq: ProfileKycStatus
+  ne: ProfileKycStatus
+}
+
+input ModelProfileFilterInput {
+  userId: ModelIDInput
+  fullName: ModelStringInput
+  email: ModelStringInput
+  phone: ModelStringInput
+  kycStatus: ModelProfileKycStatusInput
+  kycDocuments: ModelStringInput
+  avatarUrl: ModelStringInput
+  id: ModelIDInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  and: [ModelProfileFilterInput]
+  or: [ModelProfileFilterInput]
+  not: ModelProfileFilterInput
+  owner: ModelStringInput
+}
+
+type Query {
+  getProfile(id: ID!): Profile @aws_iam @aws_cognito_user_pools
+  listProfiles(filter: ModelProfileFilterInput, limit: Int, nextToken: String): ModelProfileConnection @aws_iam @aws_cognito_user_pools
+  listProfileByUserId(userId: ID!, sortDirection: ModelSortDirection, filter: ModelProfileFilterInput, limit: Int, nextToken: String): ModelProfileConnection @aws_iam @aws_cognito_user_pools
+  getUserRole(id: ID!): UserRole @aws_iam @aws_cognito_user_pools
+  listUserRoles(filter: ModelUserRoleFilterInput, limit: Int, nextToken: String): ModelUserRoleConnection @aws_iam @aws_cognito_user_pools
+  listUserRoleByUserId(userId: ID!, sortDirection: ModelSortDirection, filter: ModelUserRoleFilterInput, limit: Int, nextToken: String): ModelUserRoleConnection @aws_iam @aws_cognito_user_pools
+  getRider(id: ID!): Rider @aws_iam @aws_cognito_user_pools
+  listRiders(filter: ModelRiderFilterInput, limit: Int, nextToken: String): ModelRiderConnection @aws_iam @aws_cognito_user_pools
+  listRiderByUserId(userId: ID!, sortDirection: ModelSortDirection, filter: ModelRiderFilterInput, limit: Int, nextToken: String): ModelRiderConnection @aws_iam @aws_cognito_user_pools
+  getMotorcycle(id: ID!): Motorcycle @aws_iam @aws_cognito_user_pools
+  listMotorcycles(filter: ModelMotorcycleFilterInput, limit: Int, nextToken: String): ModelMotorcycleConnection @aws_iam @aws_cognito_user_pools
+  listMotorcycleByCurrentRiderId(currentRiderId: ID!, sortDirection: ModelSortDirection, filter: ModelMotorcycleFilterInput, limit: Int, nextToken: String): ModelMotorcycleConnection @aws_iam @aws_cognito_user_pools
+  getRide(id: ID!): Ride @aws_iam @aws_cognito_user_pools
+  listRides(filter: ModelRideFilterInput, limit: Int, nextToken: String): ModelRideConnection @aws_iam @aws_cognito_user_pools
+  listRideByRiderId(riderId: ID!, sortDirection: ModelSortDirection, filter: ModelRideFilterInput, limit: Int, nextToken: String): ModelRideConnection @aws_iam @aws_cognito_user_pools
+  getCarbonCredit(id: ID!): CarbonCredit @aws_iam @aws_cognito_user_pools
+  listCarbonCredits(filter: ModelCarbonCreditFilterInput, limit: Int, nextToken: String): ModelCarbonCreditConnection @aws_iam @aws_cognito_user_pools
+  getCarbonPurchase(id: ID!): CarbonPurchase @aws_iam @aws_cognito_user_pools
+  listCarbonPurchases(filter: ModelCarbonPurchaseFilterInput, limit: Int, nextToken: String): ModelCarbonPurchaseConnection @aws_iam @aws_cognito_user_pools
+  listCarbonPurchaseByUserId(userId: ID!, sortDirection: ModelSortDirection, filter: ModelCarbonPurchaseFilterInput, limit: Int, nextToken: String): ModelCarbonPurchaseConnection @aws_iam @aws_cognito_user_pools
+  getInitialCarbonOffering(id: ID!): InitialCarbonOffering @aws_iam @aws_cognito_user_pools
+  listInitialCarbonOfferings(filter: ModelInitialCarbonOfferingFilterInput, limit: Int, nextToken: String): ModelInitialCarbonOfferingConnection @aws_iam @aws_cognito_user_pools
+  getIcoPurchase(id: ID!): IcoPurchase @aws_iam @aws_cognito_user_pools
+  listIcoPurchases(filter: ModelIcoPurchaseFilterInput, limit: Int, nextToken: String): ModelIcoPurchaseConnection @aws_iam @aws_cognito_user_pools
+  listIcoPurchaseByUserId(userId: ID!, sortDirection: ModelSortDirection, filter: ModelIcoPurchaseFilterInput, limit: Int, nextToken: String): ModelIcoPurchaseConnection @aws_iam @aws_cognito_user_pools
+  listIcoPurchaseByIcoId(icoId: ID!, sortDirection: ModelSortDirection, filter: ModelIcoPurchaseFilterInput, limit: Int, nextToken: String): ModelIcoPurchaseConnection @aws_iam @aws_cognito_user_pools
+  getBurnedCredit(id: ID!): BurnedCredit @aws_iam @aws_cognito_user_pools
+  listBurnedCredits(filter: ModelBurnedCreditFilterInput, limit: Int, nextToken: String): ModelBurnedCreditConnection @aws_iam @aws_cognito_user_pools
+  listBurnedCreditByUserId(userId: ID!, sortDirection: ModelSortDirection, filter: ModelBurnedCreditFilterInput, limit: Int, nextToken: String): ModelBurnedCreditConnection @aws_iam @aws_cognito_user_pools
+}
+
+input ModelProfileConditionInput {
+  userId: ModelIDInput
+  fullName: ModelStringInput
+  email: ModelStringInput
+  phone: ModelStringInput
+  kycStatus: ModelProfileKycStatusInput
+  kycDocuments: ModelStringInput
+  avatarUrl: ModelStringInput
+  and: [ModelProfileConditionInput]
+  or: [ModelProfileConditionInput]
+  not: ModelProfileConditionInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  owner: ModelStringInput
+}
+
+input CreateProfileInput {
+  userId: ID!
+  fullName: String
+  email: String
+  phone: String
+  kycStatus: ProfileKycStatus
+  kycDocuments: AWSJSON
+  avatarUrl: String
+  id: ID
+}
+
+input UpdateProfileInput {
+  userId: ID
+  fullName: String
+  email: String
+  phone: String
+  kycStatus: ProfileKycStatus
+  kycDocuments: AWSJSON
+  avatarUrl: String
+  id: ID!
+}
+
+input DeleteProfileInput {
+  id: ID!
+}
+
+type Mutation {
+  createProfile(input: CreateProfileInput!, condition: ModelProfileConditionInput): Profile @aws_iam @aws_cognito_user_pools
+  updateProfile(input: UpdateProfileInput!, condition: ModelProfileConditionInput): Profile @aws_iam @aws_cognito_user_pools
+  deleteProfile(input: DeleteProfileInput!, condition: ModelProfileConditionInput): Profile @aws_iam @aws_cognito_user_pools
+  createUserRole(input: CreateUserRoleInput!, condition: ModelUserRoleConditionInput): UserRole @aws_iam @aws_cognito_user_pools
+  updateUserRole(input: UpdateUserRoleInput!, condition: ModelUserRoleConditionInput): UserRole @aws_iam @aws_cognito_user_pools
+  deleteUserRole(input: DeleteUserRoleInput!, condition: ModelUserRoleConditionInput): UserRole @aws_iam @aws_cognito_user_pools
+  createRider(input: CreateRiderInput!, condition: ModelRiderConditionInput): Rider @aws_iam @aws_cognito_user_pools
+  updateRider(input: UpdateRiderInput!, condition: ModelRiderConditionInput): Rider @aws_iam @aws_cognito_user_pools
+  deleteRider(input: DeleteRiderInput!, condition: ModelRiderConditionInput): Rider @aws_iam @aws_cognito_user_pools
+  createMotorcycle(input: CreateMotorcycleInput!, condition: ModelMotorcycleConditionInput): Motorcycle @aws_iam @aws_cognito_user_pools
+  updateMotorcycle(input: UpdateMotorcycleInput!, condition: ModelMotorcycleConditionInput): Motorcycle @aws_iam @aws_cognito_user_pools
+  deleteMotorcycle(input: DeleteMotorcycleInput!, condition: ModelMotorcycleConditionInput): Motorcycle @aws_iam @aws_cognito_user_pools
+  createRide(input: CreateRideInput!, condition: ModelRideConditionInput): Ride @aws_iam @aws_cognito_user_pools
+  updateRide(input: UpdateRideInput!, condition: ModelRideConditionInput): Ride @aws_iam @aws_cognito_user_pools
+  deleteRide(input: DeleteRideInput!, condition: ModelRideConditionInput): Ride @aws_iam @aws_cognito_user_pools
+  createCarbonCredit(input: CreateCarbonCreditInput!, condition: ModelCarbonCreditConditionInput): CarbonCredit @aws_iam @aws_cognito_user_pools
+  updateCarbonCredit(input: UpdateCarbonCreditInput!, condition: ModelCarbonCreditConditionInput): CarbonCredit @aws_iam @aws_cognito_user_pools
+  deleteCarbonCredit(input: DeleteCarbonCreditInput!, condition: ModelCarbonCreditConditionInput): CarbonCredit @aws_iam @aws_cognito_user_pools
+  createCarbonPurchase(input: CreateCarbonPurchaseInput!, condition: ModelCarbonPurchaseConditionInput): CarbonPurchase @aws_iam @aws_cognito_user_pools
+  updateCarbonPurchase(input: UpdateCarbonPurchaseInput!, condition: ModelCarbonPurchaseConditionInput): CarbonPurchase @aws_iam @aws_cognito_user_pools
+  deleteCarbonPurchase(input: DeleteCarbonPurchaseInput!, condition: ModelCarbonPurchaseConditionInput): CarbonPurchase @aws_iam @aws_cognito_user_pools
+  createInitialCarbonOffering(input: CreateInitialCarbonOfferingInput!, condition: ModelInitialCarbonOfferingConditionInput): InitialCarbonOffering @aws_iam @aws_cognito_user_pools
+  updateInitialCarbonOffering(input: UpdateInitialCarbonOfferingInput!, condition: ModelInitialCarbonOfferingConditionInput): InitialCarbonOffering @aws_iam @aws_cognito_user_pools
+  deleteInitialCarbonOffering(input: DeleteInitialCarbonOfferingInput!, condition: ModelInitialCarbonOfferingConditionInput): InitialCarbonOffering @aws_iam @aws_cognito_user_pools
+  createIcoPurchase(input: CreateIcoPurchaseInput!, condition: ModelIcoPurchaseConditionInput): IcoPurchase @aws_iam @aws_cognito_user_pools
+  updateIcoPurchase(input: UpdateIcoPurchaseInput!, condition: ModelIcoPurchaseConditionInput): IcoPurchase @aws_iam @aws_cognito_user_pools
+  deleteIcoPurchase(input: DeleteIcoPurchaseInput!, condition: ModelIcoPurchaseConditionInput): IcoPurchase @aws_iam @aws_cognito_user_pools
+  createBurnedCredit(input: CreateBurnedCreditInput!, condition: ModelBurnedCreditConditionInput): BurnedCredit @aws_iam @aws_cognito_user_pools
+  updateBurnedCredit(input: UpdateBurnedCreditInput!, condition: ModelBurnedCreditConditionInput): BurnedCredit @aws_iam @aws_cognito_user_pools
+  deleteBurnedCredit(input: DeleteBurnedCreditInput!, condition: ModelBurnedCreditConditionInput): BurnedCredit @aws_iam @aws_cognito_user_pools
+}
+
+input ModelSubscriptionProfileFilterInput {
+  userId: ModelSubscriptionIDInput
+  fullName: ModelSubscriptionStringInput
+  email: ModelSubscriptionStringInput
+  phone: ModelSubscriptionStringInput
+  kycStatus: ModelSubscriptionStringInput
+  kycDocuments: ModelSubscriptionStringInput
+  avatarUrl: ModelSubscriptionStringInput
+  id: ModelSubscriptionIDInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionProfileFilterInput]
+  or: [ModelSubscriptionProfileFilterInput]
+  owner: ModelStringInput
+}
+
+type Subscription {
+  onCreateProfile(filter: ModelSubscriptionProfileFilterInput, owner: String): Profile @aws_subscribe(mutations: ["createProfile"]) @aws_iam @aws_cognito_user_pools
+  onUpdateProfile(filter: ModelSubscriptionProfileFilterInput, owner: String): Profile @aws_subscribe(mutations: ["updateProfile"]) @aws_iam @aws_cognito_user_pools
+  onDeleteProfile(filter: ModelSubscriptionProfileFilterInput, owner: String): Profile @aws_subscribe(mutations: ["deleteProfile"]) @aws_iam @aws_cognito_user_pools
+  onCreateUserRole(filter: ModelSubscriptionUserRoleFilterInput, owner: String): UserRole @aws_subscribe(mutations: ["createUserRole"]) @aws_iam @aws_cognito_user_pools
+  onUpdateUserRole(filter: ModelSubscriptionUserRoleFilterInput, owner: String): UserRole @aws_subscribe(mutations: ["updateUserRole"]) @aws_iam @aws_cognito_user_pools
+  onDeleteUserRole(filter: ModelSubscriptionUserRoleFilterInput, owner: String): UserRole @aws_subscribe(mutations: ["deleteUserRole"]) @aws_iam @aws_cognito_user_pools
+  onCreateRider(filter: ModelSubscriptionRiderFilterInput, owner: String): Rider @aws_subscribe(mutations: ["createRider"]) @aws_iam @aws_cognito_user_pools
+  onUpdateRider(filter: ModelSubscriptionRiderFilterInput, owner: String): Rider @aws_subscribe(mutations: ["updateRider"]) @aws_iam @aws_cognito_user_pools
+  onDeleteRider(filter: ModelSubscriptionRiderFilterInput, owner: String): Rider @aws_subscribe(mutations: ["deleteRider"]) @aws_iam @aws_cognito_user_pools
+  onCreateMotorcycle(filter: ModelSubscriptionMotorcycleFilterInput): Motorcycle @aws_subscribe(mutations: ["createMotorcycle"]) @aws_iam @aws_cognito_user_pools
+  onUpdateMotorcycle(filter: ModelSubscriptionMotorcycleFilterInput): Motorcycle @aws_subscribe(mutations: ["updateMotorcycle"]) @aws_iam @aws_cognito_user_pools
+  onDeleteMotorcycle(filter: ModelSubscriptionMotorcycleFilterInput): Motorcycle @aws_subscribe(mutations: ["deleteMotorcycle"]) @aws_iam @aws_cognito_user_pools
+  onCreateRide(filter: ModelSubscriptionRideFilterInput, owner: String): Ride @aws_subscribe(mutations: ["createRide"]) @aws_iam @aws_cognito_user_pools
+  onUpdateRide(filter: ModelSubscriptionRideFilterInput, owner: String): Ride @aws_subscribe(mutations: ["updateRide"]) @aws_iam @aws_cognito_user_pools
+  onDeleteRide(filter: ModelSubscriptionRideFilterInput, owner: String): Ride @aws_subscribe(mutations: ["deleteRide"]) @aws_iam @aws_cognito_user_pools
+  onCreateCarbonCredit(filter: ModelSubscriptionCarbonCreditFilterInput): CarbonCredit @aws_subscribe(mutations: ["createCarbonCredit"]) @aws_iam @aws_cognito_user_pools
+  onUpdateCarbonCredit(filter: ModelSubscriptionCarbonCreditFilterInput): CarbonCredit @aws_subscribe(mutations: ["updateCarbonCredit"]) @aws_iam @aws_cognito_user_pools
+  onDeleteCarbonCredit(filter: ModelSubscriptionCarbonCreditFilterInput): CarbonCredit @aws_subscribe(mutations: ["deleteCarbonCredit"]) @aws_iam @aws_cognito_user_pools
+  onCreateCarbonPurchase(filter: ModelSubscriptionCarbonPurchaseFilterInput, owner: String): CarbonPurchase @aws_subscribe(mutations: ["createCarbonPurchase"]) @aws_iam @aws_cognito_user_pools
+  onUpdateCarbonPurchase(filter: ModelSubscriptionCarbonPurchaseFilterInput, owner: String): CarbonPurchase @aws_subscribe(mutations: ["updateCarbonPurchase"]) @aws_iam @aws_cognito_user_pools
+  onDeleteCarbonPurchase(filter: ModelSubscriptionCarbonPurchaseFilterInput, owner: String): CarbonPurchase @aws_subscribe(mutations: ["deleteCarbonPurchase"]) @aws_iam @aws_cognito_user_pools
+  onCreateInitialCarbonOffering(filter: ModelSubscriptionInitialCarbonOfferingFilterInput): InitialCarbonOffering @aws_subscribe(mutations: ["createInitialCarbonOffering"]) @aws_iam @aws_cognito_user_pools
+  onUpdateInitialCarbonOffering(filter: ModelSubscriptionInitialCarbonOfferingFilterInput): InitialCarbonOffering @aws_subscribe(mutations: ["updateInitialCarbonOffering"]) @aws_iam @aws_cognito_user_pools
+  onDeleteInitialCarbonOffering(filter: ModelSubscriptionInitialCarbonOfferingFilterInput): InitialCarbonOffering @aws_subscribe(mutations: ["deleteInitialCarbonOffering"]) @aws_iam @aws_cognito_user_pools
+  onCreateIcoPurchase(filter: ModelSubscriptionIcoPurchaseFilterInput, owner: String): IcoPurchase @aws_subscribe(mutations: ["createIcoPurchase"]) @aws_iam @aws_cognito_user_pools
+  onUpdateIcoPurchase(filter: ModelSubscriptionIcoPurchaseFilterInput, owner: String): IcoPurchase @aws_subscribe(mutations: ["updateIcoPurchase"]) @aws_iam @aws_cognito_user_pools
+  onDeleteIcoPurchase(filter: ModelSubscriptionIcoPurchaseFilterInput, owner: String): IcoPurchase @aws_subscribe(mutations: ["deleteIcoPurchase"]) @aws_iam @aws_cognito_user_pools
+  onCreateBurnedCredit(filter: ModelSubscriptionBurnedCreditFilterInput, owner: String): BurnedCredit @aws_subscribe(mutations: ["createBurnedCredit"]) @aws_iam @aws_cognito_user_pools
+  onUpdateBurnedCredit(filter: ModelSubscriptionBurnedCreditFilterInput, owner: String): BurnedCredit @aws_subscribe(mutations: ["updateBurnedCredit"]) @aws_iam @aws_cognito_user_pools
+  onDeleteBurnedCredit(filter: ModelSubscriptionBurnedCreditFilterInput, owner: String): BurnedCredit @aws_subscribe(mutations: ["deleteBurnedCredit"]) @aws_iam @aws_cognito_user_pools
+}
+
+type ModelUserRoleConnection @aws_iam @aws_cognito_user_pools {
+  items: [UserRole]!
+  nextToken: String
+}
+
+input ModelUserRoleRoleInput {
+  eq: UserRoleRole
+  ne: UserRoleRole
+}
+
+input ModelUserRoleFilterInput {
+  userId: ModelIDInput
+  role: ModelUserRoleRoleInput
+  id: ModelIDInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  and: [ModelUserRoleFilterInput]
+  or: [ModelUserRoleFilterInput]
+  not: ModelUserRoleFilterInput
+  owner: ModelStringInput
+}
+
+input ModelUserRoleConditionInput {
+  userId: ModelIDInput
+  role: ModelUserRoleRoleInput
+  and: [ModelUserRoleConditionInput]
+  or: [ModelUserRoleConditionInput]
+  not: ModelUserRoleConditionInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  owner: ModelStringInput
+}
+
+input CreateUserRoleInput {
+  userId: ID!
+  role: UserRoleRole
+  id: ID
+}
+
+input UpdateUserRoleInput {
+  userId: ID
+  role: UserRoleRole
+  id: ID!
+}
+
+input DeleteUserRoleInput {
+  id: ID!
+}
+
+input ModelSubscriptionUserRoleFilterInput {
+  userId: ModelSubscriptionIDInput
+  role: ModelSubscriptionStringInput
+  id: ModelSubscriptionIDInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionUserRoleFilterInput]
+  or: [ModelSubscriptionUserRoleFilterInput]
+  owner: ModelStringInput
+}
+
+type ModelRiderConnection @aws_iam @aws_cognito_user_pools {
+  items: [Rider]!
+  nextToken: String
+}
+
+input ModelRiderFilterInput {
+  userId: ModelIDInput
+  motorcycleId: ModelStringInput
+  totalDistanceKm: ModelFloatInput
+  totalCarbonCredits: ModelFloatInput
+  efficiencyScore: ModelFloatInput
+  isActive: ModelBooleanInput
+  id: ModelIDInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  and: [ModelRiderFilterInput]
+  or: [ModelRiderFilterInput]
+  not: ModelRiderFilterInput
+  owner: ModelStringInput
+}
+
+input ModelRiderConditionInput {
+  userId: ModelIDInput
+  motorcycleId: ModelStringInput
+  totalDistanceKm: ModelFloatInput
+  totalCarbonCredits: ModelFloatInput
+  efficiencyScore: ModelFloatInput
+  isActive: ModelBooleanInput
+  and: [ModelRiderConditionInput]
+  or: [ModelRiderConditionInput]
+  not: ModelRiderConditionInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  owner: ModelStringInput
+}
+
+input CreateRiderInput {
+  userId: ID!
+  motorcycleId: String
+  totalDistanceKm: Float
+  totalCarbonCredits: Float
+  efficiencyScore: Float
+  isActive: Boolean
+  id: ID
+}
+
+input UpdateRiderInput {
+  userId: ID
+  motorcycleId: String
+  totalDistanceKm: Float
+  totalCarbonCredits: Float
+  efficiencyScore: Float
+  isActive: Boolean
+  id: ID!
+}
+
+input DeleteRiderInput {
+  id: ID!
+}
+
+input ModelSubscriptionRiderFilterInput {
+  userId: ModelSubscriptionIDInput
+  motorcycleId: ModelSubscriptionStringInput
+  totalDistanceKm: ModelSubscriptionFloatInput
+  totalCarbonCredits: ModelSubscriptionFloatInput
+  efficiencyScore: ModelSubscriptionFloatInput
+  isActive: ModelSubscriptionBooleanInput
+  id: ModelSubscriptionIDInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionRiderFilterInput]
+  or: [ModelSubscriptionRiderFilterInput]
+  owner: ModelStringInput
+}
+
+type ModelMotorcycleConnection @aws_iam @aws_cognito_user_pools {
+  items: [Motorcycle]!
+  nextToken: String
+}
+
+input ModelMotorcycleFilterInput {
+  iotDeviceId: ModelStringInput
+  model: ModelStringInput
+  batteryCapacity: ModelFloatInput
+  currentRiderId: ModelIDInput
+  carbonCreditsGenerated: ModelFloatInput
+  totalDistanceKm: ModelFloatInput
+  isActive: ModelBooleanInput
+  id: ModelIDInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  and: [ModelMotorcycleFilterInput]
+  or: [ModelMotorcycleFilterInput]
+  not: ModelMotorcycleFilterInput
+}
+
+input ModelMotorcycleConditionInput {
+  iotDeviceId: ModelStringInput
+  model: ModelStringInput
+  batteryCapacity: ModelFloatInput
+  currentRiderId: ModelIDInput
+  carbonCreditsGenerated: ModelFloatInput
+  totalDistanceKm: ModelFloatInput
+  isActive: ModelBooleanInput
+  and: [ModelMotorcycleConditionInput]
+  or: [ModelMotorcycleConditionInput]
+  not: ModelMotorcycleConditionInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+}
+
+input CreateMotorcycleInput {
+  iotDeviceId: String
+  model: String
+  batteryCapacity: Float
+  currentRiderId: ID
+  carbonCreditsGenerated: Float
+  totalDistanceKm: Float
+  isActive: Boolean
+  id: ID
+}
+
+input UpdateMotorcycleInput {
+  iotDeviceId: String
+  model: String
+  batteryCapacity: Float
+  currentRiderId: ID
+  carbonCreditsGenerated: Float
+  totalDistanceKm: Float
+  isActive: Boolean
+  id: ID!
+}
+
+input DeleteMotorcycleInput {
+  id: ID!
+}
+
+input ModelSubscriptionMotorcycleFilterInput {
+  iotDeviceId: ModelSubscriptionStringInput
+  model: ModelSubscriptionStringInput
+  batteryCapacity: ModelSubscriptionFloatInput
+  currentRiderId: ModelSubscriptionIDInput
+  carbonCreditsGenerated: ModelSubscriptionFloatInput
+  totalDistanceKm: ModelSubscriptionFloatInput
+  isActive: ModelSubscriptionBooleanInput
+  id: ModelSubscriptionIDInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionMotorcycleFilterInput]
+  or: [ModelSubscriptionMotorcycleFilterInput]
+}
+
+type ModelRideConnection @aws_iam @aws_cognito_user_pools {
+  items: [Ride]!
+  nextToken: String
+}
+
+input ModelRideFilterInput {
+  riderId: ModelIDInput
+  motorcycleId: ModelIDInput
+  distanceKm: ModelFloatInput
+  energyConsumedKwh: ModelFloatInput
+  carbonCreditsEarned: ModelFloatInput
+  efficiencyScore: ModelFloatInput
+  startTime: ModelStringInput
+  endTime: ModelStringInput
+  iotValidated: ModelBooleanInput
+  id: ModelIDInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  and: [ModelRideFilterInput]
+  or: [ModelRideFilterInput]
+  not: ModelRideFilterInput
+  owner: ModelStringInput
+}
+
+input ModelRideConditionInput {
+  riderId: ModelIDInput
+  motorcycleId: ModelIDInput
+  distanceKm: ModelFloatInput
+  energyConsumedKwh: ModelFloatInput
+  carbonCreditsEarned: ModelFloatInput
+  efficiencyScore: ModelFloatInput
+  startTime: ModelStringInput
+  endTime: ModelStringInput
+  iotValidated: ModelBooleanInput
+  and: [ModelRideConditionInput]
+  or: [ModelRideConditionInput]
+  not: ModelRideConditionInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  owner: ModelStringInput
+}
+
+input CreateRideInput {
+  riderId: ID!
+  motorcycleId: ID
+  distanceKm: Float!
+  energyConsumedKwh: Float
+  carbonCreditsEarned: Float
+  efficiencyScore: Float
+  startTime: AWSDateTime
+  endTime: AWSDateTime
+  iotValidated: Boolean
+  id: ID
+}
+
+input UpdateRideInput {
+  riderId: ID
+  motorcycleId: ID
+  distanceKm: Float
+  energyConsumedKwh: Float
+  carbonCreditsEarned: Float
+  efficiencyScore: Float
+  startTime: AWSDateTime
+  endTime: AWSDateTime
+  iotValidated: Boolean
+  id: ID!
+}
+
+input DeleteRideInput {
+  id: ID!
+}
+
+input ModelSubscriptionRideFilterInput {
+  riderId: ModelSubscriptionIDInput
+  motorcycleId: ModelSubscriptionIDInput
+  distanceKm: ModelSubscriptionFloatInput
+  energyConsumedKwh: ModelSubscriptionFloatInput
+  carbonCreditsEarned: ModelSubscriptionFloatInput
+  efficiencyScore: ModelSubscriptionFloatInput
+  startTime: ModelSubscriptionStringInput
+  endTime: ModelSubscriptionStringInput
+  iotValidated: ModelSubscriptionBooleanInput
+  id: ModelSubscriptionIDInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionRideFilterInput]
+  or: [ModelSubscriptionRideFilterInput]
+  owner: ModelStringInput
+}
+
+type ModelCarbonCreditConnection @aws_iam @aws_cognito_user_pools {
+  items: [CarbonCredit]!
+  nextToken: String
+}
+
+input ModelCarbonCreditStatusInput {
+  eq: CarbonCreditStatus
+  ne: CarbonCreditStatus
+}
+
+input ModelCarbonCreditFilterInput {
+  amount: ModelFloatInput
+  pricePerCredit: ModelFloatInput
+  sourceType: ModelStringInput
+  sourceId: ModelIDInput
+  status: ModelCarbonCreditStatusInput
+  id: ModelIDInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  and: [ModelCarbonCreditFilterInput]
+  or: [ModelCarbonCreditFilterInput]
+  not: ModelCarbonCreditFilterInput
+}
+
+input ModelCarbonCreditConditionInput {
+  amount: ModelFloatInput
+  pricePerCredit: ModelFloatInput
+  sourceType: ModelStringInput
+  sourceId: ModelIDInput
+  status: ModelCarbonCreditStatusInput
+  and: [ModelCarbonCreditConditionInput]
+  or: [ModelCarbonCreditConditionInput]
+  not: ModelCarbonCreditConditionInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+}
+
+input CreateCarbonCreditInput {
+  amount: Float!
+  pricePerCredit: Float
+  sourceType: String
+  sourceId: ID
+  status: CarbonCreditStatus
+  id: ID
+}
+
+input UpdateCarbonCreditInput {
+  amount: Float
+  pricePerCredit: Float
+  sourceType: String
+  sourceId: ID
+  status: CarbonCreditStatus
+  id: ID!
+}
+
+input DeleteCarbonCreditInput {
+  id: ID!
+}
+
+input ModelSubscriptionCarbonCreditFilterInput {
+  amount: ModelSubscriptionFloatInput
+  pricePerCredit: ModelSubscriptionFloatInput
+  sourceType: ModelSubscriptionStringInput
+  sourceId: ModelSubscriptionIDInput
+  status: ModelSubscriptionStringInput
+  id: ModelSubscriptionIDInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionCarbonCreditFilterInput]
+  or: [ModelSubscriptionCarbonCreditFilterInput]
+}
+
+type ModelCarbonPurchaseConnection @aws_iam @aws_cognito_user_pools {
+  items: [CarbonPurchase]!
+  nextToken: String
+}
+
+input ModelCarbonPurchaseStatusInput {
+  eq: CarbonPurchaseStatus
+  ne: CarbonPurchaseStatus
+}
+
+input ModelCarbonPurchaseFilterInput {
+  userId: ModelIDInput
+  creditId: ModelIDInput
+  amount: ModelFloatInput
+  pricePaid: ModelFloatInput
+  status: ModelCarbonPurchaseStatusInput
+  burnedAt: ModelStringInput
+  id: ModelIDInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  and: [ModelCarbonPurchaseFilterInput]
+  or: [ModelCarbonPurchaseFilterInput]
+  not: ModelCarbonPurchaseFilterInput
+  owner: ModelStringInput
+}
+
+input ModelCarbonPurchaseConditionInput {
+  userId: ModelIDInput
+  creditId: ModelIDInput
+  amount: ModelFloatInput
+  pricePaid: ModelFloatInput
+  status: ModelCarbonPurchaseStatusInput
+  burnedAt: ModelStringInput
+  and: [ModelCarbonPurchaseConditionInput]
+  or: [ModelCarbonPurchaseConditionInput]
+  not: ModelCarbonPurchaseConditionInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  owner: ModelStringInput
+}
+
+input CreateCarbonPurchaseInput {
+  userId: ID!
+  creditId: ID
+  amount: Float!
+  pricePaid: Float!
+  status: CarbonPurchaseStatus
+  burnedAt: AWSDateTime
+  id: ID
+}
+
+input UpdateCarbonPurchaseInput {
+  userId: ID
+  creditId: ID
+  amount: Float
+  pricePaid: Float
+  status: CarbonPurchaseStatus
+  burnedAt: AWSDateTime
+  id: ID!
+}
+
+input DeleteCarbonPurchaseInput {
+  id: ID!
+}
+
+input ModelSubscriptionCarbonPurchaseFilterInput {
+  userId: ModelSubscriptionIDInput
+  creditId: ModelSubscriptionIDInput
+  amount: ModelSubscriptionFloatInput
+  pricePaid: ModelSubscriptionFloatInput
+  status: ModelSubscriptionStringInput
+  burnedAt: ModelSubscriptionStringInput
+  id: ModelSubscriptionIDInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionCarbonPurchaseFilterInput]
+  or: [ModelSubscriptionCarbonPurchaseFilterInput]
+  owner: ModelStringInput
+}
+
+type ModelInitialCarbonOfferingConnection @aws_iam @aws_cognito_user_pools {
+  items: [InitialCarbonOffering]!
+  nextToken: String
+}
+
+input ModelInitialCarbonOfferingStatusInput {
+  eq: InitialCarbonOfferingStatus
+  ne: InitialCarbonOfferingStatus
+}
+
+input ModelInitialCarbonOfferingFilterInput {
+  name: ModelStringInput
+  description: ModelStringInput
+  totalCredits: ModelFloatInput
+  creditsSold: ModelFloatInput
+  pricePerCredit: ModelFloatInput
+  marketPrice: ModelFloatInput
+  startDate: ModelStringInput
+  endDate: ModelStringInput
+  deliveryDate: ModelStringInput
+  status: ModelInitialCarbonOfferingStatusInput
+  id: ModelIDInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  and: [ModelInitialCarbonOfferingFilterInput]
+  or: [ModelInitialCarbonOfferingFilterInput]
+  not: ModelInitialCarbonOfferingFilterInput
+}
+
+input ModelInitialCarbonOfferingConditionInput {
+  name: ModelStringInput
+  description: ModelStringInput
+  totalCredits: ModelFloatInput
+  creditsSold: ModelFloatInput
+  pricePerCredit: ModelFloatInput
+  marketPrice: ModelFloatInput
+  startDate: ModelStringInput
+  endDate: ModelStringInput
+  deliveryDate: ModelStringInput
+  status: ModelInitialCarbonOfferingStatusInput
+  and: [ModelInitialCarbonOfferingConditionInput]
+  or: [ModelInitialCarbonOfferingConditionInput]
+  not: ModelInitialCarbonOfferingConditionInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+}
+
+input CreateInitialCarbonOfferingInput {
+  name: String!
+  description: String
+  totalCredits: Float!
+  creditsSold: Float
+  pricePerCredit: Float!
+  marketPrice: Float!
+  startDate: AWSDateTime!
+  endDate: AWSDateTime!
+  deliveryDate: AWSDateTime!
+  status: InitialCarbonOfferingStatus
+  id: ID
+}
+
+input UpdateInitialCarbonOfferingInput {
+  name: String
+  description: String
+  totalCredits: Float
+  creditsSold: Float
+  pricePerCredit: Float
+  marketPrice: Float
+  startDate: AWSDateTime
+  endDate: AWSDateTime
+  deliveryDate: AWSDateTime
+  status: InitialCarbonOfferingStatus
+  id: ID!
+}
+
+input DeleteInitialCarbonOfferingInput {
+  id: ID!
+}
+
+input ModelSubscriptionInitialCarbonOfferingFilterInput {
+  name: ModelSubscriptionStringInput
+  description: ModelSubscriptionStringInput
+  totalCredits: ModelSubscriptionFloatInput
+  creditsSold: ModelSubscriptionFloatInput
+  pricePerCredit: ModelSubscriptionFloatInput
+  marketPrice: ModelSubscriptionFloatInput
+  startDate: ModelSubscriptionStringInput
+  endDate: ModelSubscriptionStringInput
+  deliveryDate: ModelSubscriptionStringInput
+  status: ModelSubscriptionStringInput
+  id: ModelSubscriptionIDInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionInitialCarbonOfferingFilterInput]
+  or: [ModelSubscriptionInitialCarbonOfferingFilterInput]
+}
+
+type ModelIcoPurchaseConnection @aws_iam @aws_cognito_user_pools {
+  items: [IcoPurchase]!
+  nextToken: String
+}
+
+input ModelIcoPurchaseStatusInput {
+  eq: IcoPurchaseStatus
+  ne: IcoPurchaseStatus
+}
+
+input ModelIcoPurchaseFilterInput {
+  userId: ModelIDInput
+  icoId: ModelIDInput
+  creditsPurchased: ModelFloatInput
+  pricePaid: ModelFloatInput
+  creditsDelivered: ModelFloatInput
+  status: ModelIcoPurchaseStatusInput
+  id: ModelIDInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  and: [ModelIcoPurchaseFilterInput]
+  or: [ModelIcoPurchaseFilterInput]
+  not: ModelIcoPurchaseFilterInput
+  owner: ModelStringInput
+}
+
+input ModelIcoPurchaseConditionInput {
+  userId: ModelIDInput
+  icoId: ModelIDInput
+  creditsPurchased: ModelFloatInput
+  pricePaid: ModelFloatInput
+  creditsDelivered: ModelFloatInput
+  status: ModelIcoPurchaseStatusInput
+  and: [ModelIcoPurchaseConditionInput]
+  or: [ModelIcoPurchaseConditionInput]
+  not: ModelIcoPurchaseConditionInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  owner: ModelStringInput
+}
+
+input CreateIcoPurchaseInput {
+  userId: ID!
+  icoId: ID!
+  creditsPurchased: Float!
+  pricePaid: Float!
+  creditsDelivered: Float
+  status: IcoPurchaseStatus
+  id: ID
+}
+
+input UpdateIcoPurchaseInput {
+  userId: ID
+  icoId: ID
+  creditsPurchased: Float
+  pricePaid: Float
+  creditsDelivered: Float
+  status: IcoPurchaseStatus
+  id: ID!
+}
+
+input DeleteIcoPurchaseInput {
+  id: ID!
+}
+
+input ModelSubscriptionIcoPurchaseFilterInput {
+  userId: ModelSubscriptionIDInput
+  icoId: ModelSubscriptionIDInput
+  creditsPurchased: ModelSubscriptionFloatInput
+  pricePaid: ModelSubscriptionFloatInput
+  creditsDelivered: ModelSubscriptionFloatInput
+  status: ModelSubscriptionStringInput
+  id: ModelSubscriptionIDInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionIcoPurchaseFilterInput]
+  or: [ModelSubscriptionIcoPurchaseFilterInput]
+  owner: ModelStringInput
+}
+
+type ModelBurnedCreditConnection @aws_iam @aws_cognito_user_pools {
+  items: [BurnedCredit]!
+  nextToken: String
+}
+
+input ModelBurnedCreditFilterInput {
+  userId: ModelIDInput
+  purchaseId: ModelIDInput
+  icoPurchaseId: ModelIDInput
+  amount: ModelFloatInput
+  certificateNumber: ModelStringInput
+  burnedAt: ModelStringInput
+  id: ModelIDInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  and: [ModelBurnedCreditFilterInput]
+  or: [ModelBurnedCreditFilterInput]
+  not: ModelBurnedCreditFilterInput
+  owner: ModelStringInput
+}
+
+input ModelBurnedCreditConditionInput {
+  userId: ModelIDInput
+  purchaseId: ModelIDInput
+  icoPurchaseId: ModelIDInput
+  amount: ModelFloatInput
+  certificateNumber: ModelStringInput
+  burnedAt: ModelStringInput
+  and: [ModelBurnedCreditConditionInput]
+  or: [ModelBurnedCreditConditionInput]
+  not: ModelBurnedCreditConditionInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  owner: ModelStringInput
+}
+
+input CreateBurnedCreditInput {
+  userId: ID!
+  purchaseId: ID
+  icoPurchaseId: ID
+  amount: Float!
+  certificateNumber: String!
+  burnedAt: AWSDateTime!
+  id: ID
+}
+
+input UpdateBurnedCreditInput {
+  userId: ID
+  purchaseId: ID
+  icoPurchaseId: ID
+  amount: Float
+  certificateNumber: String
+  burnedAt: AWSDateTime
+  id: ID!
+}
+
+input DeleteBurnedCreditInput {
+  id: ID!
+}
+
+input ModelSubscriptionBurnedCreditFilterInput {
+  userId: ModelSubscriptionIDInput
+  purchaseId: ModelSubscriptionIDInput
+  icoPurchaseId: ModelSubscriptionIDInput
+  amount: ModelSubscriptionFloatInput
+  certificateNumber: ModelSubscriptionStringInput
+  burnedAt: ModelSubscriptionStringInput
+  id: ModelSubscriptionIDInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionBurnedCreditFilterInput]
+  or: [ModelSubscriptionBurnedCreditFilterInput]
+  owner: ModelStringInput
+}

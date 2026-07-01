@@ -19,7 +19,7 @@ export const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) 
       navigate("/auth", { replace: true });
       return;
     }
-    if (allowedRoles && userRole && !allowedRoles.includes(userRole)) {
+    if (allowedRoles && (!userRole || !allowedRoles.includes(userRole))) {
       navigate("/auth", { replace: true });
     }
   }, [user, userRole, loading, navigate, allowedRoles]);
@@ -33,7 +33,7 @@ export const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) 
   }
 
   if (!user) return null;
-  if (allowedRoles && userRole && !allowedRoles.includes(userRole)) return null;
+  if (allowedRoles && (!userRole || !allowedRoles.includes(userRole))) return null;
 
   return <>{children}</>;
 };

@@ -1,34 +1,13 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Leaf, Mail, Lock, User, ArrowRight, Bike, TrendingUp, Flame, ShoppingCart } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
-import { z } from "zod";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-
-const loginSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters")
-});
-
-const signupSchema = loginSchema.extend({
-  fullName: z.string().min(2, "Name must be at least 2 characters").max(100),
-});
+import { Leaf, ArrowRight } from "lucide-react";
 
 const Auth = () => {
-  const [isLogin, setIsLogin] = useState(true);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [selectedRole, setSelectedRole] = useState("rider");
-  const [isLoading, setIsLoading] = useState(false);
-  const { signIn, signUp, user, loading, userRole } = useAuth();
+  const { user, loading, userRole, signIn, error } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { toast } = useToast();
 
   // Read the portal context from query param
   const portal = searchParams.get("portal") || null;
@@ -41,95 +20,31 @@ const Auth = () => {
           rider: "/rider-dashboard",
           investor: "/investor-portal",
           offsetter: "/offsetter-dashboard",
+          admin: "/admin",
           "investor-portal": "/investor-portal",
         };
         navigate(portalRedirects[portal] || "/rider-dashboard");
         return;
       }
 
-      // Otherwise, wait for role and redirect based on role
-      if (userRole === null) return;
-      
-      if (userRole === 'investor') {
-        navigate("/investor-portal");
-      } else if (userRole === 'offsetter') {
-        navigate("/offsetter-dashboard");
-      } else {
+      // If userRole is null after authentication, redirect to default landing page
+      if (userRole === null) {
+        navigate("/");
+        return;
+      }
+
+      // Redirect based on resolved role
+      if (userRole === "admin") {
+        navigate("/admin");
+      } else if (userRole === "rider") {
         navigate("/rider-dashboard");
+      } else if (userRole === "investor") {
+        navigate("/investor-portal");
+      } else if (userRole === "offsetter") {
+        navigate("/offsetter-dashboard");
       }
     }
   }, [user, loading, userRole, portal, navigate]);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-
-    try {
-      if (isLogin) {
-        const validation = loginSchema.safeParse({ email, password });
-        if (!validation.success) {
-          toast({
-            title: "Validation Error",
-            description: validation.error.errors[0].message,
-            variant: "destructive"
-          });
-          setIsLoading(false);
-          return;
-        }
-
-        const { error } = await signIn(email, password);
-        if (error) {
-          toast({
-            title: "Login Failed",
-            description: error.message === "Invalid login credentials" 
-              ? "Invalid email or password. Please try again."
-              : error.message,
-            variant: "destructive"
-          });
-        } else {
-          toast({
-            title: "Welcome back!",
-            description: "You have successfully logged in."
-          });
-        }
-      } else {
-        const validation = signupSchema.safeParse({ email, password, fullName });
-        if (!validation.success) {
-          toast({
-            title: "Validation Error",
-            description: validation.error.errors[0].message,
-            variant: "destructive"
-          });
-          setIsLoading(false);
-          return;
-        }
-
-        const { error } = await signUp(email, password, fullName, selectedRole);
-        if (error) {
-          if (error.message.includes("already registered")) {
-            toast({
-              title: "Account Exists",
-              description: "This email is already registered. Please login instead.",
-              variant: "destructive"
-            });
-          } else {
-            toast({
-              title: "Signup Failed",
-              description: error.message,
-              variant: "destructive"
-            });
-          }
-        } else {
-          toast({
-            title: "Account Created!",
-            description: "Welcome to Net Tribe Carbon. You are now logged in."
-          });
-        }
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   if (loading) {
     return (
@@ -141,7 +56,7 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen flex bg-background">
-      {/* Left Panel - Form */}
+      {/* Left Panel - Sign In */}
       <div className="flex-1 flex items-center justify-center p-8">
         <div className="w-full max-w-md">
           {/* Logo */}
@@ -157,125 +72,30 @@ const Auth = () => {
           {/* Header */}
           <div className="mb-8">
             <h1 className="font-display text-3xl font-bold mb-2">
-              {isLogin ? "Welcome back" : "Create account"}
+              Welcome back
             </h1>
             <p className="text-muted-foreground">
-              {isLogin 
-                ? "Sign in to access your dashboard" 
-                : "Join Net Tribe Carbon and start earning carbon credits"}
+              Sign in to access your dashboard
             </p>
           </div>
 
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-5">
-            {!isLogin && (
-              <>
-                <div className="space-y-2">
-                  <Label htmlFor="fullName">Full Name</Label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                    <Input
-                      id="fullName"
-                      type="text"
-                      placeholder="John Doe"
-                      value={fullName}
-                      onChange={(e) => setFullName(e.target.value)}
-                      className="pl-10"
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-3">
-                  <Label>I am signing up as</Label>
-                  <RadioGroup value={selectedRole} onValueChange={setSelectedRole} className="grid grid-cols-2 gap-3">
-                    {[
-                      { value: "rider", label: "Rider", icon: Bike, desc: "Earn credits by riding" },
-                      { value: "investor", label: "Investor", icon: TrendingUp, desc: "Fund & earn ROI" },
-                      { value: "offsetter", label: "Offsetter", icon: Flame, desc: "Buy & burn credits" },
-                      { value: "user", label: "User", icon: ShoppingCart, desc: "Trade carbon credits" },
-                    ].map((role) => (
-                      <Label
-                        key={role.value}
-                        htmlFor={`role-${role.value}`}
-                        className={`flex items-center gap-3 p-3 rounded-xl border-2 cursor-pointer transition-all ${
-                          selectedRole === role.value
-                            ? "border-primary bg-primary/10"
-                            : "border-border hover:border-primary/50"
-                        }`}
-                      >
-                        <RadioGroupItem value={role.value} id={`role-${role.value}`} className="sr-only" />
-                        <role.icon className={`w-5 h-5 ${selectedRole === role.value ? "text-primary" : "text-muted-foreground"}`} />
-                        <div>
-                          <div className="font-medium text-sm">{role.label}</div>
-                          <div className="text-xs text-muted-foreground">{role.desc}</div>
-                        </div>
-                      </Label>
-                    ))}
-                  </RadioGroup>
-                </div>
-              </>
-            )}
-
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="you@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="pl-10"
-                  required
-                />
-              </div>
+          {/* Error message */}
+          {error && (
+            <div className="mb-6 p-4 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-sm">
+              {error}
             </div>
+          )}
 
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="pl-10"
-                  required
-                  minLength={6}
-                />
-              </div>
-            </div>
-
-
-            <Button 
-              type="submit" 
-              variant="glow" 
-              className="w-full" 
-              size="lg"
-              disabled={isLoading}
-            >
-              {isLoading ? "Please wait..." : isLogin ? "Sign In" : "Create Account"}
-              <ArrowRight className="w-5 h-5" />
-            </Button>
-          </form>
-
-          {/* Toggle */}
-          <div className="mt-6 text-center">
-            <p className="text-muted-foreground">
-              {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
-              <button
-                type="button"
-                onClick={() => setIsLogin(!isLogin)}
-                className="text-primary hover:underline font-medium"
-              >
-                {isLogin ? "Sign up" : "Sign in"}
-              </button>
-            </p>
-          </div>
+          {/* Sign In Button */}
+          <Button
+            variant="glow"
+            className="w-full"
+            size="lg"
+            onClick={() => signIn()}
+          >
+            Sign In
+            <ArrowRight className="w-5 h-5" />
+          </Button>
         </div>
       </div>
 
