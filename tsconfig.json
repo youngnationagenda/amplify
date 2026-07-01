@@ -19,7 +19,7 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "types": ["node"]
+    "types": []
   },
   "exclude": ["node_modules", "dist", ".amplify"]
 }
