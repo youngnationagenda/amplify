@@ -57,7 +57,7 @@ Replace the existing Amplify SDK authentication calls with a standards-based OID
     - Implement callback URL cleanup using `onSigninCallback` that removes `code`, `state`, and `session_state` query params via `window.history.replaceState`
     - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 9.1, 9.2, 9.3, 9.4_
 
-- [~] 5. Checkpoint - Verify provider integration
+- [x] 5. Checkpoint - Verify provider integration
   - Ensure all tests pass, ask the user if questions arise.
 
 - [x] 6. Update ProtectedRoute component
@@ -78,18 +78,18 @@ Replace the existing Amplify SDK authentication calls with a standards-based OID
     - Keep the visual layout (branding, right panel) intact
     - _Requirements: 6.1, 6.2, 6.3, 6.4, 6.5, 7.1, 7.2, 7.3_
 
-- [~] 8. Checkpoint - Verify end-to-end auth flow compiles
+- [x] 8. Checkpoint - Verify end-to-end auth flow compiles
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 9. Write unit tests for OIDC modules
-  - [-] 9.1 Create `src/integrations/oidc/__tests__/config.test.ts`
+- [x] 9. Write unit tests for OIDC modules
+  - [x] 9.1 Create `src/integrations/oidc/__tests__/config.test.ts`
     - Assert `authority`, `client_id`, `response_type`, `scope` values match requirements
     - Assert `redirect_uri` and `post_logout_redirect_uri` use `window.location.origin`
     - Assert `automaticSilentRenew` is `true` and notification time is `60`
     - Assert `userStore` uses `sessionStorage`
     - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 8.1, 8.2_
 
-  - [-] 9.2 Create `src/contexts/__tests__/OidcAuthContext.test.tsx`
+  - [x] 9.2 Create `src/contexts/__tests__/OidcAuthContext.test.tsx`
     - Mock `react-oidc-context`'s `useAuth` hook
     - Mock Amplify `client.models.UserRole.list`
     - Test: when OIDC user available, `extractUser` correctly maps `sub`, `email`, `name` claims to `AuthUser`
@@ -101,7 +101,7 @@ Replace the existing Amplify SDK authentication calls with a standards-based OID
     - Test: `error` exposes OIDC error message
     - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 4.1, 4.2, 4.3, 4.4, 4.5_
 
-  - [-] 9.3 Create `src/components/__tests__/ProtectedRoute.test.tsx`
+  - [x] 9.3 Create `src/components/__tests__/ProtectedRoute.test.tsx`
     - Mock auth context with various user/role/loading combinations
     - Test: loading state shows indicator
     - Test: unauthenticated user redirects to `/auth`
@@ -129,7 +129,7 @@ Replace the existing Amplify SDK authentication calls with a standards-based OID
     - Use `fast-check` with minimum 100 iterations
     - **Validates: Requirements 5.1, 5.2, 5.4, 5.5, 5.6**
 
-- [~] 10. Final checkpoint - Ensure all tests pass
+- [x] 10. Final checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
 ## Notes
