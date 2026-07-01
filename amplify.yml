@@ -14,9 +14,8 @@ applications:
           commands:
             - nvm install 20
             - nvm use 20
-            - npm ci
-            - npm run lint
-            - npm run test -- --run
+            - npm ci --cache .npm --prefer-offline
+            # lint + test removed — already run in GitHub Actions CI
         build:
           commands:
             - npm run build
@@ -38,8 +37,7 @@ applications:
             - nvm install 20
             - nvm use 20
             - npm ci
-            - npm run lint
-            - npm run test -- --run
+            # lint + test removed — already run in GitHub Actions CI
         build:
           commands:
             - npm run build

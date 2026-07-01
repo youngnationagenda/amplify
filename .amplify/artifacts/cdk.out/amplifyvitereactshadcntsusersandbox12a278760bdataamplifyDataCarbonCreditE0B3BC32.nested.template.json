@@ -1,0 +1,2108 @@
+{
+ "Parameters": {
+  "DynamoDBModelTableReadIOPS": {
+   "Type": "Number",
+   "Default": 5,
+   "Description": "The number of read IOPS the table should support."
+  },
+  "DynamoDBModelTableWriteIOPS": {
+   "Type": "Number",
+   "Default": 5,
+   "Description": "The number of write IOPS the table should support."
+  },
+  "DynamoDBBillingMode": {
+   "Type": "String",
+   "Default": "PAY_PER_REQUEST",
+   "AllowedValues": [
+    "PAY_PER_REQUEST",
+    "PROVISIONED"
+   ],
+   "Description": "Configure @model types to create DynamoDB tables with PAY_PER_REQUEST or PROVISIONED billing modes."
+  },
+  "DynamoDBEnablePointInTimeRecovery": {
+   "Type": "String",
+   "Default": "false",
+   "AllowedValues": [
+    "true",
+    "false"
+   ],
+   "Description": "Whether to enable Point in Time Recovery on the table."
+  },
+  "DynamoDBEnableServerSideEncryption": {
+   "Type": "String",
+   "Default": "true",
+   "AllowedValues": [
+    "true",
+    "false"
+   ],
+   "Description": "Enable server side encryption powered by KMS."
+  },
+  "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResourceEF1B8D0FOutputsamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataAmplifyTableManagerTableMa4ECAC782": {
+   "Type": "String"
+  },
+  "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId": {
+   "Type": "String"
+  },
+  "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPINONEDS55F36260Name": {
+   "Type": "String"
+  },
+  "referencetoamplifyvitereactshadcntsusersandbox12a278760bauthNestedStackauthNestedStackResourceBE670D7AOutputsamplifyvitereactshadcntsusersandbox12a278760bauthamplifyAuthauthenticatedUserRoleDA60A65ARef": {
+   "Type": "String"
+  },
+  "referencetoamplifyvitereactshadcntsusersandbox12a278760bauthNestedStackauthNestedStackResourceBE670D7AOutputsamplifyvitereactshadcntsusersandbox12a278760bauthamplifyAuthunauthenticatedUserRole5C726899Ref": {
+   "Type": "String"
+  },
+  "referencetoamplifyvitereactshadcntsusersandbox12a278760bauthNestedStackauthNestedStackResourceBE670D7AOutputsamplifyvitereactshadcntsusersandbox12a278760bauthamplifyAuthIdentityPoolC90998FBRef": {
+   "Type": "String"
+  }
+ },
+ "Conditions": {
+  "HasEnvironmentParameter": {
+   "Fn::Not": [
+    {
+     "Fn::Equals": [
+      "NONE",
+      "NONE"
+     ]
+    }
+   ]
+  },
+  "ShouldUsePayPerRequestBilling": {
+   "Fn::Equals": [
+    {
+     "Ref": "DynamoDBBillingMode"
+    },
+    "PAY_PER_REQUEST"
+   ]
+  },
+  "ShouldUsePointInTimeRecovery": {
+   "Fn::Equals": [
+    {
+     "Ref": "DynamoDBEnablePointInTimeRecovery"
+    },
+    "true"
+   ]
+  },
+  "CDKMetadataAvailable": {
+   "Fn::Or": [
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "af-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-3"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-south-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-3"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-4"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ca-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ca-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-northwest-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-central-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-south-2"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-3"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "il-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "sa-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-1"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Equals": [
+      {
+       "Ref": "AWS::Region"
+      },
+      "us-west-2"
+     ]
+    }
+   ]
+  }
+ },
+ "Resources": {
+  "CarbonCreditTable": {
+   "Type": "Custom::AmplifyDynamoDBTable",
+   "Properties": {
+    "ServiceToken": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResourceEF1B8D0FOutputsamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataAmplifyTableManagerTableMa4ECAC782"
+    },
+    "tableName": {
+     "Fn::Join": [
+      "",
+      [
+       "CarbonCredit-",
+       {
+        "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+       },
+       "-NONE"
+      ]
+     ]
+    },
+    "attributeDefinitions": [
+     {
+      "attributeName": "id",
+      "attributeType": "S"
+     }
+    ],
+    "keySchema": [
+     {
+      "attributeName": "id",
+      "keyType": "HASH"
+     }
+    ],
+    "provisionedThroughput": {
+     "Fn::If": [
+      "ShouldUsePayPerRequestBilling",
+      {
+       "Ref": "AWS::NoValue"
+      },
+      {
+       "ReadCapacityUnits": {
+        "Ref": "DynamoDBModelTableReadIOPS"
+       },
+       "WriteCapacityUnits": {
+        "Ref": "DynamoDBModelTableWriteIOPS"
+       }
+      }
+     ]
+    },
+    "sseSpecification": {
+     "sseEnabled": false
+    },
+    "streamSpecification": {
+     "streamViewType": "NEW_AND_OLD_IMAGES"
+    },
+    "deletionProtectionEnabled": false,
+    "allowDestructiveGraphqlSchemaUpdates": true,
+    "replaceTableUponGsiUpdate": true,
+    "pointInTimeRecoverySpecification": {
+     "Fn::If": [
+      "ShouldUsePointInTimeRecovery",
+      {
+       "PointInTimeRecoveryEnabled": true
+      },
+      {
+       "Ref": "AWS::NoValue"
+      }
+     ]
+    },
+    "billingMode": {
+     "Fn::If": [
+      "ShouldUsePayPerRequestBilling",
+      "PAY_PER_REQUEST",
+      {
+       "Ref": "AWS::NoValue"
+      }
+     ]
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-vitereactshadcnts-user-sandbox-12a278760b/data/amplifyData/CarbonCredit/CarbonCreditTable/Default/Default"
+   }
+  },
+  "CarbonCreditIAMRole0623837B": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "appsync.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Policies": [
+     {
+      "PolicyDocument": {
+       "Statement": [
+        {
+         "Action": [
+          "dynamodb:BatchGetItem",
+          "dynamodb:BatchWriteItem",
+          "dynamodb:PutItem",
+          "dynamodb:DeleteItem",
+          "dynamodb:GetItem",
+          "dynamodb:Scan",
+          "dynamodb:Query",
+          "dynamodb:UpdateItem",
+          "dynamodb:ConditionCheckItem",
+          "dynamodb:DescribeTable",
+          "dynamodb:GetRecords",
+          "dynamodb:GetShardIterator"
+         ],
+         "Effect": "Allow",
+         "Resource": [
+          {
+           "Fn::Sub": [
+            "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${tablename}",
+            {
+             "tablename": {
+              "Fn::Join": [
+               "",
+               [
+                "CarbonCredit-",
+                {
+                 "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+                },
+                "-NONE"
+               ]
+              ]
+             }
+            }
+           ]
+          },
+          {
+           "Fn::Sub": [
+            "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${tablename}/*",
+            {
+             "tablename": {
+              "Fn::Join": [
+               "",
+               [
+                "CarbonCredit-",
+                {
+                 "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+                },
+                "-NONE"
+               ]
+              ]
+             }
+            }
+           ]
+          }
+         ]
+        }
+       ],
+       "Version": "2012-10-17"
+      },
+      "PolicyName": "DynamoDBAccess"
+     }
+    ],
+    "RoleName": {
+     "Fn::Join": [
+      "",
+      [
+       "CarbonCreditIAMRolee965f7-",
+       {
+        "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+       },
+       "-NONE"
+      ]
+     ]
+    },
+    "Tags": [
+     {
+      "Key": "amplify:deployment-type",
+      "Value": "sandbox"
+     },
+     {
+      "Key": "amplify:friendly-name",
+      "Value": "amplifyData"
+     },
+     {
+      "Key": "created-by",
+      "Value": "amplify"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-vitereactshadcnts-user-sandbox-12a278760b/data/amplifyData/CarbonCredit/CarbonCreditIAMRole/Resource"
+   }
+  },
+  "CarbonCreditDataSource": {
+   "Type": "AWS::AppSync::DataSource",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+    },
+    "DynamoDBConfig": {
+     "AwsRegion": {
+      "Ref": "AWS::Region"
+     },
+     "TableName": {
+      "Fn::Select": [
+       1,
+       {
+        "Fn::Split": [
+         "/",
+         {
+          "Fn::Select": [
+           5,
+           {
+            "Fn::Split": [
+             ":",
+             {
+              "Fn::GetAtt": [
+               "CarbonCreditTable",
+               "TableArn"
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    },
+    "Name": "CarbonCreditTable",
+    "ServiceRoleArn": {
+     "Fn::GetAtt": [
+      "CarbonCreditIAMRole0623837B",
+      "Arn"
+     ]
+    },
+    "Type": "AMAZON_DYNAMODB"
+   },
+   "DependsOn": [
+    "CarbonCreditIAMRole0623837B"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-vitereactshadcnts-user-sandbox-12a278760b/data/amplifyData/CarbonCredit/CarbonCreditDataSource/Resource"
+   }
+  },
+  "QuerygetCarbonCreditauth0FunctionQuerygetCarbonCreditauth0FunctionAppSyncFunction39E49546": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPINONEDS55F36260Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "QuerygetCarbonCreditauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/b68cc472beb5d6c236bbd8682e31d78bd46b63809a9f03f801f6b373542c9c6c.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-vitereactshadcnts-user-sandbox-12a278760b/data/amplifyData/CarbonCredit/QuerygetCarbonCreditauth0Function/QuerygetCarbonCreditauth0Function.AppSyncFunction"
+   }
+  },
+  "QuerygetCarbonCreditpostAuth0FunctionQuerygetCarbonCreditpostAuth0FunctionAppSyncFunction1D2A48F4": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPINONEDS55F36260Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "QuerygetCarbonCreditpostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-vitereactshadcnts-user-sandbox-12a278760b/data/amplifyData/CarbonCredit/QuerygetCarbonCreditpostAuth0Function/QuerygetCarbonCreditpostAuth0Function.AppSyncFunction"
+   }
+  },
+  "QueryGetCarbonCreditDataResolverFnQueryGetCarbonCreditDataResolverFnAppSyncFunction83FF94EB": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+    },
+    "DataSourceName": {
+     "Fn::GetAtt": [
+      "CarbonCreditDataSource",
+      "Name"
+     ]
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "QueryGetCarbonCreditDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/08f4d557693d96c1a4efba0f9dc91330e4b19772fd5477c156468843e3d9cb5e.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/4c6a2d29f01c6091bd1d9afe16e5849d456c96f17c3b215938c8067399532719.vtl"
+    }
+   },
+   "DependsOn": [
+    "CarbonCreditDataSource"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-vitereactshadcnts-user-sandbox-12a278760b/data/amplifyData/CarbonCredit/QueryGetCarbonCreditDataResolverFn/QueryGetCarbonCreditDataResolverFn.AppSyncFunction"
+   }
+  },
+  "GetCarbonCreditResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+    },
+    "FieldName": "getCarbonCredit",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "QuerygetCarbonCreditauth0FunctionQuerygetCarbonCreditauth0FunctionAppSyncFunction39E49546",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "QuerygetCarbonCreditpostAuth0FunctionQuerygetCarbonCreditpostAuth0FunctionAppSyncFunction1D2A48F4",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "QueryGetCarbonCreditDataResolverFnQueryGetCarbonCreditDataResolverFnAppSyncFunction83FF94EB",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Query\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"getCarbonCredit\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+       {
+        "Fn::Select": [
+         1,
+         {
+          "Fn::Split": [
+           "/",
+           {
+            "Fn::Select": [
+             5,
+             {
+              "Fn::Split": [
+               ":",
+               {
+                "Fn::GetAtt": [
+                 "CarbonCreditTable",
+                 "TableArn"
+                ]
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bauthNestedStackauthNestedStackResourceBE670D7AOutputsamplifyvitereactshadcntsusersandbox12a278760bauthamplifyAuthauthenticatedUserRoleDA60A65ARef"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bauthNestedStackauthNestedStackResourceBE670D7AOutputsamplifyvitereactshadcntsusersandbox12a278760bauthamplifyAuthunauthenticatedUserRole5C726899Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bauthNestedStackauthNestedStackResourceBE670D7AOutputsamplifyvitereactshadcntsusersandbox12a278760bauthamplifyAuthIdentityPoolC90998FBRef"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Query"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-vitereactshadcnts-user-sandbox-12a278760b/data/amplifyData/CarbonCredit/queryGetCarbonCreditResolver"
+   }
+  },
+  "QuerylistCarbonCreditsauth0FunctionQuerylistCarbonCreditsauth0FunctionAppSyncFunction91801A6C": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPINONEDS55F36260Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "QuerylistCarbonCreditsauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/b68cc472beb5d6c236bbd8682e31d78bd46b63809a9f03f801f6b373542c9c6c.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-vitereactshadcnts-user-sandbox-12a278760b/data/amplifyData/CarbonCredit/QuerylistCarbonCreditsauth0Function/QuerylistCarbonCreditsauth0Function.AppSyncFunction"
+   }
+  },
+  "QuerylistCarbonCreditspostAuth0FunctionQuerylistCarbonCreditspostAuth0FunctionAppSyncFunctionCECB40A7": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPINONEDS55F36260Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "QuerylistCarbonCreditspostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-vitereactshadcnts-user-sandbox-12a278760b/data/amplifyData/CarbonCredit/QuerylistCarbonCreditspostAuth0Function/QuerylistCarbonCreditspostAuth0Function.AppSyncFunction"
+   }
+  },
+  "QueryListCarbonCreditsDataResolverFnQueryListCarbonCreditsDataResolverFnAppSyncFunctionB23A7446": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+    },
+    "DataSourceName": {
+     "Fn::GetAtt": [
+      "CarbonCreditDataSource",
+      "Name"
+     ]
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "QueryListCarbonCreditsDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/9fcbe070ecd3023c5bf5b966fa9584757db9762eef123bad0820bd87591b2174.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/cc01911d0269d4080ea57505dc445dfc315ef7ad85d3d9d4ea1357858bff451d.vtl"
+    }
+   },
+   "DependsOn": [
+    "CarbonCreditDataSource"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-vitereactshadcnts-user-sandbox-12a278760b/data/amplifyData/CarbonCredit/QueryListCarbonCreditsDataResolverFn/QueryListCarbonCreditsDataResolverFn.AppSyncFunction"
+   }
+  },
+  "ListCarbonCreditResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+    },
+    "FieldName": "listCarbonCredits",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "QuerylistCarbonCreditsauth0FunctionQuerylistCarbonCreditsauth0FunctionAppSyncFunction91801A6C",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "QuerylistCarbonCreditspostAuth0FunctionQuerylistCarbonCreditspostAuth0FunctionAppSyncFunctionCECB40A7",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "QueryListCarbonCreditsDataResolverFnQueryListCarbonCreditsDataResolverFnAppSyncFunctionB23A7446",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Query\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"listCarbonCredits\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+       {
+        "Fn::Select": [
+         1,
+         {
+          "Fn::Split": [
+           "/",
+           {
+            "Fn::Select": [
+             5,
+             {
+              "Fn::Split": [
+               ":",
+               {
+                "Fn::GetAtt": [
+                 "CarbonCreditTable",
+                 "TableArn"
+                ]
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bauthNestedStackauthNestedStackResourceBE670D7AOutputsamplifyvitereactshadcntsusersandbox12a278760bauthamplifyAuthauthenticatedUserRoleDA60A65ARef"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bauthNestedStackauthNestedStackResourceBE670D7AOutputsamplifyvitereactshadcntsusersandbox12a278760bauthamplifyAuthunauthenticatedUserRole5C726899Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bauthNestedStackauthNestedStackResourceBE670D7AOutputsamplifyvitereactshadcntsusersandbox12a278760bauthamplifyAuthIdentityPoolC90998FBRef"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Query"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-vitereactshadcnts-user-sandbox-12a278760b/data/amplifyData/CarbonCredit/queryListCarbonCreditsResolver"
+   }
+  },
+  "MutationcreateCarbonCreditinit0FunctionMutationcreateCarbonCreditinit0FunctionAppSyncFunctionF97F37DD": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPINONEDS55F36260Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationcreateCarbonCreditinit0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/a183ddccbd956316c38ef97177b8f088ef0826f62023323f5ae6053d348ccffc.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-vitereactshadcnts-user-sandbox-12a278760b/data/amplifyData/CarbonCredit/MutationcreateCarbonCreditinit0Function/MutationcreateCarbonCreditinit0Function.AppSyncFunction"
+   }
+  },
+  "MutationcreateCarbonCreditinit1FunctionMutationcreateCarbonCreditinit1FunctionAppSyncFunctionFD9AC830": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPINONEDS55F36260Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationcreateCarbonCreditinit1Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/03cf3124dec21c9eeb058e0ae10f63fedabd4c2f2c2300bcb3600baabc806409.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-vitereactshadcnts-user-sandbox-12a278760b/data/amplifyData/CarbonCredit/MutationcreateCarbonCreditinit1Function/MutationcreateCarbonCreditinit1Function.AppSyncFunction"
+   }
+  },
+  "MutationcreateCarbonCreditauth0FunctionMutationcreateCarbonCreditauth0FunctionAppSyncFunction28350277": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPINONEDS55F36260Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationcreateCarbonCreditauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/cd88edaad70d0feb9836b0bce4e4cb855f58fb00ae8b4b2bf62f17253ec0d06e.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-vitereactshadcnts-user-sandbox-12a278760b/data/amplifyData/CarbonCredit/MutationcreateCarbonCreditauth0Function/MutationcreateCarbonCreditauth0Function.AppSyncFunction"
+   }
+  },
+  "MutationcreateCarbonCreditpostAuth0FunctionMutationcreateCarbonCreditpostAuth0FunctionAppSyncFunctionDDC9BE21": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPINONEDS55F36260Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationcreateCarbonCreditpostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-vitereactshadcnts-user-sandbox-12a278760b/data/amplifyData/CarbonCredit/MutationcreateCarbonCreditpostAuth0Function/MutationcreateCarbonCreditpostAuth0Function.AppSyncFunction"
+   }
+  },
+  "MutationCreateCarbonCreditDataResolverFnMutationCreateCarbonCreditDataResolverFnAppSyncFunction5AC57EDA": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+    },
+    "DataSourceName": {
+     "Fn::GetAtt": [
+      "CarbonCreditDataSource",
+      "Name"
+     ]
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationCreateCarbonCreditDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/9844a8711e0946a4b63991922c638729b148e96a616ccbf80ad3fce1adcd7bc4.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f4a52b72209a9dfa197b5e7367a5c378c5bb86de6e29ddd9e48b49a3fe54b249.vtl"
+    }
+   },
+   "DependsOn": [
+    "CarbonCreditDataSource"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-vitereactshadcnts-user-sandbox-12a278760b/data/amplifyData/CarbonCredit/MutationCreateCarbonCreditDataResolverFn/MutationCreateCarbonCreditDataResolverFn.AppSyncFunction"
+   }
+  },
+  "CreateCarbonCreditResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+    },
+    "FieldName": "createCarbonCredit",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "MutationcreateCarbonCreditinit0FunctionMutationcreateCarbonCreditinit0FunctionAppSyncFunctionF97F37DD",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationcreateCarbonCreditinit1FunctionMutationcreateCarbonCreditinit1FunctionAppSyncFunctionFD9AC830",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationcreateCarbonCreditauth0FunctionMutationcreateCarbonCreditauth0FunctionAppSyncFunction28350277",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationcreateCarbonCreditpostAuth0FunctionMutationcreateCarbonCreditpostAuth0FunctionAppSyncFunctionDDC9BE21",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationCreateCarbonCreditDataResolverFnMutationCreateCarbonCreditDataResolverFnAppSyncFunction5AC57EDA",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Mutation\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"createCarbonCredit\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+       {
+        "Fn::Select": [
+         1,
+         {
+          "Fn::Split": [
+           "/",
+           {
+            "Fn::Select": [
+             5,
+             {
+              "Fn::Split": [
+               ":",
+               {
+                "Fn::GetAtt": [
+                 "CarbonCreditTable",
+                 "TableArn"
+                ]
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bauthNestedStackauthNestedStackResourceBE670D7AOutputsamplifyvitereactshadcntsusersandbox12a278760bauthamplifyAuthauthenticatedUserRoleDA60A65ARef"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bauthNestedStackauthNestedStackResourceBE670D7AOutputsamplifyvitereactshadcntsusersandbox12a278760bauthamplifyAuthunauthenticatedUserRole5C726899Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bauthNestedStackauthNestedStackResourceBE670D7AOutputsamplifyvitereactshadcntsusersandbox12a278760bauthamplifyAuthIdentityPoolC90998FBRef"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Mutation"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-vitereactshadcnts-user-sandbox-12a278760b/data/amplifyData/CarbonCredit/mutationCreateCarbonCreditResolver"
+   }
+  },
+  "MutationupdateCarbonCreditinit0FunctionMutationupdateCarbonCreditinit0FunctionAppSyncFunction21476325": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPINONEDS55F36260Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationupdateCarbonCreditinit0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/06db846fd14e6fc371f22b12b5545ba8e2dbfeda85d8c8d586c71c282166657b.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-vitereactshadcnts-user-sandbox-12a278760b/data/amplifyData/CarbonCredit/MutationupdateCarbonCreditinit0Function/MutationupdateCarbonCreditinit0Function.AppSyncFunction"
+   }
+  },
+  "MutationupdateCarbonCreditauth0FunctionMutationupdateCarbonCreditauth0FunctionAppSyncFunction6D4333B7": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+    },
+    "DataSourceName": {
+     "Fn::GetAtt": [
+      "CarbonCreditDataSource",
+      "Name"
+     ]
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationupdateCarbonCreditauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/1f5fed297da9c32ae3af922bf3a38ccf23b956078887d16891ec06c20c64722c.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/9c2fe6d8d3c5f507f3e770c6ca3393acfd34b87b6292769cbedda1109fdeef43.vtl"
+    }
+   },
+   "DependsOn": [
+    "CarbonCreditDataSource"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-vitereactshadcnts-user-sandbox-12a278760b/data/amplifyData/CarbonCredit/MutationupdateCarbonCreditauth0Function/MutationupdateCarbonCreditauth0Function.AppSyncFunction"
+   }
+  },
+  "MutationupdateCarbonCreditpostAuth0FunctionMutationupdateCarbonCreditpostAuth0FunctionAppSyncFunction27EC76B3": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPINONEDS55F36260Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationupdateCarbonCreditpostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-vitereactshadcnts-user-sandbox-12a278760b/data/amplifyData/CarbonCredit/MutationupdateCarbonCreditpostAuth0Function/MutationupdateCarbonCreditpostAuth0Function.AppSyncFunction"
+   }
+  },
+  "MutationUpdateCarbonCreditDataResolverFnMutationUpdateCarbonCreditDataResolverFnAppSyncFunctionE6CD38C3": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+    },
+    "DataSourceName": {
+     "Fn::GetAtt": [
+      "CarbonCreditDataSource",
+      "Name"
+     ]
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationUpdateCarbonCreditDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/474bf0776ec2164a13191d1a0a9e057154931e4918fea5086f49850d02a5371b.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f4a52b72209a9dfa197b5e7367a5c378c5bb86de6e29ddd9e48b49a3fe54b249.vtl"
+    }
+   },
+   "DependsOn": [
+    "CarbonCreditDataSource"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-vitereactshadcnts-user-sandbox-12a278760b/data/amplifyData/CarbonCredit/MutationUpdateCarbonCreditDataResolverFn/MutationUpdateCarbonCreditDataResolverFn.AppSyncFunction"
+   }
+  },
+  "UpdateCarbonCreditResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+    },
+    "FieldName": "updateCarbonCredit",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "MutationupdateCarbonCreditinit0FunctionMutationupdateCarbonCreditinit0FunctionAppSyncFunction21476325",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationupdateCarbonCreditauth0FunctionMutationupdateCarbonCreditauth0FunctionAppSyncFunction6D4333B7",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationupdateCarbonCreditpostAuth0FunctionMutationupdateCarbonCreditpostAuth0FunctionAppSyncFunction27EC76B3",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationUpdateCarbonCreditDataResolverFnMutationUpdateCarbonCreditDataResolverFnAppSyncFunctionE6CD38C3",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Mutation\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"updateCarbonCredit\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+       {
+        "Fn::Select": [
+         1,
+         {
+          "Fn::Split": [
+           "/",
+           {
+            "Fn::Select": [
+             5,
+             {
+              "Fn::Split": [
+               ":",
+               {
+                "Fn::GetAtt": [
+                 "CarbonCreditTable",
+                 "TableArn"
+                ]
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bauthNestedStackauthNestedStackResourceBE670D7AOutputsamplifyvitereactshadcntsusersandbox12a278760bauthamplifyAuthauthenticatedUserRoleDA60A65ARef"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bauthNestedStackauthNestedStackResourceBE670D7AOutputsamplifyvitereactshadcntsusersandbox12a278760bauthamplifyAuthunauthenticatedUserRole5C726899Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bauthNestedStackauthNestedStackResourceBE670D7AOutputsamplifyvitereactshadcntsusersandbox12a278760bauthamplifyAuthIdentityPoolC90998FBRef"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Mutation"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-vitereactshadcnts-user-sandbox-12a278760b/data/amplifyData/CarbonCredit/mutationUpdateCarbonCreditResolver"
+   }
+  },
+  "MutationdeleteCarbonCreditauth0FunctionMutationdeleteCarbonCreditauth0FunctionAppSyncFunctionA9E8F2F7": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+    },
+    "DataSourceName": {
+     "Fn::GetAtt": [
+      "CarbonCreditDataSource",
+      "Name"
+     ]
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationdeleteCarbonCreditauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/1f5fed297da9c32ae3af922bf3a38ccf23b956078887d16891ec06c20c64722c.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/45c7c52cacf53924b3cc4d12c9d6ef635a3cdd63cb01c3cb4da212b6391c24cb.vtl"
+    }
+   },
+   "DependsOn": [
+    "CarbonCreditDataSource"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-vitereactshadcnts-user-sandbox-12a278760b/data/amplifyData/CarbonCredit/MutationdeleteCarbonCreditauth0Function/MutationdeleteCarbonCreditauth0Function.AppSyncFunction"
+   }
+  },
+  "MutationdeleteCarbonCreditpostAuth0FunctionMutationdeleteCarbonCreditpostAuth0FunctionAppSyncFunctionDF07F91F": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPINONEDS55F36260Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationdeleteCarbonCreditpostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-vitereactshadcnts-user-sandbox-12a278760b/data/amplifyData/CarbonCredit/MutationdeleteCarbonCreditpostAuth0Function/MutationdeleteCarbonCreditpostAuth0Function.AppSyncFunction"
+   }
+  },
+  "MutationDeleteCarbonCreditDataResolverFnMutationDeleteCarbonCreditDataResolverFnAppSyncFunction7D49B90A": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+    },
+    "DataSourceName": {
+     "Fn::GetAtt": [
+      "CarbonCreditDataSource",
+      "Name"
+     ]
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationDeleteCarbonCreditDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/4f7907d1209a2c9953a0c053df402c634e359546d70c7cc5c2e8e21ea734880f.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f4a52b72209a9dfa197b5e7367a5c378c5bb86de6e29ddd9e48b49a3fe54b249.vtl"
+    }
+   },
+   "DependsOn": [
+    "CarbonCreditDataSource"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-vitereactshadcnts-user-sandbox-12a278760b/data/amplifyData/CarbonCredit/MutationDeleteCarbonCreditDataResolverFn/MutationDeleteCarbonCreditDataResolverFn.AppSyncFunction"
+   }
+  },
+  "DeleteCarbonCreditResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+    },
+    "FieldName": "deleteCarbonCredit",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "MutationdeleteCarbonCreditauth0FunctionMutationdeleteCarbonCreditauth0FunctionAppSyncFunctionA9E8F2F7",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationdeleteCarbonCreditpostAuth0FunctionMutationdeleteCarbonCreditpostAuth0FunctionAppSyncFunctionDF07F91F",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationDeleteCarbonCreditDataResolverFnMutationDeleteCarbonCreditDataResolverFnAppSyncFunction7D49B90A",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Mutation\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"deleteCarbonCredit\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+       {
+        "Fn::Select": [
+         1,
+         {
+          "Fn::Split": [
+           "/",
+           {
+            "Fn::Select": [
+             5,
+             {
+              "Fn::Split": [
+               ":",
+               {
+                "Fn::GetAtt": [
+                 "CarbonCreditTable",
+                 "TableArn"
+                ]
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bauthNestedStackauthNestedStackResourceBE670D7AOutputsamplifyvitereactshadcntsusersandbox12a278760bauthamplifyAuthauthenticatedUserRoleDA60A65ARef"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bauthNestedStackauthNestedStackResourceBE670D7AOutputsamplifyvitereactshadcntsusersandbox12a278760bauthamplifyAuthunauthenticatedUserRole5C726899Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bauthNestedStackauthNestedStackResourceBE670D7AOutputsamplifyvitereactshadcntsusersandbox12a278760bauthamplifyAuthIdentityPoolC90998FBRef"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Mutation"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-vitereactshadcnts-user-sandbox-12a278760b/data/amplifyData/CarbonCredit/mutationDeleteCarbonCreditResolver"
+   }
+  },
+  "SubscriptiononCreateCarbonCreditauth0FunctionSubscriptiononCreateCarbonCreditauth0FunctionAppSyncFunction6C931BA9": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPINONEDS55F36260Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptiononCreateCarbonCreditauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/fafa3f1390dc7b75e4b1fd7976531d3dd5eddfc4dcf91838f3a78b976d97094a.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-vitereactshadcnts-user-sandbox-12a278760b/data/amplifyData/CarbonCredit/SubscriptiononCreateCarbonCreditauth0Function/SubscriptiononCreateCarbonCreditauth0Function.AppSyncFunction"
+   }
+  },
+  "SubscriptiononCreateCarbonCreditpostAuth0FunctionSubscriptiononCreateCarbonCreditpostAuth0FunctionAppSyncFunction6C2F8DF7": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPINONEDS55F36260Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptiononCreateCarbonCreditpostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-vitereactshadcnts-user-sandbox-12a278760b/data/amplifyData/CarbonCredit/SubscriptiononCreateCarbonCreditpostAuth0Function/SubscriptiononCreateCarbonCreditpostAuth0Function.AppSyncFunction"
+   }
+  },
+  "SubscriptionOnCreateCarbonCreditDataResolverFnSubscriptionOnCreateCarbonCreditDataResolverFnAppSyncFunction94F64CA8": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPINONEDS55F36260Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptionOnCreateCarbonCreditDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/fe3c43ada4b9d681a5e2312663ef7a73386424d73b73e51f8e2e9d4b50f7c502.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/e0cff47fb007f0bbf2a4e43ca256d6aa7ec109821769fd79fa7c5e83f0e7f9fc.vtl"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-vitereactshadcnts-user-sandbox-12a278760b/data/amplifyData/CarbonCredit/SubscriptionOnCreateCarbonCreditDataResolverFn/SubscriptionOnCreateCarbonCreditDataResolverFn.AppSyncFunction"
+   }
+  },
+  "SubscriptiononCreateCarbonCreditResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+    },
+    "FieldName": "onCreateCarbonCredit",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "SubscriptiononCreateCarbonCreditauth0FunctionSubscriptiononCreateCarbonCreditauth0FunctionAppSyncFunction6C931BA9",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "SubscriptiononCreateCarbonCreditpostAuth0FunctionSubscriptiononCreateCarbonCreditpostAuth0FunctionAppSyncFunction6C2F8DF7",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "SubscriptionOnCreateCarbonCreditDataResolverFnSubscriptionOnCreateCarbonCreditDataResolverFnAppSyncFunction94F64CA8",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Subscription\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"onCreateCarbonCredit\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"NONE\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bauthNestedStackauthNestedStackResourceBE670D7AOutputsamplifyvitereactshadcntsusersandbox12a278760bauthamplifyAuthauthenticatedUserRoleDA60A65ARef"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bauthNestedStackauthNestedStackResourceBE670D7AOutputsamplifyvitereactshadcntsusersandbox12a278760bauthamplifyAuthunauthenticatedUserRole5C726899Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bauthNestedStackauthNestedStackResourceBE670D7AOutputsamplifyvitereactshadcntsusersandbox12a278760bauthamplifyAuthIdentityPoolC90998FBRef"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Subscription"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-vitereactshadcnts-user-sandbox-12a278760b/data/amplifyData/CarbonCredit/subscriptionOnCreateCarbonCreditResolver"
+   }
+  },
+  "SubscriptiononUpdateCarbonCreditauth0FunctionSubscriptiononUpdateCarbonCreditauth0FunctionAppSyncFunctionD4EB73A4": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPINONEDS55F36260Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptiononUpdateCarbonCreditauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/fafa3f1390dc7b75e4b1fd7976531d3dd5eddfc4dcf91838f3a78b976d97094a.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-vitereactshadcnts-user-sandbox-12a278760b/data/amplifyData/CarbonCredit/SubscriptiononUpdateCarbonCreditauth0Function/SubscriptiononUpdateCarbonCreditauth0Function.AppSyncFunction"
+   }
+  },
+  "SubscriptiononUpdateCarbonCreditpostAuth0FunctionSubscriptiononUpdateCarbonCreditpostAuth0FunctionAppSyncFunction150E3501": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPINONEDS55F36260Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptiononUpdateCarbonCreditpostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-vitereactshadcnts-user-sandbox-12a278760b/data/amplifyData/CarbonCredit/SubscriptiononUpdateCarbonCreditpostAuth0Function/SubscriptiononUpdateCarbonCreditpostAuth0Function.AppSyncFunction"
+   }
+  },
+  "SubscriptionOnUpdateCarbonCreditDataResolverFnSubscriptionOnUpdateCarbonCreditDataResolverFnAppSyncFunction7839B057": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPINONEDS55F36260Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptionOnUpdateCarbonCreditDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/fe3c43ada4b9d681a5e2312663ef7a73386424d73b73e51f8e2e9d4b50f7c502.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/e0cff47fb007f0bbf2a4e43ca256d6aa7ec109821769fd79fa7c5e83f0e7f9fc.vtl"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-vitereactshadcnts-user-sandbox-12a278760b/data/amplifyData/CarbonCredit/SubscriptionOnUpdateCarbonCreditDataResolverFn/SubscriptionOnUpdateCarbonCreditDataResolverFn.AppSyncFunction"
+   }
+  },
+  "SubscriptiononUpdateCarbonCreditResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+    },
+    "FieldName": "onUpdateCarbonCredit",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "SubscriptiononUpdateCarbonCreditauth0FunctionSubscriptiononUpdateCarbonCreditauth0FunctionAppSyncFunctionD4EB73A4",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "SubscriptiononUpdateCarbonCreditpostAuth0FunctionSubscriptiononUpdateCarbonCreditpostAuth0FunctionAppSyncFunction150E3501",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "SubscriptionOnUpdateCarbonCreditDataResolverFnSubscriptionOnUpdateCarbonCreditDataResolverFnAppSyncFunction7839B057",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Subscription\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"onUpdateCarbonCredit\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"NONE\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bauthNestedStackauthNestedStackResourceBE670D7AOutputsamplifyvitereactshadcntsusersandbox12a278760bauthamplifyAuthauthenticatedUserRoleDA60A65ARef"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bauthNestedStackauthNestedStackResourceBE670D7AOutputsamplifyvitereactshadcntsusersandbox12a278760bauthamplifyAuthunauthenticatedUserRole5C726899Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bauthNestedStackauthNestedStackResourceBE670D7AOutputsamplifyvitereactshadcntsusersandbox12a278760bauthamplifyAuthIdentityPoolC90998FBRef"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Subscription"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-vitereactshadcnts-user-sandbox-12a278760b/data/amplifyData/CarbonCredit/subscriptionOnUpdateCarbonCreditResolver"
+   }
+  },
+  "SubscriptiononDeleteCarbonCreditauth0FunctionSubscriptiononDeleteCarbonCreditauth0FunctionAppSyncFunction7489F1F1": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPINONEDS55F36260Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptiononDeleteCarbonCreditauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/fafa3f1390dc7b75e4b1fd7976531d3dd5eddfc4dcf91838f3a78b976d97094a.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-vitereactshadcnts-user-sandbox-12a278760b/data/amplifyData/CarbonCredit/SubscriptiononDeleteCarbonCreditauth0Function/SubscriptiononDeleteCarbonCreditauth0Function.AppSyncFunction"
+   }
+  },
+  "SubscriptiononDeleteCarbonCreditpostAuth0FunctionSubscriptiononDeleteCarbonCreditpostAuth0FunctionAppSyncFunction47C5A0CB": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPINONEDS55F36260Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptiononDeleteCarbonCreditpostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-vitereactshadcnts-user-sandbox-12a278760b/data/amplifyData/CarbonCredit/SubscriptiononDeleteCarbonCreditpostAuth0Function/SubscriptiononDeleteCarbonCreditpostAuth0Function.AppSyncFunction"
+   }
+  },
+  "SubscriptionOnDeleteCarbonCreditDataResolverFnSubscriptionOnDeleteCarbonCreditDataResolverFnAppSyncFunctionAFDEED82": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPINONEDS55F36260Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptionOnDeleteCarbonCreditDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/fe3c43ada4b9d681a5e2312663ef7a73386424d73b73e51f8e2e9d4b50f7c502.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/e0cff47fb007f0bbf2a4e43ca256d6aa7ec109821769fd79fa7c5e83f0e7f9fc.vtl"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-vitereactshadcnts-user-sandbox-12a278760b/data/amplifyData/CarbonCredit/SubscriptionOnDeleteCarbonCreditDataResolverFn/SubscriptionOnDeleteCarbonCreditDataResolverFn.AppSyncFunction"
+   }
+  },
+  "SubscriptiononDeleteCarbonCreditResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+    },
+    "FieldName": "onDeleteCarbonCredit",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "SubscriptiononDeleteCarbonCreditauth0FunctionSubscriptiononDeleteCarbonCreditauth0FunctionAppSyncFunction7489F1F1",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "SubscriptiononDeleteCarbonCreditpostAuth0FunctionSubscriptiononDeleteCarbonCreditpostAuth0FunctionAppSyncFunction47C5A0CB",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "SubscriptionOnDeleteCarbonCreditDataResolverFnSubscriptionOnDeleteCarbonCreditDataResolverFnAppSyncFunctionAFDEED82",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Subscription\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"onDeleteCarbonCredit\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"NONE\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bauthNestedStackauthNestedStackResourceBE670D7AOutputsamplifyvitereactshadcntsusersandbox12a278760bauthamplifyAuthauthenticatedUserRoleDA60A65ARef"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bauthNestedStackauthNestedStackResourceBE670D7AOutputsamplifyvitereactshadcntsusersandbox12a278760bauthamplifyAuthunauthenticatedUserRole5C726899Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bauthNestedStackauthNestedStackResourceBE670D7AOutputsamplifyvitereactshadcntsusersandbox12a278760bauthamplifyAuthIdentityPoolC90998FBRef"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Subscription"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-vitereactshadcnts-user-sandbox-12a278760b/data/amplifyData/CarbonCredit/subscriptionOnDeleteCarbonCreditResolver"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/1WO0W6DMAxFv6XvweuAH1hBe9wm2HtlEoNSQoJip1WF+PcJOnXa0/WRj+ybQ16WcDzgjTNtxszZDpYPYiHTCupRVb3/wogTCcUNquCNFRu8aohDippUlVjC9Ie9f8544/Ni7h6nYDr4xs7RCZmUxQmWJriHHRytCueZ717DUu963dUo2D5P/qf35PVWogq+t0OKuDf6/eyuFFfFxRmZSRjetlBcwCnpkWQrsG7uZ5I5idrXreBg/bAqHwzBhV+ueQmvBRwPF7Y2i8mLnQiaR/4AB3oHbTYBAAA="
+   },
+   "Metadata": {
+    "aws:cdk:path": "amplify-vitereactshadcnts-user-sandbox-12a278760b/data/amplifyData/CarbonCredit/CDKMetadata/Default"
+   },
+   "Condition": "CDKMetadataAvailable"
+  }
+ },
+ "Outputs": {
+  "GetAttCarbonCreditTableStreamArn": {
+   "Description": "Your DynamoDB table StreamArn.",
+   "Value": {
+    "Fn::GetAtt": [
+     "CarbonCreditTable",
+     "TableStreamArn"
+    ]
+   },
+   "Export": {
+    "Name": {
+     "Fn::Join": [
+      ":",
+      [
+       {
+        "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+       },
+       "GetAtt:CarbonCreditTable:StreamArn"
+      ]
+     ]
+    }
+   }
+  },
+  "GetAttCarbonCreditTableName": {
+   "Description": "Your DynamoDB table name.",
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "CarbonCredit-",
+      {
+       "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+      },
+      "-NONE"
+     ]
+    ]
+   },
+   "Export": {
+    "Name": {
+     "Fn::Join": [
+      ":",
+      [
+       {
+        "Ref": "referencetoamplifyvitereactshadcntsusersandbox12a278760bdataamplifyDataGraphQLAPI90AC9E90ApiId"
+       },
+       "GetAtt:CarbonCreditTable:Name"
+      ]
+     ]
+    }
+   }
+  }
+ }
+}

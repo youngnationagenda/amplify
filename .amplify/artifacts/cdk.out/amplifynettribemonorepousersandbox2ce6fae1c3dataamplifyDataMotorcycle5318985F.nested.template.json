@@ -1,0 +1,2322 @@
+{
+ "Parameters": {
+  "DynamoDBModelTableReadIOPS": {
+   "Type": "Number",
+   "Default": 5,
+   "Description": "The number of read IOPS the table should support."
+  },
+  "DynamoDBModelTableWriteIOPS": {
+   "Type": "Number",
+   "Default": 5,
+   "Description": "The number of write IOPS the table should support."
+  },
+  "DynamoDBBillingMode": {
+   "Type": "String",
+   "Default": "PAY_PER_REQUEST",
+   "AllowedValues": [
+    "PAY_PER_REQUEST",
+    "PROVISIONED"
+   ],
+   "Description": "Configure @model types to create DynamoDB tables with PAY_PER_REQUEST or PROVISIONED billing modes."
+  },
+  "DynamoDBEnablePointInTimeRecovery": {
+   "Type": "String",
+   "Default": "false",
+   "AllowedValues": [
+    "true",
+    "false"
+   ],
+   "Description": "Whether to enable Point in Time Recovery on the table."
+  },
+  "DynamoDBEnableServerSideEncryption": {
+   "Type": "String",
+   "Default": "true",
+   "AllowedValues": [
+    "true",
+    "false"
+   ],
+   "Description": "Enable server side encryption powered by KMS."
+  },
+  "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResourceB87052A0Outputsamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataAmplifyTableManagerTableMana8B2B7E99": {
+   "Type": "String"
+  },
+  "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId": {
+   "Type": "String"
+  },
+  "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPINONEDS6FA7B490Name": {
+   "Type": "String"
+  },
+  "referencetoamplifynettribemonorepousersandbox2ce6fae1c3authNestedStackauthNestedStackResource04AD0A6DOutputsamplifynettribemonorepousersandbox2ce6fae1c3authamplifyAuthauthenticatedUserRoleE74572B0Ref": {
+   "Type": "String"
+  },
+  "referencetoamplifynettribemonorepousersandbox2ce6fae1c3authNestedStackauthNestedStackResource04AD0A6DOutputsamplifynettribemonorepousersandbox2ce6fae1c3authamplifyAuthunauthenticatedUserRoleA9373BB7Ref": {
+   "Type": "String"
+  },
+  "referencetoamplifynettribemonorepousersandbox2ce6fae1c3authNestedStackauthNestedStackResource04AD0A6DOutputsamplifynettribemonorepousersandbox2ce6fae1c3authamplifyAuthIdentityPoolBFA3E4B3Ref": {
+   "Type": "String"
+  }
+ },
+ "Conditions": {
+  "HasEnvironmentParameter": {
+   "Fn::Not": [
+    {
+     "Fn::Equals": [
+      "NONE",
+      "NONE"
+     ]
+    }
+   ]
+  },
+  "ShouldUsePayPerRequestBilling": {
+   "Fn::Equals": [
+    {
+     "Ref": "DynamoDBBillingMode"
+    },
+    "PAY_PER_REQUEST"
+   ]
+  },
+  "ShouldUsePointInTimeRecovery": {
+   "Fn::Equals": [
+    {
+     "Ref": "DynamoDBEnablePointInTimeRecovery"
+    },
+    "true"
+   ]
+  },
+  "CDKMetadataAvailable": {
+   "Fn::Or": [
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "af-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-3"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-south-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-3"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-4"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ca-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ca-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-northwest-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-central-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-south-2"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-3"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "il-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "sa-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-1"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Equals": [
+      {
+       "Ref": "AWS::Region"
+      },
+      "us-west-2"
+     ]
+    }
+   ]
+  }
+ },
+ "Resources": {
+  "MotorcycleTable": {
+   "Type": "Custom::AmplifyDynamoDBTable",
+   "Properties": {
+    "ServiceToken": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResourceB87052A0Outputsamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataAmplifyTableManagerTableMana8B2B7E99"
+    },
+    "tableName": {
+     "Fn::Join": [
+      "",
+      [
+       "Motorcycle-",
+       {
+        "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+       },
+       "-NONE"
+      ]
+     ]
+    },
+    "attributeDefinitions": [
+     {
+      "attributeName": "id",
+      "attributeType": "S"
+     },
+     {
+      "attributeName": "currentRiderId",
+      "attributeType": "S"
+     }
+    ],
+    "keySchema": [
+     {
+      "attributeName": "id",
+      "keyType": "HASH"
+     }
+    ],
+    "globalSecondaryIndexes": [
+     {
+      "indexName": "motorcyclesByCurrentRiderId",
+      "keySchema": [
+       {
+        "attributeName": "currentRiderId",
+        "keyType": "HASH"
+       }
+      ],
+      "projection": {
+       "projectionType": "ALL"
+      },
+      "provisionedThroughput": {
+       "Fn::If": [
+        "ShouldUsePayPerRequestBilling",
+        {
+         "Ref": "AWS::NoValue"
+        },
+        {
+         "ReadCapacityUnits": {
+          "Ref": "DynamoDBModelTableReadIOPS"
+         },
+         "WriteCapacityUnits": {
+          "Ref": "DynamoDBModelTableWriteIOPS"
+         }
+        }
+       ]
+      }
+     }
+    ],
+    "provisionedThroughput": {
+     "Fn::If": [
+      "ShouldUsePayPerRequestBilling",
+      {
+       "Ref": "AWS::NoValue"
+      },
+      {
+       "ReadCapacityUnits": {
+        "Ref": "DynamoDBModelTableReadIOPS"
+       },
+       "WriteCapacityUnits": {
+        "Ref": "DynamoDBModelTableWriteIOPS"
+       }
+      }
+     ]
+    },
+    "sseSpecification": {
+     "sseEnabled": false
+    },
+    "streamSpecification": {
+     "streamViewType": "NEW_AND_OLD_IMAGES"
+    },
+    "deletionProtectionEnabled": false,
+    "allowDestructiveGraphqlSchemaUpdates": true,
+    "replaceTableUponGsiUpdate": true,
+    "pointInTimeRecoverySpecification": {
+     "Fn::If": [
+      "ShouldUsePointInTimeRecovery",
+      {
+       "PointInTimeRecoveryEnabled": true
+      },
+      {
+       "Ref": "AWS::NoValue"
+      }
+     ]
+    },
+    "billingMode": {
+     "Fn::If": [
+      "ShouldUsePayPerRequestBilling",
+      "PAY_PER_REQUEST",
+      {
+       "Ref": "AWS::NoValue"
+      }
+     ]
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/MotorcycleTable/Default/Default"
+   }
+  },
+  "MotorcycleIAMRole8F1C1B0F": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "appsync.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Policies": [
+     {
+      "PolicyDocument": {
+       "Statement": [
+        {
+         "Action": [
+          "dynamodb:BatchGetItem",
+          "dynamodb:BatchWriteItem",
+          "dynamodb:PutItem",
+          "dynamodb:DeleteItem",
+          "dynamodb:GetItem",
+          "dynamodb:Scan",
+          "dynamodb:Query",
+          "dynamodb:UpdateItem",
+          "dynamodb:ConditionCheckItem",
+          "dynamodb:DescribeTable",
+          "dynamodb:GetRecords",
+          "dynamodb:GetShardIterator"
+         ],
+         "Effect": "Allow",
+         "Resource": [
+          {
+           "Fn::Sub": [
+            "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${tablename}",
+            {
+             "tablename": {
+              "Fn::Join": [
+               "",
+               [
+                "Motorcycle-",
+                {
+                 "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+                },
+                "-NONE"
+               ]
+              ]
+             }
+            }
+           ]
+          },
+          {
+           "Fn::Sub": [
+            "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${tablename}/*",
+            {
+             "tablename": {
+              "Fn::Join": [
+               "",
+               [
+                "Motorcycle-",
+                {
+                 "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+                },
+                "-NONE"
+               ]
+              ]
+             }
+            }
+           ]
+          }
+         ]
+        }
+       ],
+       "Version": "2012-10-17"
+      },
+      "PolicyName": "DynamoDBAccess"
+     }
+    ],
+    "RoleName": {
+     "Fn::Join": [
+      "",
+      [
+       "MotorcycleIAMRole1942ad-",
+       {
+        "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+       },
+       "-NONE"
+      ]
+     ]
+    },
+    "Tags": [
+     {
+      "Key": "amplify:deployment-type",
+      "Value": "sandbox"
+     },
+     {
+      "Key": "amplify:friendly-name",
+      "Value": "amplifyData"
+     },
+     {
+      "Key": "created-by",
+      "Value": "amplify"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/MotorcycleIAMRole/Resource"
+   }
+  },
+  "MotorcycleDataSource": {
+   "Type": "AWS::AppSync::DataSource",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+    },
+    "DynamoDBConfig": {
+     "AwsRegion": {
+      "Ref": "AWS::Region"
+     },
+     "TableName": {
+      "Fn::Select": [
+       1,
+       {
+        "Fn::Split": [
+         "/",
+         {
+          "Fn::Select": [
+           5,
+           {
+            "Fn::Split": [
+             ":",
+             {
+              "Fn::GetAtt": [
+               "MotorcycleTable",
+               "TableArn"
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    },
+    "Name": "MotorcycleTable",
+    "ServiceRoleArn": {
+     "Fn::GetAtt": [
+      "MotorcycleIAMRole8F1C1B0F",
+      "Arn"
+     ]
+    },
+    "Type": "AMAZON_DYNAMODB"
+   },
+   "DependsOn": [
+    "MotorcycleIAMRole8F1C1B0F"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/MotorcycleDataSource/Resource"
+   }
+  },
+  "QuerygetMotorcycleauth0FunctionQuerygetMotorcycleauth0FunctionAppSyncFunctionB6D1DFB6": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPINONEDS6FA7B490Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "QuerygetMotorcycleauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/b68cc472beb5d6c236bbd8682e31d78bd46b63809a9f03f801f6b373542c9c6c.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/QuerygetMotorcycleauth0Function/QuerygetMotorcycleauth0Function.AppSyncFunction"
+   }
+  },
+  "QuerygetMotorcyclepostAuth0FunctionQuerygetMotorcyclepostAuth0FunctionAppSyncFunction1D3155DC": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPINONEDS6FA7B490Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "QuerygetMotorcyclepostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/QuerygetMotorcyclepostAuth0Function/QuerygetMotorcyclepostAuth0Function.AppSyncFunction"
+   }
+  },
+  "QueryGetMotorcycleDataResolverFnQueryGetMotorcycleDataResolverFnAppSyncFunction41520538": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+    },
+    "DataSourceName": {
+     "Fn::GetAtt": [
+      "MotorcycleDataSource",
+      "Name"
+     ]
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "QueryGetMotorcycleDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/08f4d557693d96c1a4efba0f9dc91330e4b19772fd5477c156468843e3d9cb5e.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/4c6a2d29f01c6091bd1d9afe16e5849d456c96f17c3b215938c8067399532719.vtl"
+    }
+   },
+   "DependsOn": [
+    "MotorcycleDataSource"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/QueryGetMotorcycleDataResolverFn/QueryGetMotorcycleDataResolverFn.AppSyncFunction"
+   }
+  },
+  "GetMotorcycleResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+    },
+    "FieldName": "getMotorcycle",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "QuerygetMotorcycleauth0FunctionQuerygetMotorcycleauth0FunctionAppSyncFunctionB6D1DFB6",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "QuerygetMotorcyclepostAuth0FunctionQuerygetMotorcyclepostAuth0FunctionAppSyncFunction1D3155DC",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "QueryGetMotorcycleDataResolverFnQueryGetMotorcycleDataResolverFnAppSyncFunction41520538",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Query\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"getMotorcycle\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+       {
+        "Fn::Select": [
+         1,
+         {
+          "Fn::Split": [
+           "/",
+           {
+            "Fn::Select": [
+             5,
+             {
+              "Fn::Split": [
+               ":",
+               {
+                "Fn::GetAtt": [
+                 "MotorcycleTable",
+                 "TableArn"
+                ]
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3authNestedStackauthNestedStackResource04AD0A6DOutputsamplifynettribemonorepousersandbox2ce6fae1c3authamplifyAuthauthenticatedUserRoleE74572B0Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3authNestedStackauthNestedStackResource04AD0A6DOutputsamplifynettribemonorepousersandbox2ce6fae1c3authamplifyAuthunauthenticatedUserRoleA9373BB7Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3authNestedStackauthNestedStackResource04AD0A6DOutputsamplifynettribemonorepousersandbox2ce6fae1c3authamplifyAuthIdentityPoolBFA3E4B3Ref"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Query"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/queryGetMotorcycleResolver"
+   }
+  },
+  "QuerylistMotorcyclesauth0FunctionQuerylistMotorcyclesauth0FunctionAppSyncFunctionEFDB36EF": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPINONEDS6FA7B490Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "QuerylistMotorcyclesauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/b68cc472beb5d6c236bbd8682e31d78bd46b63809a9f03f801f6b373542c9c6c.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/QuerylistMotorcyclesauth0Function/QuerylistMotorcyclesauth0Function.AppSyncFunction"
+   }
+  },
+  "QuerylistMotorcyclespostAuth0FunctionQuerylistMotorcyclespostAuth0FunctionAppSyncFunction503A03F4": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPINONEDS6FA7B490Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "QuerylistMotorcyclespostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/QuerylistMotorcyclespostAuth0Function/QuerylistMotorcyclespostAuth0Function.AppSyncFunction"
+   }
+  },
+  "QueryListMotorcyclesDataResolverFnQueryListMotorcyclesDataResolverFnAppSyncFunction82FF00AD": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+    },
+    "DataSourceName": {
+     "Fn::GetAtt": [
+      "MotorcycleDataSource",
+      "Name"
+     ]
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "QueryListMotorcyclesDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/9fcbe070ecd3023c5bf5b966fa9584757db9762eef123bad0820bd87591b2174.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/cc01911d0269d4080ea57505dc445dfc315ef7ad85d3d9d4ea1357858bff451d.vtl"
+    }
+   },
+   "DependsOn": [
+    "MotorcycleDataSource"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/QueryListMotorcyclesDataResolverFn/QueryListMotorcyclesDataResolverFn.AppSyncFunction"
+   }
+  },
+  "ListMotorcycleResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+    },
+    "FieldName": "listMotorcycles",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "QuerylistMotorcyclesauth0FunctionQuerylistMotorcyclesauth0FunctionAppSyncFunctionEFDB36EF",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "QuerylistMotorcyclespostAuth0FunctionQuerylistMotorcyclespostAuth0FunctionAppSyncFunction503A03F4",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "QueryListMotorcyclesDataResolverFnQueryListMotorcyclesDataResolverFnAppSyncFunction82FF00AD",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Query\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"listMotorcycles\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+       {
+        "Fn::Select": [
+         1,
+         {
+          "Fn::Split": [
+           "/",
+           {
+            "Fn::Select": [
+             5,
+             {
+              "Fn::Split": [
+               ":",
+               {
+                "Fn::GetAtt": [
+                 "MotorcycleTable",
+                 "TableArn"
+                ]
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3authNestedStackauthNestedStackResource04AD0A6DOutputsamplifynettribemonorepousersandbox2ce6fae1c3authamplifyAuthauthenticatedUserRoleE74572B0Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3authNestedStackauthNestedStackResource04AD0A6DOutputsamplifynettribemonorepousersandbox2ce6fae1c3authamplifyAuthunauthenticatedUserRoleA9373BB7Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3authNestedStackauthNestedStackResource04AD0A6DOutputsamplifynettribemonorepousersandbox2ce6fae1c3authamplifyAuthIdentityPoolBFA3E4B3Ref"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Query"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/queryListMotorcyclesResolver"
+   }
+  },
+  "MutationcreateMotorcycleinit0FunctionMutationcreateMotorcycleinit0FunctionAppSyncFunction27B24582": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPINONEDS6FA7B490Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationcreateMotorcycleinit0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/a183ddccbd956316c38ef97177b8f088ef0826f62023323f5ae6053d348ccffc.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/MutationcreateMotorcycleinit0Function/MutationcreateMotorcycleinit0Function.AppSyncFunction"
+   }
+  },
+  "MutationcreateMotorcycleinit1FunctionMutationcreateMotorcycleinit1FunctionAppSyncFunction962F2B6D": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPINONEDS6FA7B490Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationcreateMotorcycleinit1Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/5ccaa605cefab724dca545f744b4ecc7018d728cb476b154d751f6add796ce80.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/MutationcreateMotorcycleinit1Function/MutationcreateMotorcycleinit1Function.AppSyncFunction"
+   }
+  },
+  "MutationcreateMotorcycleauth0FunctionMutationcreateMotorcycleauth0FunctionAppSyncFunctionB5D2BEF9": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPINONEDS6FA7B490Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationcreateMotorcycleauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/bf358b85506e0ca7c86a173fbca1dc6771271344937bacfe62d91a764644ab47.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/MutationcreateMotorcycleauth0Function/MutationcreateMotorcycleauth0Function.AppSyncFunction"
+   }
+  },
+  "MutationcreateMotorcyclepostAuth0FunctionMutationcreateMotorcyclepostAuth0FunctionAppSyncFunction6D4BF505": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPINONEDS6FA7B490Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationcreateMotorcyclepostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/MutationcreateMotorcyclepostAuth0Function/MutationcreateMotorcyclepostAuth0Function.AppSyncFunction"
+   }
+  },
+  "MutationCreateMotorcycleDataResolverFnMutationCreateMotorcycleDataResolverFnAppSyncFunctionF02CC2E8": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+    },
+    "DataSourceName": {
+     "Fn::GetAtt": [
+      "MotorcycleDataSource",
+      "Name"
+     ]
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationCreateMotorcycleDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/9166d1a4d3761e90cc087274363b6af26caf0479707ae23f6be38e2c3b20a467.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f4a52b72209a9dfa197b5e7367a5c378c5bb86de6e29ddd9e48b49a3fe54b249.vtl"
+    }
+   },
+   "DependsOn": [
+    "MotorcycleDataSource"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/MutationCreateMotorcycleDataResolverFn/MutationCreateMotorcycleDataResolverFn.AppSyncFunction"
+   }
+  },
+  "CreateMotorcycleResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+    },
+    "FieldName": "createMotorcycle",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "MutationcreateMotorcycleinit0FunctionMutationcreateMotorcycleinit0FunctionAppSyncFunction27B24582",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationcreateMotorcycleinit1FunctionMutationcreateMotorcycleinit1FunctionAppSyncFunction962F2B6D",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationcreateMotorcycleauth0FunctionMutationcreateMotorcycleauth0FunctionAppSyncFunctionB5D2BEF9",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationcreateMotorcyclepostAuth0FunctionMutationcreateMotorcyclepostAuth0FunctionAppSyncFunction6D4BF505",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationCreateMotorcycleDataResolverFnMutationCreateMotorcycleDataResolverFnAppSyncFunctionF02CC2E8",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Mutation\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"createMotorcycle\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+       {
+        "Fn::Select": [
+         1,
+         {
+          "Fn::Split": [
+           "/",
+           {
+            "Fn::Select": [
+             5,
+             {
+              "Fn::Split": [
+               ":",
+               {
+                "Fn::GetAtt": [
+                 "MotorcycleTable",
+                 "TableArn"
+                ]
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3authNestedStackauthNestedStackResource04AD0A6DOutputsamplifynettribemonorepousersandbox2ce6fae1c3authamplifyAuthauthenticatedUserRoleE74572B0Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3authNestedStackauthNestedStackResource04AD0A6DOutputsamplifynettribemonorepousersandbox2ce6fae1c3authamplifyAuthunauthenticatedUserRoleA9373BB7Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3authNestedStackauthNestedStackResource04AD0A6DOutputsamplifynettribemonorepousersandbox2ce6fae1c3authamplifyAuthIdentityPoolBFA3E4B3Ref"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Mutation"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/mutationCreateMotorcycleResolver"
+   }
+  },
+  "MutationupdateMotorcycleinit0FunctionMutationupdateMotorcycleinit0FunctionAppSyncFunctionEC1B256B": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPINONEDS6FA7B490Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationupdateMotorcycleinit0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/06db846fd14e6fc371f22b12b5545ba8e2dbfeda85d8c8d586c71c282166657b.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/MutationupdateMotorcycleinit0Function/MutationupdateMotorcycleinit0Function.AppSyncFunction"
+   }
+  },
+  "MutationupdateMotorcycleauth0FunctionMutationupdateMotorcycleauth0FunctionAppSyncFunctionBD5A204A": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+    },
+    "DataSourceName": {
+     "Fn::GetAtt": [
+      "MotorcycleDataSource",
+      "Name"
+     ]
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationupdateMotorcycleauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/1f5fed297da9c32ae3af922bf3a38ccf23b956078887d16891ec06c20c64722c.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/a508c1552a68dcc38294e593749a08bca0cccc9d9e0a5668dec27390e8844c7a.vtl"
+    }
+   },
+   "DependsOn": [
+    "MotorcycleDataSource"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/MutationupdateMotorcycleauth0Function/MutationupdateMotorcycleauth0Function.AppSyncFunction"
+   }
+  },
+  "MutationupdateMotorcyclepostAuth0FunctionMutationupdateMotorcyclepostAuth0FunctionAppSyncFunctionDC8552D8": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPINONEDS6FA7B490Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationupdateMotorcyclepostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/MutationupdateMotorcyclepostAuth0Function/MutationupdateMotorcyclepostAuth0Function.AppSyncFunction"
+   }
+  },
+  "MutationUpdateMotorcycleDataResolverFnMutationUpdateMotorcycleDataResolverFnAppSyncFunction25C962C0": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+    },
+    "DataSourceName": {
+     "Fn::GetAtt": [
+      "MotorcycleDataSource",
+      "Name"
+     ]
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationUpdateMotorcycleDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/474bf0776ec2164a13191d1a0a9e057154931e4918fea5086f49850d02a5371b.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f4a52b72209a9dfa197b5e7367a5c378c5bb86de6e29ddd9e48b49a3fe54b249.vtl"
+    }
+   },
+   "DependsOn": [
+    "MotorcycleDataSource"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/MutationUpdateMotorcycleDataResolverFn/MutationUpdateMotorcycleDataResolverFn.AppSyncFunction"
+   }
+  },
+  "UpdateMotorcycleResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+    },
+    "FieldName": "updateMotorcycle",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "MutationupdateMotorcycleinit0FunctionMutationupdateMotorcycleinit0FunctionAppSyncFunctionEC1B256B",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationupdateMotorcycleauth0FunctionMutationupdateMotorcycleauth0FunctionAppSyncFunctionBD5A204A",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationupdateMotorcyclepostAuth0FunctionMutationupdateMotorcyclepostAuth0FunctionAppSyncFunctionDC8552D8",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationUpdateMotorcycleDataResolverFnMutationUpdateMotorcycleDataResolverFnAppSyncFunction25C962C0",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Mutation\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"updateMotorcycle\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+       {
+        "Fn::Select": [
+         1,
+         {
+          "Fn::Split": [
+           "/",
+           {
+            "Fn::Select": [
+             5,
+             {
+              "Fn::Split": [
+               ":",
+               {
+                "Fn::GetAtt": [
+                 "MotorcycleTable",
+                 "TableArn"
+                ]
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3authNestedStackauthNestedStackResource04AD0A6DOutputsamplifynettribemonorepousersandbox2ce6fae1c3authamplifyAuthauthenticatedUserRoleE74572B0Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3authNestedStackauthNestedStackResource04AD0A6DOutputsamplifynettribemonorepousersandbox2ce6fae1c3authamplifyAuthunauthenticatedUserRoleA9373BB7Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3authNestedStackauthNestedStackResource04AD0A6DOutputsamplifynettribemonorepousersandbox2ce6fae1c3authamplifyAuthIdentityPoolBFA3E4B3Ref"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Mutation"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/mutationUpdateMotorcycleResolver"
+   }
+  },
+  "MutationdeleteMotorcycleauth0FunctionMutationdeleteMotorcycleauth0FunctionAppSyncFunction753AD0D1": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+    },
+    "DataSourceName": {
+     "Fn::GetAtt": [
+      "MotorcycleDataSource",
+      "Name"
+     ]
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationdeleteMotorcycleauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/1f5fed297da9c32ae3af922bf3a38ccf23b956078887d16891ec06c20c64722c.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/45c7c52cacf53924b3cc4d12c9d6ef635a3cdd63cb01c3cb4da212b6391c24cb.vtl"
+    }
+   },
+   "DependsOn": [
+    "MotorcycleDataSource"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/MutationdeleteMotorcycleauth0Function/MutationdeleteMotorcycleauth0Function.AppSyncFunction"
+   }
+  },
+  "MutationdeleteMotorcyclepostAuth0FunctionMutationdeleteMotorcyclepostAuth0FunctionAppSyncFunction59A860DE": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPINONEDS6FA7B490Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationdeleteMotorcyclepostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/MutationdeleteMotorcyclepostAuth0Function/MutationdeleteMotorcyclepostAuth0Function.AppSyncFunction"
+   }
+  },
+  "MutationDeleteMotorcycleDataResolverFnMutationDeleteMotorcycleDataResolverFnAppSyncFunctionCF23B1D0": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+    },
+    "DataSourceName": {
+     "Fn::GetAtt": [
+      "MotorcycleDataSource",
+      "Name"
+     ]
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationDeleteMotorcycleDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/4f7907d1209a2c9953a0c053df402c634e359546d70c7cc5c2e8e21ea734880f.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f4a52b72209a9dfa197b5e7367a5c378c5bb86de6e29ddd9e48b49a3fe54b249.vtl"
+    }
+   },
+   "DependsOn": [
+    "MotorcycleDataSource"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/MutationDeleteMotorcycleDataResolverFn/MutationDeleteMotorcycleDataResolverFn.AppSyncFunction"
+   }
+  },
+  "DeleteMotorcycleResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+    },
+    "FieldName": "deleteMotorcycle",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "MutationdeleteMotorcycleauth0FunctionMutationdeleteMotorcycleauth0FunctionAppSyncFunction753AD0D1",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationdeleteMotorcyclepostAuth0FunctionMutationdeleteMotorcyclepostAuth0FunctionAppSyncFunction59A860DE",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationDeleteMotorcycleDataResolverFnMutationDeleteMotorcycleDataResolverFnAppSyncFunctionCF23B1D0",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Mutation\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"deleteMotorcycle\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+       {
+        "Fn::Select": [
+         1,
+         {
+          "Fn::Split": [
+           "/",
+           {
+            "Fn::Select": [
+             5,
+             {
+              "Fn::Split": [
+               ":",
+               {
+                "Fn::GetAtt": [
+                 "MotorcycleTable",
+                 "TableArn"
+                ]
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3authNestedStackauthNestedStackResource04AD0A6DOutputsamplifynettribemonorepousersandbox2ce6fae1c3authamplifyAuthauthenticatedUserRoleE74572B0Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3authNestedStackauthNestedStackResource04AD0A6DOutputsamplifynettribemonorepousersandbox2ce6fae1c3authamplifyAuthunauthenticatedUserRoleA9373BB7Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3authNestedStackauthNestedStackResource04AD0A6DOutputsamplifynettribemonorepousersandbox2ce6fae1c3authamplifyAuthIdentityPoolBFA3E4B3Ref"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Mutation"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/mutationDeleteMotorcycleResolver"
+   }
+  },
+  "SubscriptiononCreateMotorcycleauth0FunctionSubscriptiononCreateMotorcycleauth0FunctionAppSyncFunction2D52565B": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPINONEDS6FA7B490Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptiononCreateMotorcycleauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/fafa3f1390dc7b75e4b1fd7976531d3dd5eddfc4dcf91838f3a78b976d97094a.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/SubscriptiononCreateMotorcycleauth0Function/SubscriptiononCreateMotorcycleauth0Function.AppSyncFunction"
+   }
+  },
+  "SubscriptiononCreateMotorcyclepostAuth0FunctionSubscriptiononCreateMotorcyclepostAuth0FunctionAppSyncFunction92CD363C": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPINONEDS6FA7B490Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptiononCreateMotorcyclepostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/SubscriptiononCreateMotorcyclepostAuth0Function/SubscriptiononCreateMotorcyclepostAuth0Function.AppSyncFunction"
+   }
+  },
+  "SubscriptionOnCreateMotorcycleDataResolverFnSubscriptionOnCreateMotorcycleDataResolverFnAppSyncFunction5D09EB28": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPINONEDS6FA7B490Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptionOnCreateMotorcycleDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/fe3c43ada4b9d681a5e2312663ef7a73386424d73b73e51f8e2e9d4b50f7c502.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/e0cff47fb007f0bbf2a4e43ca256d6aa7ec109821769fd79fa7c5e83f0e7f9fc.vtl"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/SubscriptionOnCreateMotorcycleDataResolverFn/SubscriptionOnCreateMotorcycleDataResolverFn.AppSyncFunction"
+   }
+  },
+  "SubscriptiononCreateMotorcycleResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+    },
+    "FieldName": "onCreateMotorcycle",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "SubscriptiononCreateMotorcycleauth0FunctionSubscriptiononCreateMotorcycleauth0FunctionAppSyncFunction2D52565B",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "SubscriptiononCreateMotorcyclepostAuth0FunctionSubscriptiononCreateMotorcyclepostAuth0FunctionAppSyncFunction92CD363C",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "SubscriptionOnCreateMotorcycleDataResolverFnSubscriptionOnCreateMotorcycleDataResolverFnAppSyncFunction5D09EB28",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Subscription\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"onCreateMotorcycle\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"NONE\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3authNestedStackauthNestedStackResource04AD0A6DOutputsamplifynettribemonorepousersandbox2ce6fae1c3authamplifyAuthauthenticatedUserRoleE74572B0Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3authNestedStackauthNestedStackResource04AD0A6DOutputsamplifynettribemonorepousersandbox2ce6fae1c3authamplifyAuthunauthenticatedUserRoleA9373BB7Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3authNestedStackauthNestedStackResource04AD0A6DOutputsamplifynettribemonorepousersandbox2ce6fae1c3authamplifyAuthIdentityPoolBFA3E4B3Ref"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Subscription"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/subscriptionOnCreateMotorcycleResolver"
+   }
+  },
+  "SubscriptiononUpdateMotorcycleauth0FunctionSubscriptiononUpdateMotorcycleauth0FunctionAppSyncFunctionC17BC43F": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPINONEDS6FA7B490Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptiononUpdateMotorcycleauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/fafa3f1390dc7b75e4b1fd7976531d3dd5eddfc4dcf91838f3a78b976d97094a.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/SubscriptiononUpdateMotorcycleauth0Function/SubscriptiononUpdateMotorcycleauth0Function.AppSyncFunction"
+   }
+  },
+  "SubscriptiononUpdateMotorcyclepostAuth0FunctionSubscriptiononUpdateMotorcyclepostAuth0FunctionAppSyncFunction2E001A24": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPINONEDS6FA7B490Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptiononUpdateMotorcyclepostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/SubscriptiononUpdateMotorcyclepostAuth0Function/SubscriptiononUpdateMotorcyclepostAuth0Function.AppSyncFunction"
+   }
+  },
+  "SubscriptionOnUpdateMotorcycleDataResolverFnSubscriptionOnUpdateMotorcycleDataResolverFnAppSyncFunctionDECBB968": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPINONEDS6FA7B490Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptionOnUpdateMotorcycleDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/fe3c43ada4b9d681a5e2312663ef7a73386424d73b73e51f8e2e9d4b50f7c502.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/e0cff47fb007f0bbf2a4e43ca256d6aa7ec109821769fd79fa7c5e83f0e7f9fc.vtl"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/SubscriptionOnUpdateMotorcycleDataResolverFn/SubscriptionOnUpdateMotorcycleDataResolverFn.AppSyncFunction"
+   }
+  },
+  "SubscriptiononUpdateMotorcycleResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+    },
+    "FieldName": "onUpdateMotorcycle",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "SubscriptiononUpdateMotorcycleauth0FunctionSubscriptiononUpdateMotorcycleauth0FunctionAppSyncFunctionC17BC43F",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "SubscriptiononUpdateMotorcyclepostAuth0FunctionSubscriptiononUpdateMotorcyclepostAuth0FunctionAppSyncFunction2E001A24",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "SubscriptionOnUpdateMotorcycleDataResolverFnSubscriptionOnUpdateMotorcycleDataResolverFnAppSyncFunctionDECBB968",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Subscription\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"onUpdateMotorcycle\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"NONE\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3authNestedStackauthNestedStackResource04AD0A6DOutputsamplifynettribemonorepousersandbox2ce6fae1c3authamplifyAuthauthenticatedUserRoleE74572B0Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3authNestedStackauthNestedStackResource04AD0A6DOutputsamplifynettribemonorepousersandbox2ce6fae1c3authamplifyAuthunauthenticatedUserRoleA9373BB7Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3authNestedStackauthNestedStackResource04AD0A6DOutputsamplifynettribemonorepousersandbox2ce6fae1c3authamplifyAuthIdentityPoolBFA3E4B3Ref"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Subscription"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/subscriptionOnUpdateMotorcycleResolver"
+   }
+  },
+  "SubscriptiononDeleteMotorcycleauth0FunctionSubscriptiononDeleteMotorcycleauth0FunctionAppSyncFunction043844B6": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPINONEDS6FA7B490Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptiononDeleteMotorcycleauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/fafa3f1390dc7b75e4b1fd7976531d3dd5eddfc4dcf91838f3a78b976d97094a.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/SubscriptiononDeleteMotorcycleauth0Function/SubscriptiononDeleteMotorcycleauth0Function.AppSyncFunction"
+   }
+  },
+  "SubscriptiononDeleteMotorcyclepostAuth0FunctionSubscriptiononDeleteMotorcyclepostAuth0FunctionAppSyncFunctionD7D334EC": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPINONEDS6FA7B490Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptiononDeleteMotorcyclepostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/SubscriptiononDeleteMotorcyclepostAuth0Function/SubscriptiononDeleteMotorcyclepostAuth0Function.AppSyncFunction"
+   }
+  },
+  "SubscriptionOnDeleteMotorcycleDataResolverFnSubscriptionOnDeleteMotorcycleDataResolverFnAppSyncFunctionEC94EC62": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPINONEDS6FA7B490Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptionOnDeleteMotorcycleDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/fe3c43ada4b9d681a5e2312663ef7a73386424d73b73e51f8e2e9d4b50f7c502.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/e0cff47fb007f0bbf2a4e43ca256d6aa7ec109821769fd79fa7c5e83f0e7f9fc.vtl"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/SubscriptionOnDeleteMotorcycleDataResolverFn/SubscriptionOnDeleteMotorcycleDataResolverFn.AppSyncFunction"
+   }
+  },
+  "SubscriptiononDeleteMotorcycleResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+    },
+    "FieldName": "onDeleteMotorcycle",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "SubscriptiononDeleteMotorcycleauth0FunctionSubscriptiononDeleteMotorcycleauth0FunctionAppSyncFunction043844B6",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "SubscriptiononDeleteMotorcyclepostAuth0FunctionSubscriptiononDeleteMotorcyclepostAuth0FunctionAppSyncFunctionD7D334EC",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "SubscriptionOnDeleteMotorcycleDataResolverFnSubscriptionOnDeleteMotorcycleDataResolverFnAppSyncFunctionEC94EC62",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Subscription\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"onDeleteMotorcycle\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"NONE\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3authNestedStackauthNestedStackResource04AD0A6DOutputsamplifynettribemonorepousersandbox2ce6fae1c3authamplifyAuthauthenticatedUserRoleE74572B0Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3authNestedStackauthNestedStackResource04AD0A6DOutputsamplifynettribemonorepousersandbox2ce6fae1c3authamplifyAuthunauthenticatedUserRoleA9373BB7Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3authNestedStackauthNestedStackResource04AD0A6DOutputsamplifynettribemonorepousersandbox2ce6fae1c3authamplifyAuthIdentityPoolBFA3E4B3Ref"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Subscription"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/subscriptionOnDeleteMotorcycleResolver"
+   }
+  },
+  "QuerylistMotorcycleByCurrentRiderIdauth0FunctionQuerylistMotorcycleByCurrentRiderIdauth0FunctionAppSyncFunction109B4300": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPINONEDS6FA7B490Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "QuerylistMotorcycleByCurrentRiderIdauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/b68cc472beb5d6c236bbd8682e31d78bd46b63809a9f03f801f6b373542c9c6c.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/QuerylistMotorcycleByCurrentRiderIdauth0Function/QuerylistMotorcycleByCurrentRiderIdauth0Function.AppSyncFunction"
+   }
+  },
+  "QuerylistMotorcycleByCurrentRiderIdpostAuth0FunctionQuerylistMotorcycleByCurrentRiderIdpostAuth0FunctionAppSyncFunctionAB6CAD0B": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPINONEDS6FA7B490Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "QuerylistMotorcycleByCurrentRiderIdpostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/QuerylistMotorcycleByCurrentRiderIdpostAuth0Function/QuerylistMotorcycleByCurrentRiderIdpostAuth0Function.AppSyncFunction"
+   }
+  },
+  "QueryListMotorcycleByCurrentRiderIdDataResolverFnQueryListMotorcycleByCurrentRiderIdDataResolverFnAppSyncFunctionAAD509E1": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+    },
+    "DataSourceName": {
+     "Fn::GetAtt": [
+      "MotorcycleDataSource",
+      "Name"
+     ]
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "QueryListMotorcycleByCurrentRiderIdDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/da747bc019caa836509917f334f1fb2162a838e3ff877b86ff2389a2d85107cb.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/098c998f215c333f57348ca8912f66057ae6b574fe34013033dc54362ee2372c.vtl"
+    }
+   },
+   "DependsOn": [
+    "MotorcycleDataSource"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/QueryListMotorcycleByCurrentRiderIdDataResolverFn/QueryListMotorcycleByCurrentRiderIdDataResolverFn.AppSyncFunction"
+   }
+  },
+  "QuerylistMotorcycleByCurrentRiderIdResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+    },
+    "FieldName": "listMotorcycleByCurrentRiderId",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "QuerylistMotorcycleByCurrentRiderIdauth0FunctionQuerylistMotorcycleByCurrentRiderIdauth0FunctionAppSyncFunction109B4300",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "QuerylistMotorcycleByCurrentRiderIdpostAuth0FunctionQuerylistMotorcycleByCurrentRiderIdpostAuth0FunctionAppSyncFunctionAB6CAD0B",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "QueryListMotorcycleByCurrentRiderIdDataResolverFnQueryListMotorcycleByCurrentRiderIdDataResolverFnAppSyncFunctionAAD509E1",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Query\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"listMotorcycleByCurrentRiderId\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+       {
+        "Fn::Select": [
+         1,
+         {
+          "Fn::Split": [
+           "/",
+           {
+            "Fn::Select": [
+             5,
+             {
+              "Fn::Split": [
+               ":",
+               {
+                "Fn::GetAtt": [
+                 "MotorcycleTable",
+                 "TableArn"
+                ]
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3authNestedStackauthNestedStackResource04AD0A6DOutputsamplifynettribemonorepousersandbox2ce6fae1c3authamplifyAuthauthenticatedUserRoleE74572B0Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3authNestedStackauthNestedStackResource04AD0A6DOutputsamplifynettribemonorepousersandbox2ce6fae1c3authamplifyAuthunauthenticatedUserRoleA9373BB7Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3authNestedStackauthNestedStackResource04AD0A6DOutputsamplifynettribemonorepousersandbox2ce6fae1c3authamplifyAuthIdentityPoolBFA3E4B3Ref"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Query"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/queryListMotorcycleByCurrentRiderIdResolver"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/1WOwW6DMAyGn6X34DGYdl9BO24T7F6ZxKCUkKDYaVUh3n2CTp12+v3Jn+y/gOI1h/yAV860GTNnO1g+iIVMK6hHVfX+CyNOJBQ3qII3VmzwqiEOKWpSVWIJ0x/2/jHjlU+LuXmcgungGztHR2RSFidYmuDudnC0KpxnvnkNS73rdVejYPs4+Z/ek9dbiSr43g4p4t7o97O7UFwVlydkJmF420JxCcekR5KtwLq5n0nmJGpft4KD9cOqfDAEZ366FC/wXEJ+OLO1WUxe7ETQ3PMHX9Md9DYBAAA="
+   },
+   "Metadata": {
+    "aws:cdk:path": "amplify-nettribemonorepo-user-sandbox-2ce6fae1c3/data/amplifyData/Motorcycle/CDKMetadata/Default"
+   },
+   "Condition": "CDKMetadataAvailable"
+  }
+ },
+ "Outputs": {
+  "GetAttMotorcycleTableStreamArn": {
+   "Description": "Your DynamoDB table StreamArn.",
+   "Value": {
+    "Fn::GetAtt": [
+     "MotorcycleTable",
+     "TableStreamArn"
+    ]
+   },
+   "Export": {
+    "Name": {
+     "Fn::Join": [
+      ":",
+      [
+       {
+        "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+       },
+       "GetAtt:MotorcycleTable:StreamArn"
+      ]
+     ]
+    }
+   }
+  },
+  "GetAttMotorcycleTableName": {
+   "Description": "Your DynamoDB table name.",
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "Motorcycle-",
+      {
+       "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+      },
+      "-NONE"
+     ]
+    ]
+   },
+   "Export": {
+    "Name": {
+     "Fn::Join": [
+      ":",
+      [
+       {
+        "Ref": "referencetoamplifynettribemonorepousersandbox2ce6fae1c3dataamplifyDataGraphQLAPIB102D1D3ApiId"
+       },
+       "GetAtt:MotorcycleTable:Name"
+      ]
+     ]
+    }
+   }
+  }
+ }
+}
